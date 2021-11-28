@@ -77,15 +77,6 @@
     
     <item>
       <title>Kubernetes Liveness ProbeでJavaプロセスを監視する</title>
-      <link>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</link>
-      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</guid>
-      <description>Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes Liveness ProbeでJavaプロセスを監視する</title>
       <link>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe/</link>
       <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
       

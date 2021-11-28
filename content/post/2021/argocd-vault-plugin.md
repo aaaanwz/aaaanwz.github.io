@@ -6,16 +6,11 @@ categories:
 - kubernetes
 ---
 
-# まえおき
-KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。
+KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。  
 
-- 手元で暗号化する系
-    - Sealed Secrets
-    - kubesec
-- 外部シークレットストアから引っ張ってくる系
-    - Kubernetes Secrets Store CSI Driver
-    - kubernetes-external-secrets
-- 機密情報だけ別Repoにする
+Sealed Secretsやkubesecなどの手元で暗号化する系  
+Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部シークレットストアから引っ張ってくる系  
+機密情報だけ別Repoにする  
 
 など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。
 

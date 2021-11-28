@@ -18,6 +18,8 @@ jobs:
           hugo mod init github.com/aaaanwz/blog
           hugo mod get
           hugo -D
+        env:
+          HUGO_ENV: production
       - run: |
           git add -f ./docs; \
           git commit -m "hugo -D"; \

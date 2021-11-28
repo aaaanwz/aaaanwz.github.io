@@ -44,11 +44,11 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://aaaanwz.github.io/post/2021/argocd-vault-plugin/" />
 <meta property="article:published_time" content="2021-11-01T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T02:56:17+09:00" />
+<meta property="article:modified_time" content="2021-11-29T03:33:47+09:00" />
 <meta itemprop="name" content="ArgoCD GitOpsにおけるSecret管理">
 <meta itemprop="description" content="まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト">
 <meta itemprop="datePublished" content="2021-11-01T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T02:56:17&#43;09:00" />
+<meta itemprop="dateModified" content="2021-11-29T03:33:47&#43;09:00" />
 <meta itemprop="wordCount" content="1422">
 
 
@@ -582,6 +582,11 @@ $ helm install argo/argo-cd -f values.yaml
 </div>
 </div><p>あとは[テストで作成したManifest](#Kubernetes Manifestを作成する)と同様の実装でrepoにpushすればOKです。</p>
 
+      
+      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&text=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class="twitter-share-button"> Tweet</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      
+      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&title=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
     </div>
 
     
@@ -617,18 +622,20 @@ $ helm install argo/argo-cd -f values.yaml
 
     <footer id="footer" class="footer">
       <div class="social-links">
-        <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-        <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-    <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-  </div>
-  
-  <div class="copyright">  
-    <span class="copyright-year">
-      &copy; 
-      2019 - 
-      2021<span>	aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください</span>
-    </span>
-  </div>
+      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
+  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">  
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span>	aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください</span>
+  </span>
+  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
+</div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">

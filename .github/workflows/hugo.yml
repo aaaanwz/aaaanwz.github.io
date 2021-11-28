@@ -1,0 +1,26 @@
+name: hugo
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+      - run: |
+          sudo apt update
+          sudo apt install hugo -y
+      - run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - run: |
+          hugo mod init github.com/aaaanwz/blog
+          hugo mod get
+          hugo -D --minify
+      - run: |
+          if (git diff --shortstat | grep '[0-9]'); then \
+            git add -f ./docs; \
+            git commit -m "hugo -D"; \
+            git push origin HEAD:${GITHUB_REF}; \
+          fi

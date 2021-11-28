@@ -19,8 +19,6 @@ jobs:
           hugo mod get
           hugo -D
       - run: |
-          if (git diff --shortstat | grep '[0-9]'); then \
-            git add -f ./docs; \
-            git commit -m "hugo -D"; \
-            git push origin HEAD:${GITHUB_REF}; \
-          fi
+          git add -f ./docs; \
+          git commit -m "hugo -D"; \
+          git push origin HEAD:${GITHUB_REF}; \

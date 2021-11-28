@@ -1,0 +1,77 @@
+{{ define "content" -}}
+  <article class="post">
+    <!-- post-header -->
+    <header class="post-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> {{ .Date.Format (.Site.Params.dateFormatToUse | default "2006-01-02") }} </span>
+        {{ with .Params.categories -}}
+          <div class="post-category">
+            {{ range . -}}
+              <a href="{{ "categories" | relLangURL }}/{{ . | urlize }}/"> {{ . }} </a>
+            {{ end -}}
+          </div>
+        {{- end }}
+        {{- if .Site.Params.moreMeta }}
+          <span class="more-meta"> {{ T "wordCount" .WordCount }} </span>
+          <span class="more-meta"> {{ T "readingTime" .ReadingTime }} </span>
+        {{- end }}
+        {{ if and .Site.Params.busuanzi.enable .Site.Params.busuanzi.pagePV -}}
+          {{ $valueSpan := printf `<span id="busuanzi_value_page_pv"><img src="%s" alt="spinner.svg"/></span>` ("img/spinner.svg" | relURL) -}}
+          <span id="busuanzi_container_page_pv" class="more-meta"> {{ printf (T "pagePV") $valueSpan | safeHTML }} </span>
+        {{- end }}
+      </div>
+    </header>
+
+    <!-- TOC -->
+    {{- partial "post/toc.html" . -}}
+
+    <!-- Outdated Info Warning -->
+    {{- partial "post/outdated-info-warning.html" . -}}
+
+    <!-- Content -->
+    <div class="post-content">
+      {{ .Content }}
+      <!-- twitter -->
+      <a href="http://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" class="twitter-share-button"> Tweet</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <!-- hatena -->
+      <a href="http://b.hatena.ne.jp/add?mode=confirm&url={{ .Permalink }}&title={{ .Title }}" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+    </div>
+
+    <!-- Copyright -->
+    {{- partial "post/copyright.html" . -}}
+
+    <!-- Reward -->
+    {{- partial "post/reward.html" . -}}
+
+    <footer class="post-footer">
+      {{ with .Params.tags -}}
+        <div class="post-tags">
+          {{ range . -}}
+            <a href="{{ "tags" | relLangURL }}/{{ . | urlize }}{{ if $.Site.Params.uglyURLs }}.html{{ else }}/{{ end }}">{{ . }}</a>
+          {{ end -}}
+        </div>
+      {{- end -}}
+
+      <!-- Post Pagination -->
+      <nav class="post-nav">
+        {{ with .NextInSection -}}
+          <a class="prev" href="{{ .RelPermalink }}">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">{{ .Title }}</span>
+            <span class="prev-text nav-mobile">{{ T "prevPost" }}</span>
+          </a>
+        {{- end }}
+        {{ with .PrevInSection -}}
+          <a class="next" href="{{ .RelPermalink }}">
+            <span class="next-text nav-default">{{ .Title }}</span>
+            <span class="next-text nav-mobile">{{ T "nextPost" }}</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+        {{- end }}
+      </nav>
+    </footer>
+  </article>
+{{- end }}

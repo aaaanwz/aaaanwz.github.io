@@ -24,7 +24,7 @@
     <item>
       <title>BigQueryで重複レコードを削除するSQL</title>
       <link>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</link>
-      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 05 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</guid>
       <description>オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを</description>

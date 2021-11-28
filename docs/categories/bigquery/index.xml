@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
-    <lastBuildDate>Tue, 18 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 05 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://aaaanwz.github.io/categories/bigquery/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>BigQueryで重複レコードを削除するSQL</title>
       <link>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</link>
-      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 05 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</guid>
       <description>オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを</description>

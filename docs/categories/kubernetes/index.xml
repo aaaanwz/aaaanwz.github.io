@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on A4 note</title>
-    <link>https://aaaanwz.github.io/blog/categories/kubernetes/</link>
-    <description>Recent content in kubernetes on A4 note</description>
+    <title>kubernetes on A4 tech note</title>
+    <link>https://aaaanwz.github.io/categories/kubernetes/</link>
+    <description>Recent content in kubernetes on A4 tech note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
     <lastBuildDate>Mon, 01 Nov 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://aaaanwz.github.io/blog/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://aaaanwz.github.io/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>ArgoCD GitOpsにおけるSecret管理</title>
-      <link>https://aaaanwz.github.io/blog/post/2021/argocd-vault-plugin/</link>
+      <link>https://aaaanwz.github.io/post/2021/argocd-vault-plugin/</link>
       <pubDate>Mon, 01 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://aaaanwz.github.io/blog/post/2021/argocd-vault-plugin/</guid>
+      <guid>https://aaaanwz.github.io/post/2021/argocd-vault-plugin/</guid>
       <description>まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト</description>
     </item>
     

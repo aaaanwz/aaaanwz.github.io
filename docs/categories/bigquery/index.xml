@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>小ネタ on A4 tech note</title>
-    <link>https://aaaanwz.github.io/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/</link>
-    <description>Recent content in 小ネタ on A4 tech note</description>
+    <title>BigQuery on A4 tech note</title>
+    <link>https://aaaanwz.github.io/categories/bigquery/</link>
+    <description>Recent content in BigQuery on A4 tech note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
     <lastBuildDate>Tue, 18 Feb 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://aaaanwz.github.io/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://aaaanwz.github.io/categories/bigquery/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</guid>
       <description>オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを</description>
-    </item>
-    
-    <item>
-      <title>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</title>
-      <link>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</link>
-      <pubDate>Thu, 28 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</guid>
-      <description>ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id</description>
     </item>
     
   </channel>

@@ -22,12 +22,39 @@
     </item>
     
     <item>
+      <title>BigQueryで重複レコードを削除するSQL</title>
+      <link>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</link>
+      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</guid>
+      <description>オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを</description>
+    </item>
+    
+    <item>
+      <title>Apache beam サンプルコード</title>
+      <link>https://aaaanwz.github.io/post/2020/apache-beam-example/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/apache-beam-example/</guid>
+      <description>Apache beamのJava quickstartがいまいち分かりづらかったため、最小コードとデプロイ手順(Google Cloud Dataflow, AWS EMR)を備忘録としてま</description>
+    </item>
+    
+    <item>
       <title>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</title>
       <link>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</link>
       <pubDate>Thu, 28 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</guid>
       <description>ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id</description>
+    </item>
+    
+    <item>
+      <title>Github ActionsでAWS Lambdaにデプロイする</title>
+      <link>https://aaaanwz.github.io/post/2019/github-actions-lambda-deploy/</link>
+      <pubDate>Thu, 28 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/github-actions-lambda-deploy/</guid>
+      <description>GitHubでreleaseが作成された時、Lambdaにコードを反映させバージョンを更新するワークフローの単純な実装です サンプルディレクト</description>
     </item>
     
     <item>

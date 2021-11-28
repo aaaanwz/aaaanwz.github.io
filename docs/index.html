@@ -135,6 +135,54 @@
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2020/bigquery-deduplication/">BigQueryで重複レコードを削除するSQL</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-02-18 </span>
+      <div class="post-category">
+          <a href="/categories/bigquery/"> BigQuery </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
+          </div>
+        <span class="more-meta"> 467 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを
+    </div>
+    <div class="read-more">
+      <a href="/post/2020/bigquery-deduplication/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2020/apache-beam-example/">Apache beam サンプルコード</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-02-01 </span>
+      <div class="post-category">
+          <a href="/categories/data-pipeline/"> Data-pipeline </a>
+          <a href="/categories/java/"> Java </a>
+          </div>
+        <span class="more-meta"> 770 文字 </span>
+        <span class="more-meta"> 読了時間: 2 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Apache beamのJava quickstartがいまいち分かりづらかったため、最小コードとデプロイ手順(Google Cloud Dataflow, AWS EMR)を備忘録としてま
+    </div>
+    <div class="read-more">
+      <a href="/post/2020/apache-beam-example/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/2019/circleci-deploy-key/">CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2019-11-28 </span>
@@ -159,73 +207,24 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/java-create-maven-project/">mavenプロジェクト作成からCIOps構築まで</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2019/github-actions-lambda-deploy/">Github ActionsでAWS Lambdaにデプロイする</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-24 </span>
+      <span class="post-time"> 2019-11-28 </span>
       <div class="post-category">
-          <a href="/categories/java/"> java </a>
           <a href="/categories/ci/cd/"> CI/CD </a>
-          <a href="/categories/kubernetes/"> kubernetes </a>
+          <a href="/categories/aws/"> AWS </a>
           </div>
-        <span class="more-meta"> 2657 文字 </span>
-        <span class="more-meta"> 読了時間: 6 分 </span>
+        <span class="more-meta"> 180 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA
+      GitHubでreleaseが作成された時、Lambdaにコードを反映させバージョンを更新するワークフローの単純な実装です サンプルディレクト
     </div>
     <div class="read-more">
-      <a href="/post/2019/java-create-maven-project/" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/java-k8s-liveness-probe./">Kubernetes Liveness ProbeでJavaプロセスを監視する</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-07-02 </span>
-      <div class="post-category">
-          <a href="/categories/java/"> java </a>
-          <a href="/categories/kubernetes/"> kubernetes </a>
-          </div>
-        <span class="more-meta"> 670 文字 </span>
-        <span class="more-meta"> 読了時間: 2 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ
-    </div>
-    <div class="read-more">
-      <a href="/post/2019/java-k8s-liveness-probe./" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/java-k8s-liveness-probe/">Kubernetes Liveness ProbeでJavaプロセスを監視する</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-07-02 </span>
-      <div class="post-category">
-          <a href="/categories/java/"> java </a>
-          <a href="/categories/kubernetes/"> kubernetes </a>
-          </div>
-        <span class="more-meta"> 670 文字 </span>
-        <span class="more-meta"> 読了時間: 2 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ
-    </div>
-    <div class="read-more">
-      <a href="/post/2019/java-k8s-liveness-probe/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2019/github-actions-lambda-deploy/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>

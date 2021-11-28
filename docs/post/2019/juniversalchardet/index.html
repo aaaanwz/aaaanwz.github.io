@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Javaで文字コードを推測する - A4 note</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="aaaanwz" /><meta name="description" content="juniversalchardetを使用して、 ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデ" /><meta name="keywords" content="aaaanwz, エンジニア, テックブログ" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://aaaanwz.github.io/blog/post/2019/juniversalchardet/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/blog/favicon-16x16.png">
+<link rel="manifest" href="/blog/manifest.json">
+<link rel="mask-icon" href="/blog/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/blog/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Javaで文字コードを推測する" />
+<meta property="og:description" content="juniversalchardetを使用して、 ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aaaanwz.github.io/blog/post/2019/juniversalchardet/" />
+<meta property="article:published_time" content="2019-06-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-11-29T02:01:14+09:00" />
+<meta itemprop="name" content="Javaで文字コードを推測する">
+<meta itemprop="description" content="juniversalchardetを使用して、 ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデ">
+<meta itemprop="datePublished" content="2019-06-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-11-29T02:01:14&#43;09:00" />
+<meta itemprop="wordCount" content="1139">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Javaで文字コードを推測する"/>
+<meta name="twitter:description" content="juniversalchardetを使用して、 ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデ"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">A4 note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/blog/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/blog/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/blog/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/blog/portfolio">
+        <li class="mobile-menu-item">Portfolio</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/blog/" class="logo">A4 note</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/blog/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blog/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blog/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blog/portfolio">Portfolio</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Javaで文字コードを推測する</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-06-27 </span>
+        <div class="post-category">
+            <a href="/blog/categories/java/"> java </a>
+            </div>
+          <span class="more-meta"> 1139 文字 </span>
+          <span class="more-meta"> 読了時間: 3 分 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">コンテンツ</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#開発環境">開発環境</a></li>
+        <li><a href="#下準備">下準備</a></li>
+        <li><a href="#サンプル1-ファイル読み込み">サンプル1. ファイル読み込み</a>
+          <ul>
+            <li><a href="#detectorクラス">Detectorクラス</a></li>
+            <li><a href="#mainクラス">Mainクラス</a></li>
+            <li><a href="#実行例">実行例</a></li>
+          </ul>
+        </li>
+        <li><a href="#サンプル2-urlのデコード">サンプル2. URLのデコード</a>
+          <ul>
+            <li><a href="#detectorクラス-1">Detectorクラス</a></li>
+            <li><a href="#mainクラス-1">Mainクラス</a></li>
+            <li><a href="#実行例-1">実行例</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://code.google.com/archive/p/juniversalchardet/">juniversalchardet</a>を使用して、</p>
+<ul>
+<li>ファイルの文字コードを推測・デコード・コンソールへの表示を行う</li>
+<li>URLエンコードされた文字列をデコードする</li>
+</ul>
+<p>の2つのサンプルプログラムを作成してみます。</p>
+<p>juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。</p>
+<h2 id="開発環境">開発環境</h2>
+<ul>
+<li>OpenJDK 11</li>
+<li>Maven 3.6</li>
+</ul>
+<h2 id="下準備">下準備</h2>
+<p>以下をmaven dependenciesに追加します</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml:pom.xml" data-lang="xml:pom.xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.googlecode.juniversalchardet<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>juniversalchardet<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.0.3<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="サンプル1-ファイル読み込み">サンプル1. ファイル読み込み</h2>
+<h3 id="detectorクラス">Detectorクラス</h3>
+<p>今回は汎用性のためにInputStreamを引数としてみます。
+引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。
+UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java:Detector.java" data-lang="java:Detector.java"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.charset.Charset</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mozilla.universalchardet.UniversalDetector</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Detector</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Charset</span> <span class="nf">getCharsetName</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">is</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="c1">//4kbのメモリバッファを確保する
+</span><span class="c1"></span>    <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">4096</span><span class="o">];</span>
+    <span class="n">UniversalDetector</span> <span class="n">detector</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UniversalDetector</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+    <span class="c1">//文字コードの推測結果が得られるまでInputStreamを読み進める
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">nread</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">((</span><span class="n">nread</span> <span class="o">=</span> <span class="n">is</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">detector</span><span class="o">.</span><span class="na">isDone</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">detector</span><span class="o">.</span><span class="na">handleData</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">nread</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="c1">//推測結果を取得する
+</span><span class="c1"></span>    <span class="n">detector</span><span class="o">.</span><span class="na">dataEnd</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">detectedCharset</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="na">getDetectedCharset</span><span class="o">();</span>
+    
+    <span class="n">detector</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">detectedCharset</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">Charset</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">detectedCharset</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">//文字コードを取得できなかった場合、環境のデフォルトを使用する
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">Charset</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&#34;file.encoding&#34;</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="mainクラス">Mainクラス</h3>
+<p>ファイルの文字コードを判別し、コンソールに出力します。<br>
+FileInputStreamはmark/resetをサポートしていないため、文字コード判別とコンソール出力で別のインスタンスを生成します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+public class Main {
+  public static void main(String[] args) throws IOException {
+    final String path = &#34;./test.txt&#34;;
+
+    Charset cs;
+    try (FileInputStream fis = new FileInputStream(path)) {
+      cs = Detector.getCharsetName(fis);
+      System.out.println(&#34;charset:&#34; + cs);
+    }
+
+    try (BufferedReader br =new BufferedReader(new InputStreamReader(new FileInputStream(path), cs))) {
+      br.lines().forEach(s -&gt; System.out.println(s));
+    }
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="実行例">実行例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">charset:SHIFT-JIS
+あいうえお
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="サンプル2-urlのデコード">サンプル2. URLのデコード</h2>
+<p>追加でApache commons codecを使用します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml:pom.xml" data-lang="xml:pom.xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>commons-codec<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>commons-codec<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.12<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="detectorクラス-1">Detectorクラス</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import org.mozilla.universalchardet.UniversalDetector;
+
+public class Detector {
+  public static Charset getCharsetName(byte[] bytes) {
+    UniversalDetector detector = new UniversalDetector(null);
+    //入力文字列が短すぎると推測ができないため、入力を繰り返す
+    while (!detector.isDone()) {
+      detector.handleData(bytes, 0, bytes.length);
+      detector.dataEnd();
+    }
+    final String charsetName = detector.getDetectedCharset();
+    detector.reset();
+    if (charsetName != null) {
+      return Charset.forName(charsetName);
+    }
+    return Charset.forName(System.getProperty(&#34;file.encoding&#34;));
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="mainクラス-1">Mainクラス</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.net.URLCodec;
+
+public class Main {
+  public static void main(String[] args) throws DecoderException, UnsupportedEncodingException {
+    final String str= &#34;%82%a0%82%a2%82%a4%82%a6%82%a8&#34;;
+    //URLエンコード文字列をパースし、バイト配列にする
+    byte[] bytes = new URLCodec()
+        .decode(str, StandardCharsets.ISO_8859_1.name())
+        .getBytes(StandardCharsets.ISO_8859_1.name());
+    
+    Charset cs = Detector.getCharsetName(bytes);
+    System.out.println(&#34;charset:&#34;+cs);
+
+    //バイト配列を検出したcharsetを用いて文字列にする
+    final String s = new String(bytes,cs);
+    System.out.println(s);
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="実行例-1">実行例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">charset:SHIFT-JIS
+あいうえお
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/blog/post/2021/argocd-vault-plugin/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ArgoCD GitOpsにおけるSecret管理</span>
+            <span class="prev-text nav-mobile">前の記事へ</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+    <script src="https://utteranc.es/client.js"
+            repo="aaaanwz/blog"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+        <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
+        <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
+    <a href="https://aaaanwz.github.io/blog/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+  </div>
+  
+  <div class="copyright">  
+    <span class="copyright-year">
+      &copy; 
+      2019 - 
+      2021<span>	aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください</span>
+    </span>
+  </div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/blog/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 title: "BigQueryで重複レコードを削除するSQL"
-date: 2020-02-18
+date: 2020-02-05
 draft: false
 categories:
 - BigQuery

@@ -51,13 +51,12 @@ copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される
   version = "4.x"
   debug = false
   since = "2019"
-  gitRepo = "https://github.com/aaaanwz/blog"
+  gitRepo = "aaaanwz.github.io"
 
   logoTitle = "A4 tech note"
-  keywords = ["aaaanwz", "エンジニア","テックブログ"]
-  description = "データエンジニアの技術メモ"
+  keywords = ["aaaanwz", "データエンジニア","テックブログ"]
   archivePaginate = 50
-  showArchiveCount = false
+  showArchiveCount = true
   dateFormatToUse = "2006-01-02"
   moreMeta = true
   highlightInClient = false
@@ -91,7 +90,7 @@ copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される
 
   [params.utterances] # https://utteranc.es/
     owner = "aaaanwz"
-    repo = "blog"
+    repo = "aaaanwz.github.io"
 
   [params.social]
     c-twitter = "https://twitter.com/aaaanwz"

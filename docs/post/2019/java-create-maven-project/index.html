@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Javaプロジェクト作成からCIOpsまで - A4 tech note</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="aaaanwz" /><meta name="description" content="git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA" /><meta name="keywords" content="aaaanwz, エンジニア, テックブログ" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://aaaanwz.github.io/post/2019/java-create-maven-project/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Javaプロジェクト作成からCIOpsまで" />
+<meta property="og:description" content="git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aaaanwz.github.io/post/2019/java-create-maven-project/" />
+<meta property="article:published_time" content="2019-07-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-11-29T04:06:02+09:00" />
+<meta itemprop="name" content="Javaプロジェクト作成からCIOpsまで">
+<meta itemprop="description" content="git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA">
+<meta itemprop="datePublished" content="2019-07-24T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-11-29T04:06:02&#43;09:00" />
+<meta itemprop="wordCount" content="2657">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Javaプロジェクト作成からCIOpsまで"/>
+<meta name="twitter:description" content="git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">A4 tech note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/portfolio">
+        <li class="mobile-menu-item">Portfolio</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">A4 tech note</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/portfolio">Portfolio</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Javaプロジェクト作成からCIOpsまで</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-07-24 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> java </a>
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+          <span class="more-meta"> 2657 文字 </span>
+          <span class="more-meta"> 読了時間: 6 分 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">コンテンツ</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#登場するもの">登場するもの</a>
+          <ul>
+            <li><a href="#oss">OSS</a></li>
+            <li><a href="#サービス">サービス</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#サンプルプロジェクトの実装">サンプルプロジェクトの実装</a>
+      <ul>
+        <li><a href="#1-スキーマ定義">1. スキーマ定義</a></li>
+        <li><a href="#2-mavenプロジェクト作成">2. mavenプロジェクト作成</a></li>
+        <li><a href="#3-dockerfile作成">3. Dockerfile作成</a></li>
+        <li><a href="#4-k8s-yamlファイル作成">4. k8s yamlファイル作成</a></li>
+        <li><a href="#5-circleci-configファイル作成">5. circleci configファイル作成</a>
+          <ul>
+            <li><a href="#junitテストの実行">①JUnitテストの実行</a></li>
+            <li><a href="#コンテナのビルドとecrへのpush">②コンテナのビルドとECRへのpush</a></li>
+            <li><a href="#eksへのkubectl-apply">③EKSへのkubectl apply</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#インフラ設定">インフラ設定</a>
+      <ul>
+        <li><a href="#1-ecr-eks環境準備">1. ECR, EKS環境準備</a>
+          <ul>
+            <li><a href="#1-1-基本設定">1-1. 基本設定</a></li>
+            <li><a href="#1-2-eks上にmysqlをデプロイ">1-2. EKS上にMySQLをデプロイ</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-circleci-projectの設定">2. CircleCI projectの設定</a>
+          <ul>
+            <li><a href="#2-1-プロジェクトのセットアップ">2-1. プロジェクトのセットアップ</a></li>
+            <li><a href="#2-2-環境変数の設定">2-2. 環境変数の設定</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#まとめ">まとめ</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>git branchに変更が加わった際、</p>
+<ul>
+<li>JUnit test (with MySQL)</li>
+<li>docker build</li>
+<li>Kubernetes環境にデプロイ (CIOps)</li>
+</ul>
+<p>が行われるJavaプロジェクトを構築します。</p>
+<blockquote>
+<p>本番運用ではArgoCDなどgitOps構築をお勧めします</p>
+</blockquote>
+<h2 id="登場するもの">登場するもの</h2>
+<h3 id="oss">OSS</h3>
+<ul>
+<li>Maven</li>
+<li>MySQL</li>
+<li>Docker</li>
+</ul>
+<h3 id="サービス">サービス</h3>
+<ul>
+<li>GitHub</li>
+<li>CircleCI</li>
+<li>AWS (ECR, EKS) ⇦ 微修正でその他マネージドk8sにも応用可能かと思います。</li>
+</ul>
+<h1 id="サンプルプロジェクトの実装">サンプルプロジェクトの実装</h1>
+<p>最終的にディレクトリ構成はこんな感じになります。順を追って作っていきます。
+<a href="https://github.com/aaaanwz/java-autodeploy-example">GitHub</a>からcloneして頂いても結構です。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">testproject/
+    ├ src/
+    │   ├ main/
+    │   │   └ java/
+    │   │        └testpackage/
+    │   │            └Main.java
+    │   └ test/
+    │       └ java/
+    │           └testpackage/  
+    │              └MainTest.java   
+    ├ .cifcleci/
+    │   └ config.yml
+    ├ schema.sql
+    ├ pom.xml
+    ├ deploy.yaml
+    └ Dockerfile
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="1-スキーマ定義">1. スキーマ定義</h2>
+<p>テーブルスキーマを記述します。resourceフォルダに置いても良いのですが、今回はトップディレクトリに配置することにします。<br>
+データベース名は指定しません。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql:schema.sql" data-lang="sql:schema.sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">user</span> <span class="p">(</span><span class="n">id</span> <span class="kt">int</span><span class="p">,</span> <span class="n">name</span> <span class="kt">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2-mavenプロジェクト作成">2. mavenプロジェクト作成</h2>
+<p>先ほどのtableに適当なレコードを挿入する最小限のJavaプロジェクトを実装します。</p>
+<p>JDBC、JUnit、maven-assembly-pluginを使用します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml:pom.xml" data-lang="xml:pom.xml"><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0&#34;</span>
+	<span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+	<span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>aaaanwz<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>0.0.1<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;name&gt;</span>testproject<span class="nt">&lt;/name&gt;</span>
+	<span class="nt">&lt;properties&gt;</span>
+		<span class="nt">&lt;maven.compiler.source&gt;</span>11<span class="nt">&lt;/maven.compiler.source&gt;</span>
+		<span class="nt">&lt;maven.compiler.target&gt;</span>11<span class="nt">&lt;/maven.compiler.target&gt;</span>
+	<span class="nt">&lt;/properties&gt;</span>
+	<span class="nt">&lt;dependencies&gt;</span>
+		<span class="c">&lt;!-- JDBC driver --&gt;</span>
+		<span class="nt">&lt;dependency&gt;</span>
+			<span class="nt">&lt;groupId&gt;</span>mysql<span class="nt">&lt;/groupId&gt;</span>
+			<span class="nt">&lt;artifactId&gt;</span>mysql-connector-java<span class="nt">&lt;/artifactId&gt;</span>
+			<span class="nt">&lt;version&gt;</span>8.0.17<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;/dependency&gt;</span>
+		<span class="c">&lt;!-- JUnit --&gt;</span>
+		<span class="nt">&lt;dependency&gt;</span>
+			<span class="nt">&lt;groupId&gt;</span>org.junit.jupiter<span class="nt">&lt;/groupId&gt;</span>
+			<span class="nt">&lt;artifactId&gt;</span>junit-jupiter-engine<span class="nt">&lt;/artifactId&gt;</span>
+			<span class="nt">&lt;version&gt;</span>5.3.1<span class="nt">&lt;/version&gt;</span>
+			<span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+		<span class="nt">&lt;/dependency&gt;</span>
+	<span class="nt">&lt;/dependencies&gt;</span>
+	<span class="nt">&lt;build&gt;</span>
+		<span class="nt">&lt;plugins&gt;</span>
+			<span class="c">&lt;!-- JUnit test --&gt;</span>
+			<span class="nt">&lt;plugin&gt;</span>
+				<span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+				<span class="nt">&lt;version&gt;</span>3.0.0-M3<span class="nt">&lt;/version&gt;</span>
+			<span class="nt">&lt;/plugin&gt;</span>
+			<span class="c">&lt;!-- Build runnable jar --&gt;</span>
+			<span class="nt">&lt;plugin&gt;</span>
+				<span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+				<span class="nt">&lt;executions&gt;</span>
+					<span class="nt">&lt;execution&gt;</span>
+						<span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+						<span class="nt">&lt;goals&gt;</span>
+							<span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+						<span class="nt">&lt;/goals&gt;</span>
+					<span class="nt">&lt;/execution&gt;</span>
+				<span class="nt">&lt;/executions&gt;</span>
+				<span class="nt">&lt;configuration&gt;</span>
+					<span class="nt">&lt;archive&gt;</span>
+						<span class="nt">&lt;manifest&gt;</span>
+							<span class="nt">&lt;mainClass&gt;</span>testpackage.Main<span class="nt">&lt;/mainClass&gt;</span>
+						<span class="nt">&lt;/manifest&gt;</span>
+					<span class="nt">&lt;/archive&gt;</span>
+					<span class="nt">&lt;descriptorRefs&gt;</span>
+						<span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
+					<span class="nt">&lt;/descriptorRefs&gt;</span>
+				<span class="nt">&lt;/configuration&gt;</span>
+			<span class="nt">&lt;/plugin&gt;</span>
+		<span class="nt">&lt;/plugins&gt;</span>
+	<span class="nt">&lt;/build&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>1レコード挿入するだけのMainクラスを実装します。<br>
+データベースへの接続情報は環境変数から取得します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java:src/main/java/testpackage/Main.java" data-lang="java:src/main/java/testpackage/Main.java"><span class="kn">package</span> <span class="nn">testpackage</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.Connection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.DriverManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.PreparedStatement</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.SQLException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">SQLException</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">&#34;DB_HOST&#34;</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">dbname</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">&#34;DB_NAME&#34;</span><span class="o">);</span>
+    <span class="n">execute</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">dbname</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">static</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">host</span><span class="o">,</span> <span class="n">String</span> <span class="n">dbname</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">SQLException</span> <span class="o">{</span>
+    <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class="o">);</span>
+    <span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span>
+        <span class="s">&#34;jdbc:mySql://&#34;</span> <span class="o">+</span> <span class="n">host</span> <span class="o">+</span> <span class="s">&#34;/&#34;</span> <span class="o">+</span> <span class="n">dbname</span> <span class="o">+</span> <span class="s">&#34;?useSSL=false&#34;</span><span class="o">,</span> <span class="s">&#34;root&#34;</span><span class="o">,</span> <span class="s">&#34;&#34;</span><span class="o">);</span>
+    <span class="n">PreparedStatement</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="s">&#34;INSERT INTO user(id,name) VALUES(?, ?)&#34;</span><span class="o">);</span>
+    <span class="n">stmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">1</span><span class="o">);</span>
+    <span class="n">stmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="s">&#34;Yamada&#34;</span><span class="o">);</span>
+    <span class="n">stmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>レコードが挿入された事を確認するだけのテストを書きます。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java:src/test/java/testpackage/MainTest.java" data-lang="java:src/test/java/testpackage/MainTest.java"><span class="kn">package</span> <span class="nn">testpackage</span><span class="o">;</span>
+
+<span class="kn">import static</span> <span class="nn">org.junit.jupiter.api.Assertions.assertEquals</span><span class="o">;</span>
+<span class="kn">import static</span> <span class="nn">org.junit.jupiter.api.Assertions.fail</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.Connection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.DriverManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.ResultSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.SQLException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.Statement</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.jupiter.api.AfterEach</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.jupiter.api.BeforeEach</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.jupiter.api.Test</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">testpackage.Main</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">MainTest</span> <span class="o">{</span>
+  <span class="n">Statement</span> <span class="n">stmt</span><span class="o">;</span>
+
+  <span class="nd">@BeforeEach</span>
+  <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">SQLException</span> <span class="o">{</span>
+    <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span class="o">);</span>
+    <span class="n">Connection</span> <span class="n">conn</span> <span class="o">=</span>
+        <span class="n">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="s">&#34;jdbc:mySql://localhost/test?useSSL=false&#34;</span><span class="o">,</span> <span class="s">&#34;root&#34;</span><span class="o">,</span> <span class="s">&#34;&#34;</span><span class="o">);</span>
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">createStatement</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@AfterEach</span>
+  <span class="kt">void</span> <span class="nf">after</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="o">{</span>
+    <span class="n">stmt</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">(</span><span class="s">&#34;TRUNCATE TABLE user&#34;</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Test</span>
+  <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">Main</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&#34;localhost&#34;</span><span class="o">,</span> <span class="s">&#34;test&#34;</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">(</span><span class="n">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">stmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">(</span><span class="s">&#34;SELECT * FROM user WHERE id = 1;&#34;</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;Yamada&#34;</span><span class="o">,</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">));</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">fail</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3-dockerfile作成">3. Dockerfile作成</h2>
+<p>Dockerfileを書きます。テストは <code>docker build</code>とは別のステップで行う予定のため、<code>-DskipTests</code>を付与してビルド時のテストをスキップします。</p>
+<p>イメージサイズ削減のためmaven:3.6でビルド、openjdk11:apline-slimで実行するマルチステージビルドを行います。
+maven:3.6では約800MB、openjdk11:alpine-slimでは約300MBとなります。現時点でECRの無料枠は500MBのため、個人開発では大きな差です。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">FROM maven:3.6 AS build
+
+ADD . /var/tmp/testproject/
+WORKDIR /var/tmp/testproject/
+RUN mvn -DskipTests package
+
+FROM adoptopenjdk/openjdk11:alpine-slim
+
+COPY --from=build /var/tmp/testproject/target/test-0.0.1-jar-with-dependencies.jar /usr/local/
+CMD java -jar /usr/local/test-0.0.1-jar-with-dependencies.jar.jar
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="4-k8s-yamlファイル作成">4. k8s yamlファイル作成</h2>
+<p>3.でビルドされたコンテナをk8sにデプロイするためのyamlを書きます。今回のプログラムは単発でSQLを実行して終了するため、<code>kind: Job</code>にしてみます。Docker registryのurlは適宜置換してください。<br>
+<code>env</code>でDBへの接続情報を定義します。 <code>DB_HOST</code>の値が <code>mysql</code>となっているのは、KubernetesのService経由で接続するためです。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml:k8s-job.yaml" data-lang="yaml:k8s-job.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>batch/v1<span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Job<span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>test<span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">template</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>test<span class="w">
+</span><span class="w">        </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>your-docker-registry-url/testimage<span class="p">:</span>latest<span class="w">
+</span><span class="w">        </span><span class="k">imagePullPolicy</span><span class="p">:</span><span class="w"> </span>Always<span class="w">
+</span><span class="w">        </span><span class="k">env</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>DB_HOST<span class="w">
+</span><span class="w">          </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mysql&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>DB_NAME<span class="w">
+</span><span class="w">          </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ekstest&#34;</span><span class="w">
+</span><span class="w">      </span><span class="k">restartPolicy</span><span class="p">:</span><span class="w"> </span>Never<span class="w">
+</span><span class="w">  </span><span class="k">backoffLimit</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="5-circleci-configファイル作成">5. circleci configファイル作成</h2>
+<p>本稿のキモです。CircleCIで自動テスト/ビルドを行うための構成設定を書きます。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yml:.circleci/config.yml" data-lang="yml:.circleci/config.yml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="m">2.1</span><span class="w">
+</span><span class="w"></span><span class="k">orbs</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">aws-ecr</span><span class="p">:</span><span class="w"> </span>circleci/aws-ecr@<span class="m">6.1.0</span><span class="w">
+</span><span class="w">  </span><span class="k">aws-eks</span><span class="p">:</span><span class="w"> </span>circleci/aws-eks@<span class="m">0.2.1</span><span class="w">
+</span><span class="w">  </span><span class="k">kubernetes</span><span class="p">:</span><span class="w"> </span>circleci/kubernetes@<span class="m">0.3.0</span><span class="w">
+</span><span class="w"></span><span class="k">jobs</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">test</span><span class="p">:</span><span class="w"> </span><span class="c"># ①JUnit テストの実行</span><span class="w">
+</span><span class="w">    </span><span class="k">docker</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="k">image</span><span class="p">:</span><span class="w"> </span>circleci/openjdk<span class="p">:</span><span class="m">11</span><span class="w">
+</span><span class="w">      </span>- <span class="k">image</span><span class="p">:</span><span class="w"> </span>circleci/mysql<span class="p">:</span><span class="m">5.7</span><span class="w">
+</span><span class="w">        </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">MYSQL_ALLOW_EMPTY_PASSWORD</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">          </span><span class="k">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span>test<span class="w">
+</span><span class="w">        </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>--character-set-server=utf8<span class="p">,</span><span class="w"> </span>--collation-server=utf8_general_ci<span class="p">,</span><span class="w"> </span>--default-storage-engine=innodb<span class="p">]</span><span class="w">
+</span><span class="w">    </span><span class="k">steps</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- checkout<span class="w">
+</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>Waiting<span class="w"> </span>for<span class="w"> </span>MySQL<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>ready<span class="w">
+</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>dockerize<span class="w"> </span>-wait<span class="w"> </span>tcp<span class="p">:</span>//localhost<span class="p">:</span><span class="m">3306</span><span class="w"> </span>-timeout<span class="w"> </span>1m<span class="w">
+</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>Install<span class="w"> </span>MySQL<span class="w"> </span>CLI;<span class="w"> </span>Create<span class="w"> </span>table;<span class="w">
+</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>default-mysql-client<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w"> </span>mysql<span class="w"> </span>-h<span class="w"> </span><span class="m">127.0.0.1</span><span class="w"> </span>-uroot<span class="w"> </span>test<span class="w"> </span>&lt;<span class="w"> </span>schema.sql<span class="w">
+</span><span class="w">      </span>- <span class="k">restore_cache</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">key</span><span class="p">:</span><span class="w"> </span>circleci-test-{{<span class="w"> </span>checksum<span class="w"> </span><span class="s2">&#34;pom.xml&#34;</span><span class="w"> </span>}}<span class="w">
+</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w"> </span>mvn<span class="w"> </span>dependency<span class="p">:</span>go-offline<span class="w">
+</span><span class="w">      </span>- <span class="k">save_cache</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">paths</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- ~/.m2<span class="w">
+</span><span class="w">          </span><span class="k">key</span><span class="p">:</span><span class="w"> </span>circleci-test-{{<span class="w"> </span>checksum<span class="w"> </span><span class="s2">&#34;pom.xml&#34;</span><span class="w"> </span>}}<span class="w">
+</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w"> </span>mvn<span class="w"> </span>test<span class="w">
+</span><span class="w">      </span>- <span class="k">store_test_results</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">path</span><span class="p">:</span><span class="w"> </span>target/surefire-reports<span class="w">
+</span><span class="w">  </span><span class="k">deploy</span><span class="p">:</span><span class="w"> </span><span class="c"># ③EKSへのkubectl apply</span><span class="w">
+</span><span class="w">    </span><span class="k">executor</span><span class="p">:</span><span class="w"> </span>aws-eks/python3<span class="w">
+</span><span class="w">    </span><span class="k">steps</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- checkout<span class="w">
+</span><span class="w">      </span>- kubernetes/install<span class="w">
+</span><span class="w">      </span>- <span class="k">aws-eks/update-kubeconfig-with-authenticator</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">cluster-name</span><span class="p">:</span><span class="w"> </span>test-cluster<span class="w">
+</span><span class="w">          </span><span class="k">aws-region</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;${AWS_REGION}&#34;</span><span class="w">
+</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="sd">|
+</span><span class="sd">            kubectl apply -f k8s-job.yaml</span><span class="w">
+</span><span class="w">          </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>apply<span class="w">
+</span><span class="w"></span><span class="k">workflows</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">test-and-deploy</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">jobs</span><span class="p">:</span><span class="w"> 
+</span><span class="w">      </span>- <span class="k">test</span><span class="p">:</span><span class="w"> </span><span class="c"># ①JUnit テストの実行</span><span class="w">
+</span><span class="w">          </span><span class="k">filters</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">branches</span><span class="p">:</span><span class="w">
+</span><span class="w">              </span><span class="k">only</span><span class="p">:</span><span class="w"> </span>develop<span class="w">
+</span><span class="w">      </span>- <span class="k">aws-ecr/build-and-push-image</span><span class="p">:</span><span class="w"> </span><span class="c"># ②コンテナのビルドとECRへのpush</span><span class="w">
+</span><span class="w">          </span><span class="k">filters</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="k">branches</span><span class="p">:</span><span class="w">
+</span><span class="w">              </span><span class="k">only</span><span class="p">:</span><span class="w"> </span>master<span class="w">
+</span><span class="w">          </span><span class="k">create-repo</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">          </span><span class="k">repo</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;testimage&#34;</span><span class="w">
+</span><span class="w">          </span><span class="k">tag</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;latest&#34;</span><span class="w">
+</span><span class="w">      </span>- <span class="k">deploy</span><span class="p">:</span><span class="w"> </span><span class="c"># ③EKSへのkubectl apply</span><span class="w">
+</span><span class="w">          </span><span class="k">requires</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- aws-ecr/build-and-push-image<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="junitテストの実行">①JUnitテストの実行</h3>
+<p>filterによって、<code>develop</code>ブランチに変更が加わった際に <code>mvn test</code>が実行されるようにしてみました。この際テスト用MySQLインスタンスが立ち上がり、 <code>test</code>データベースが準備されます。</p>
+<p>公式ドキュメントで詳しく解説されています。　　</p>
+<ul>
+<li><a href="https://circleci.com/docs/2.0/language-java/">Language Guide: Java</a></li>
+<li><a href="https://circleci.com/docs/2.0/postgres-config/">Database Configuration Examples</a></li>
+</ul>
+<h3 id="コンテナのビルドとecrへのpush">②コンテナのビルドとECRへのpush</h3>
+<p><code>master</code>ブランチに変更が加わった際に、Dockerfileに従ってbuildし、ECRにpushします。<br>
+<a href="https://circleci.com/orbs/registry/orb/circleci/aws-ecr">Orbクイックスタートガイド</a>で詳しく解説されています。</p>
+<h3 id="eksへのkubectl-apply">③EKSへのkubectl apply</h3>
+<p>②が実施された後、4.で定義したJobを実行します。<br>
+<a href="https://circleci.com/orbs/registry/orb/circleci/aws-eks">circleci/aws-eks</a>に解説がありますが、サンプルコードをよりシンプルに変更しました。<br>
+@0.2.1のドキュメントによるとパラメータ<code>aws-region</code>はRequiredとなっていませんが、実際は必須のようです。ECRのpushで環境変数<code>AWS_REGION</code>を要求されているので、これをそのまま使いました。</p>
+<h1 id="インフラ設定">インフラ設定</h1>
+<p>ほとんど公式ドキュメントへのリンク集です。</p>
+<h2 id="1-ecr-eks環境準備">1. ECR, EKS環境準備</h2>
+<h3 id="1-1-基本設定">1-1. 基本設定</h3>
+<p><code>test-cluster</code>を立ち上げます。</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html">Getting Started with Amazon EKS</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/get-set-up-for-amazon-ecr.html">Setting Up with Amazon ECR</a></li>
+</ul>
+<h3 id="1-2-eks上にmysqlをデプロイ">1-2. EKS上にMySQLをデプロイ</h3>
+<p>Kubernetes公式に<a href="https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/#deploy-mysql">Deploy MySQL</a>というドキュメントが用意されています。<br>
+<code>kubectl exec -it mysql-0 mysql</code>コマンドから<code>ekstest</code>データベースと<code>user</code>テーブルを用意します。</p>
+<h2 id="2-circleci-projectの設定">2. CircleCI projectの設定</h2>
+<h3 id="2-1-プロジェクトのセットアップ">2-1. プロジェクトのセットアップ</h3>
+<ul>
+<li><a href="https://circleci.com/docs/enterprise/quick-start/">quick-start</a></li>
+</ul>
+<h3 id="2-2-環境変数の設定">2-2. 環境変数の設定</h3>
+<ul>
+<li><a href="https://circleci.com/orbs/registry/orb/circleci/aws-ecr">circleci/aws-ecr</a>でRequiredとなっている環境変数をCircleCI Projectに<a href="https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project">設定</a>します。<br>
+Roleに要求される権限の詳細は割愛します。</li>
+</ul>
+<h1 id="まとめ">まとめ</h1>
+<ul>
+<li>develop branchにpush<br>
+　mvn testが実行され、テストレポートがCircleCIのTest summaryに表示されます。</li>
+<li>master branchにpush<br>
+ECRにdocker imageがpushされ、EKSでJobが開始します。EKS上のMySQLに <code>id:1 name:Yamada</code>レコードが挿入されます。</li>
+</ul>
+
+      
+      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fjava-create-maven-project%2f&text=Java%e3%83%97%e3%83%ad%e3%82%b8%e3%82%a7%e3%82%af%e3%83%88%e4%bd%9c%e6%88%90%e3%81%8b%e3%82%89CIOps%e3%81%be%e3%81%a7" class="twitter-share-button"> Tweet</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      
+      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fjava-create-maven-project%2f&title=Java%e3%83%97%e3%83%ad%e3%82%b8%e3%82%a7%e3%82%af%e3%83%88%e4%bd%9c%e6%88%90%e3%81%8b%e3%82%89CIOps%e3%81%be%e3%81%a7" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/2019/circleci-deploy-key/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</span>
+            <span class="prev-text nav-mobile">前の記事へ</span>
+          </a>
+        <a class="next" href="/post/2019/java-k8s-liveness-probe./">
+            <span class="next-text nav-default">Kubernetes Liveness ProbeでJavaプロセスを監視する</span>
+            <span class="next-text nav-mobile">次の記事へ</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+    <script src="https://utteranc.es/client.js"
+            repo="aaaanwz/blog"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
+  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">  
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span>	aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください</span>
+  </span>
+  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'G-CWBPGKYRHB', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -21,5 +21,23 @@
       <description>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す</description>
     </item>
     
+    <item>
+      <title>Javaプロジェクト作成からCIOpsまで</title>
+      <link>https://aaaanwz.github.io/post/2019/java-create-maven-project/</link>
+      <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/java-create-maven-project/</guid>
+      <description>git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Liveness ProbeでJavaプロセスを監視する</title>
+      <link>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</guid>
+      <description>Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ</description>
+    </item>
+    
   </channel>
 </rss>

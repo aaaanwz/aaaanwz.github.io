@@ -22,6 +22,33 @@
     </item>
     
     <item>
+      <title>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</title>
+      <link>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</link>
+      <pubDate>Thu, 28 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/circleci-deploy-key/</guid>
+      <description>ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id</description>
+    </item>
+    
+    <item>
+      <title>Javaプロジェクト作成からCIOpsまで</title>
+      <link>https://aaaanwz.github.io/post/2019/java-create-maven-project/</link>
+      <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/java-create-maven-project/</guid>
+      <description>git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Liveness ProbeでJavaプロセスを監視する</title>
+      <link>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe./</guid>
+      <description>Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ</description>
+    </item>
+    
+    <item>
       <title>Javaで文字コードを推測する</title>
       <link>https://aaaanwz.github.io/post/2019/juniversalchardet/</link>
       <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>

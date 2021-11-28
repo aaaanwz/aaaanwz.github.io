@@ -18,7 +18,7 @@
       <pubDate>Mon, 01 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/post/2021/argocd-vault-plugin/</guid>
-      <description>まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト</description>
+      <description>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す</description>
     </item>
     
   </channel>

@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="aaaanwz" /><meta name="description" content="まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト" /><meta name="keywords" content="aaaanwz, エンジニア, テックブログ" />
+<meta name="author" content="aaaanwz" /><meta name="description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す" /><meta name="keywords" content="aaaanwz, エンジニア, テックブログ" />
 
 
 
@@ -40,22 +40,22 @@
 
 
 <meta property="og:title" content="ArgoCD GitOpsにおけるSecret管理" />
-<meta property="og:description" content="まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト" />
+<meta property="og:description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://aaaanwz.github.io/post/2021/argocd-vault-plugin/" />
 <meta property="article:published_time" content="2021-11-01T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T03:33:47+09:00" />
+<meta property="article:modified_time" content="2021-11-29T03:49:00+09:00" />
 <meta itemprop="name" content="ArgoCD GitOpsにおけるSecret管理">
-<meta itemprop="description" content="まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト">
+<meta itemprop="description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す">
 <meta itemprop="datePublished" content="2021-11-01T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T03:33:47&#43;09:00" />
-<meta itemprop="wordCount" content="1422">
+<meta itemprop="dateModified" content="2021-11-29T03:49:00&#43;09:00" />
+<meta itemprop="wordCount" content="1469">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ArgoCD GitOpsにおけるSecret管理"/>
-<meta name="twitter:description" content="まえおき KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 手元で暗号化する系 Sealed Secrets kubesec 外部シークレットスト"/>
+<meta name="twitter:description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -125,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/kubernetes/"> kubernetes </a>
             </div>
-          <span class="more-meta"> 1422 文字 </span>
+          <span class="more-meta"> 1469 文字 </span>
           <span class="more-meta"> 読了時間: 3 分 </span>
         
       </div>
@@ -136,7 +136,6 @@
   <div class="post-toc-content">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#まえおき">まえおき</a></li>
     <li><a href="#テスト">テスト</a>
       <ul>
         <li><a href="#ローカル環境にインストール-mac">ローカル環境にインストール (Mac)</a></li>
@@ -162,23 +161,10 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="まえおき">まえおき</h1>
-<p>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。</p>
-<ul>
-<li>手元で暗号化する系
-<ul>
-<li>Sealed Secrets</li>
-<li>kubesec</li>
-</ul>
-</li>
-<li>外部シークレットストアから引っ張ってくる系
-<ul>
-<li>Kubernetes Secrets Store CSI Driver</li>
-<li>kubernetes-external-secrets</li>
-</ul>
-</li>
-<li>機密情報だけ別Repoにする</li>
-</ul>
+      <p>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。</p>
+<p>Sealed Secretsやkubesecなどの手元で暗号化する系<br>
+Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部シークレットストアから引っ張ってくる系<br>
+機密情報だけ別Repoにする</p>
 <p>など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。</p>
 <p>そんな中でIBM社が開発している<code>ArgoCD Vault Plugin</code>を触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。
 (上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します)

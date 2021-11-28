@@ -1,8 +1,8 @@
 publishDir = "docs"
-baseURL = "https://aaaanwz.github.io/blog/"
+baseURL = "https://aaaanwz.github.io/"
 languageCode = "ja"
 defaultContentLanguage = "ja"
-title = "A4 note"
+title = "A4 tech note"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
@@ -15,7 +15,7 @@ pygmentsCodefencesGuessSyntax = true
 
 hasCJKLanguage = true
 paginate = 5
-googleAnalytics = ""      # TODO
+googleAnalytics = "G-CWBPGKYRHB"
 copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください"
 
 [author]
@@ -53,7 +53,7 @@ copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される
   since = "2019"
   gitRepo = "https://github.com/aaaanwz/blog"
 
-  logoTitle = "A4 note"
+  logoTitle = "A4 tech note"
   keywords = ["aaaanwz", "エンジニア","テックブログ"]
   description = "データエンジニアの技術メモ"
   archivePaginate = 50

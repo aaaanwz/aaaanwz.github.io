@@ -20,5 +20,14 @@
       <description>ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id</description>
     </item>
     
+    <item>
+      <title>mavenプロジェクト作成からCIOps構築まで</title>
+      <link>https://aaaanwz.github.io/post/2019/java-create-maven-project/</link>
+      <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2019/java-create-maven-project/</guid>
+      <description>git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA</description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,9 +1,10 @@
 ---
-title: "Javaプロジェクト作成からCIOpsまで"
+title: "mavenプロジェクト作成からCIOps構築まで"
 date: 2019-07-24
 draft: false
 categories:
 - java
+- CI/CD
 - kubernetes
 ---
 

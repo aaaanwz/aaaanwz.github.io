@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>自作キーボード JJ50 ビルドログ</title>
+      <link>https://aaaanwz.github.io/post/2020/keyboard-jj50/</link>
+      <pubDate>Sun, 23 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/keyboard-jj50/</guid>
+      <description>HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し</description>
+    </item>
+    
+    <item>
       <title>BigQueryで重複レコードを削除するSQL</title>
       <link>https://aaaanwz.github.io/post/2020/bigquery-deduplication/</link>
       <pubDate>Wed, 05 Feb 2020 00:00:00 +0000</pubDate>

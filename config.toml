@@ -16,7 +16,7 @@ pygmentsCodefencesGuessSyntax = true
 hasCJKLanguage = true
 paginate = 5
 googleAnalytics = ""      # TODO
-copyright = "aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください"
+copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください"
 
 [author]
   name = "aaaanwz"
@@ -46,11 +46,11 @@ copyright = "aaaanwz all rights reserved.<br>コンテンツを引用される�
   weight = 40
   identifier = "portfolio"
   url = "/portfolio"
-
+  
 [params]
   version = "4.x"
   debug = false
-  since = "2021"
+  since = "2019"
   gitRepo = "https://github.com/aaaanwz/blog"
 
   logoTitle = "A4 note"

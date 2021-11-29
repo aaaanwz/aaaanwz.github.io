@@ -95,8 +95,12 @@ $ winetricks cjkfonts
 
 ## VSCode
 
-snapで入れるとKubernetes拡張機能が動作しないなど不具合が多いので、公式から.debで入れたほうがいい
+snapで入れるとKubernetes extensionが動作しないなど不具合が多いので、公式から.debで入れたほうがいい
 
 ## Slack
 
-snapで入れるとIME切り替えができない
+snapで入れるとショートカットキーでIME切り替えができないためWebで利用中。要調査
+
+---
+
+随時追記予定

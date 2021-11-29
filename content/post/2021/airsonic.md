@@ -1,6 +1,6 @@
 ---
 title: "おうちKubernetesに音楽ストリーミングサーバー(兼ファイルサーバー)を構築する"
-date: 2021-12-02
+date: 2021-12-02T07:00:00+09:00
 draft: false
 categories:
 - kubernetes

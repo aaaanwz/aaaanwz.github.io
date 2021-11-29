@@ -27,9 +27,9 @@ copyright = "\t@aaaanwz\tコンテンツを引用される際は当ブログのU
   filename = "sitemap.xml"
 
 [[menu.main]]
-  name = "Home"
+  name = "Blog"
   weight = 10
-  identifier = "home"
+  identifier = "blog"
   url = "/"
 [[menu.main]]
   name = "Categories"
@@ -57,7 +57,7 @@ copyright = "\t@aaaanwz\tコンテンツを引用される際は当ブログのU
   keywords = ["aaaanwz", "データエンジニア","テックブログ"]
   archivePaginate = 50
   showArchiveCount = true
-  dateFormatToUse = "2006-01-02"
+  dateFormatToUse = "2006-01-02 15:04:05"
   moreMeta = true
   highlightInClient = false
 

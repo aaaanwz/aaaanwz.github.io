@@ -63,7 +63,7 @@ copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される
 
 
   toc = true
-  autoCollapseToc = true
+  autoCollapseToc = false
   fancybox = true
 
   postMetaInFooter = false

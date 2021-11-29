@@ -16,7 +16,7 @@ pygmentsCodefencesGuessSyntax = true
 hasCJKLanguage = true
 paginate = 5
 googleAnalytics = "G-CWBPGKYRHB"
-copyright = "\taaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください"
+copyright = "\t@aaaanwz\tコンテンツを引用される際は当ブログのURLを併記してください"
 
 [author]
   name = "aaaanwz"

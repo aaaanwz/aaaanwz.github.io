@@ -17,9 +17,7 @@ jobs:
       - run: |
           hugo mod init github.com/$GITHUB_REPOSITORY
           hugo mod get
-          hugo -D --minify
-        env:
-          HUGO_ENV: production
+          HUGO_ENV=production hugo -D --minify
       - run: |
           git add -f ./docs; \
           git commit -m "hugo -D"; \

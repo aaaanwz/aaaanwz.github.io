@@ -42,10 +42,10 @@ copyright = "\t@aaaanwz\tコンテンツを引用される際は当ブログのU
   identifier = "archives"
   url = "/post/"
 [[menu.main]]
-  name = "Portfolio"
+  name = "Author"
   weight = 40
-  identifier = "portfolio"
-  url = "/portfolio"
+  identifier = "author"
+  url = "/author"
   
 [params]
   version = "4.x"
@@ -57,7 +57,7 @@ copyright = "\t@aaaanwz\tコンテンツを引用される際は当ブログのU
   keywords = ["aaaanwz", "データエンジニア","テックブログ"]
   archivePaginate = 50
   showArchiveCount = true
-  dateFormatToUse = "2006-01-02 15:04:05"
+  dateFormatToUse = "2006-01-02"
   moreMeta = true
   highlightInClient = false
 

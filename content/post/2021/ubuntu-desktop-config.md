@@ -6,9 +6,9 @@ categories:
 - 小ネタ
 ---
 
-M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。  
+M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktop 20.04にしました。  
 
-## IME切り替えショートカットの設定
+## IME切り替えショートカットを `Ctrl + Space` に設定
 
 - 設定 > 地域と言語 > 入力ソース で入力ソースを `日本語(Mozc)` のみにする
 - Mozcプロパティ > キー設定 > 編集　で 入力キーが`Ctrl Space`のエントリーを削除し、以下のように設定
@@ -46,6 +46,18 @@ XDG_PICTURES_DIR="$HOME/Pictures"
 XDG_VIDEOS_DIR="$HOME/Videos"
 ```
 
+## デスクトップとファイルマネージャの間でファイルの移動ができるようにする
+
+### 元々のDesktop Iconsを無効化
+デスクトップを右クリック -> 設定
+- デスクトップにホームフォルダーを表示する
+- デスクトップにゴミ箱を表示する
+をオフにする
+
+> Gnome tweaksからも設定可能
+
+### GNOME拡張のDesktop Icons NG (DING)をインストール
+https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/
 
 ## Docker
 

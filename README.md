@@ -1,1 +1,1 @@
-https://aaaanwz.github.io/blog/
+https://aaaanwz.github.io/

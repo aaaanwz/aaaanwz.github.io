@@ -18,6 +18,8 @@ Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部
 (上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します)
 ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。
 
+{{< toc >}}
+
 # テスト
 AVPはbrewからも導入でき、手元で簡単にテストができます。
 シークレットストアはAWS Secrets Mangerを使う前提で解説します。

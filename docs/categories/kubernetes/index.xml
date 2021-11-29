@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>KubernetesのCronJobからJobを手動作成する</title>
+      <link>https://aaaanwz.github.io/post/2020/k8s-cron-rerun/</link>
+      <pubDate>Mon, 30 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/k8s-cron-rerun/</guid>
+      <description>1 kubectl create job 作成するJob名 --from=cronjob/CronJob名 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-job-em-</description>
+    </item>
+    
+    <item>
       <title>mavenプロジェクト作成からCIOps構築まで</title>
       <link>https://aaaanwz.github.io/post/2019/java-create-maven-project/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>

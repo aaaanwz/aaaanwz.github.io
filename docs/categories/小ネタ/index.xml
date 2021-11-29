@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
-    <lastBuildDate>Wed, 05 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Sep 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://aaaanwz.github.io/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VSCode Remote ContainerからGitHubにssh接続する</title>
+      <link>https://aaaanwz.github.io/post/2021/vscode-remote-container-ssh/</link>
+      <pubDate>Thu, 02 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2021/vscode-remote-container-ssh/</guid>
+      <description>公式ドキュメントの Sharing Git credentials with your containerに色々と記載があるが、非常に簡単なソリューションがあったためメモ Mac 1 2 3 4 5 $ sudo vi ~/.ssh/config Host github.com AddKeysToAgent yes UseKeychain</description>
+    </item>
+    
+    <item>
+      <title>KubernetesのCronJobからJobを手動作成する</title>
+      <link>https://aaaanwz.github.io/post/2020/k8s-cron-rerun/</link>
+      <pubDate>Mon, 30 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/k8s-cron-rerun/</guid>
+      <description>1 kubectl create job 作成するJob名 --from=cronjob/CronJob名 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-job-em-</description>
+    </item>
+    
+    <item>
+      <title>GCPでカスタムロールをサービスアカウントにbindingしようとしてエラーになる場合</title>
+      <link>https://aaaanwz.github.io/post/2020/gcp-serviceaccount-error/</link>
+      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2020/gcp-serviceaccount-error/</guid>
+      <description>1 2 3 4 $ gcloud projects add-iam-policy-binding myproject --member=serviceAccount:myserviceaccount@myproject.iam.gserviceaccount.com --role=&amp;#39;roles/mycustomrole&amp;#39; ERROR: Policy modification failed. For a binding with condition, run &amp;#34;gcloud alpha iam policies lint-condition&amp;#34; to identify issues in condition. ERROR: (gcloud.projects.add-iam-policy-binding) INVALID_ARGUMENT: Role roles/mycustomrole is not supported for this resource. --role の指定を roles/mycustomrole ではなく projects/myproject</description>
+    </item>
     
     <item>
       <title>BigQueryで重複レコードを削除するSQL</title>

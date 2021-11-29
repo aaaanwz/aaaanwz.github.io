@@ -135,95 +135,94 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2020/keyboard-jj50/">自作キーボード JJ50 ビルドログ</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2021/vscode-remote-container-ssh/">VSCode Remote ContainerからGitHubにssh接続する</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-23 </span>
+      <span class="post-time"> 2021-09-02 </span>
       <div class="post-category">
-          <a href="/categories/%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89/"> 自作キーボード </a>
-          </div>
-        <span class="more-meta"> 1506 文字 </span>
-        <span class="more-meta"> 読了時間: 4 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し
-    </div>
-    <div class="read-more">
-      <a href="/post/2020/keyboard-jj50/" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2020/bigquery-deduplication/">BigQueryで重複レコードを削除するSQL</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-02-05 </span>
-      <div class="post-category">
-          <a href="/categories/bigquery/"> BigQuery </a>
+          <a href="/categories/vscode/"> vscode </a>
           <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
           </div>
-        <span class="more-meta"> 467 文字 </span>
+        <span class="more-meta"> 86 文字 </span>
         <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを
+      公式ドキュメントの Sharing Git credentials with your containerに色々と記載があるが、非常に簡単なソリューションがあったためメモ Mac 1 2 3 4 5 $ sudo vi ~/.ssh/config Host github.com AddKeysToAgent yes UseKeychain
     </div>
     <div class="read-more">
-      <a href="/post/2020/bigquery-deduplication/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2021/vscode-remote-container-ssh/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2020/apache-beam-example/">Apache beam サンプルコード</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2021/airflow-xcom/">Airflowで後続のOperatorに配列を渡す</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-01 </span>
+      <span class="post-time"> 2021-05-20 </span>
       <div class="post-category">
-          <a href="/categories/data-pipeline/"> Data-pipeline </a>
-          <a href="/categories/java/"> Java </a>
+          <a href="/categories/terraform/"> terraform </a>
           </div>
-        <span class="more-meta"> 770 文字 </span>
+        <span class="more-meta"> 476 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Apache AirflowにおいてOperator間で値を渡すにはXCOMを使用しますが、 Airflow macroで文字列として取得する PythonOperato
+    </div>
+    <div class="read-more">
+      <a href="/post/2021/airflow-xcom/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2020/k8s-cron-rerun/">KubernetesのCronJobからJobを手動作成する</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-11-30 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> kubernetes </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
+          </div>
+        <span class="more-meta"> 36 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      1 kubectl create job 作成するJob名 --from=cronjob/CronJob名 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-job-em-
+    </div>
+    <div class="read-more">
+      <a href="/post/2020/k8s-cron-rerun/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2020/terraform-local-exec/">terraform非対応リソースをlocal-execで管理する</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-09-14 </span>
+      <div class="post-category">
+          <a href="/categories/terraform/"> terraform </a>
+          </div>
+        <span class="more-meta"> 733 文字 </span>
         <span class="more-meta"> 読了時間: 2 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Apache beamのJava quickstartがいまいち分かりづらかったため、最小コードとデプロイ手順(Google Cloud Dataflow, AWS EMR)を備忘録としてま
+      terraformに対応していないクラウドリソースを local-exec を用いてterraform化してみます。 今回はBigQueryのユーザー定義関数(UD
     </div>
     <div class="read-more">
-      <a href="/post/2020/apache-beam-example/" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/circleci-deploy-key/">CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-11-28 </span>
-      <div class="post-category">
-          <a href="/categories/ci/cd/"> CI/CD </a>
-          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
-          </div>
-        <span class="more-meta"> 134 文字 </span>
-        <span class="more-meta"> 読了時間: 1 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id
-    </div>
-    <div class="read-more">
-      <a href="/post/2019/circleci-deploy-key/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2020/terraform-local-exec/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>

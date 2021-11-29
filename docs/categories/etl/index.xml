@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ETL on A4 tech note</title>
+    <link>https://aaaanwz.github.io/categories/etl/</link>
+    <description>Recent content in ETL on A4 tech note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
+    <lastBuildDate>Thu, 28 Oct 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://aaaanwz.github.io/categories/etl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>embulkをArgo workflowsで実行するTemplate</title>
+      <link>https://aaaanwz.github.io/post/2021/argo-workflows-embulk/</link>
+      <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2021/argo-workflows-embulk/</guid>
+      <description>Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml</description>
+    </item>
+    
+    <item>
+      <title>[fluetd] S3にアップロードされたキー名でルーティングする</title>
+      <link>https://aaaanwz.github.io/post/2021/fluentd-s3-routing/</link>
+      <pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2021/fluentd-s3-routing/</guid>
+      <description>S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載</description>
+    </item>
+    
+  </channel>
+</rss>

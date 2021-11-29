@@ -135,94 +135,94 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2021/vscode-remote-container-ssh/">VSCode Remote ContainerからGitHubにssh接続する</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2021/argo-workflows-exit-handler/">Argo Workflowsの失敗時にデフォルトでSlackに通知する</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-09-02 </span>
+      <span class="post-time"> 2021-10-29 </span>
       <div class="post-category">
-          <a href="/categories/vscode/"> vscode </a>
-          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
+          <a href="/categories/kubernetes/"> Kubernetes </a>
           </div>
-        <span class="more-meta"> 86 文字 </span>
+        <span class="more-meta"> 171 文字 </span>
         <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      公式ドキュメントの Sharing Git credentials with your containerに色々と記載があるが、非常に簡単なソリューションがあったためメモ Mac 1 2 3 4 5 $ sudo vi ~/.ssh/config Host github.com AddKeysToAgent yes UseKeychain
+      Argo workflowsでは Default Workflow Spec を設定する事でワークフローに色々とパッチできる。 以下のようにexit-handlerをworkflowDefa
     </div>
     <div class="read-more">
-      <a href="/post/2021/vscode-remote-container-ssh/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2021/argo-workflows-exit-handler/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2021/airflow-xcom/">Airflowで後続のOperatorに配列を渡す</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2021/argo-workflows-embulk/">embulkをArgo workflowsで実行するTemplate</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-05-20 </span>
+      <span class="post-time"> 2021-10-28 </span>
       <div class="post-category">
-          <a href="/categories/terraform/"> terraform </a>
+          <a href="/categories/kubernetes/"> Kubernetes </a>
+          <a href="/categories/etl/"> ETL </a>
           </div>
-        <span class="more-meta"> 476 文字 </span>
+        <span class="more-meta"> 223 文字 </span>
         <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Apache AirflowにおいてOperator間で値を渡すにはXCOMを使用しますが、 Airflow macroで文字列として取得する PythonOperato
+      Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml
     </div>
     <div class="read-more">
-      <a href="/post/2021/airflow-xcom/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2021/argo-workflows-embulk/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2020/k8s-cron-rerun/">KubernetesのCronJobからJobを手動作成する</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2021/fluentd-s3-routing/">[fluetd] S3にアップロードされたキー名でルーティングする</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-11-30 </span>
+      <span class="post-time"> 2021-10-26 </span>
       <div class="post-category">
-          <a href="/categories/kubernetes/"> kubernetes </a>
-          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
+          <a href="/categories/etl/"> ETL </a>
           </div>
-        <span class="more-meta"> 36 文字 </span>
-        <span class="more-meta"> 読了時間: 1 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      1 kubectl create job 作成するJob名 --from=cronjob/CronJob名 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-job-em-
-    </div>
-    <div class="read-more">
-      <a href="/post/2020/k8s-cron-rerun/" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2020/terraform-local-exec/">terraform非対応リソースをlocal-execで管理する</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-14 </span>
-      <div class="post-category">
-          <a href="/categories/terraform/"> terraform </a>
-          </div>
-        <span class="more-meta"> 733 文字 </span>
+        <span class="more-meta"> 600 文字 </span>
         <span class="more-meta"> 読了時間: 2 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      terraformに対応していないクラウドリソースを local-exec を用いてterraform化してみます。 今回はBigQueryのユーザー定義関数(UD
+      S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載
     </div>
     <div class="read-more">
-      <a href="/post/2020/terraform-local-exec/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2021/fluentd-s3-routing/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2021/kubectl-logs/">kubectl logsに任意のログを表示する</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-09-08 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> Kubernetes </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
+          </div>
+        <span class="more-meta"> 81 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。 1 2 3 $ kubectl exec -it pod-xxx bash # echo &#39;show as stdin&#39; &gt; /proc/1/fd/1 # echo &#39;show as stderr&#39; &gt; /proc/1/fd/2 1 2 3
+    </div>
+    <div class="read-more">
+      <a href="/post/2021/kubectl-logs/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>

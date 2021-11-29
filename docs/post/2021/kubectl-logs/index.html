@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする - A4 tech note</title>
+  <title>kubectl logsに任意のログを表示する - A4 tech note</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="aaaanwz" /><meta name="description" content="ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
+<meta name="author" content="aaaanwz" /><meta name="description" content="kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。 1 2 3 $ kubectl exec -it pod-xxx bash # echo &amp;#39;show as stdin&amp;#39; &amp;gt; /proc/1/fd/1 # echo &amp;#39;show as stderr&amp;#39; &amp;gt; /proc/1/fd/2 1 2 3" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://aaaanwz.github.io/post/2019/circleci-deploy-key/" />
+<link rel="canonical" href="https://aaaanwz.github.io/post/2021/kubectl-logs/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,23 +39,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="CircleCIでDeploy Keyを用いて別のprivate repoをcloneする" />
-<meta property="og:description" content="ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id" />
+<meta property="og:title" content="kubectl logsに任意のログを表示する" />
+<meta property="og:description" content="kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。 1 2 3 $ kubectl exec -it pod-xxx bash # echo &#39;show as stdin&#39; &gt; /proc/1/fd/1 # echo &#39;show as stderr&#39; &gt; /proc/1/fd/2 1 2 3" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2019/circleci-deploy-key/" />
-<meta property="article:published_time" content="2019-11-28T00:00:00+00:00" />
+<meta property="og:url" content="https://aaaanwz.github.io/post/2021/kubectl-logs/" />
+<meta property="article:published_time" content="2021-09-08T00:00:00+00:00" />
 <meta property="article:modified_time" content="2021-11-29T11:39:56+09:00" />
-<meta itemprop="name" content="CircleCIでDeploy Keyを用いて別のprivate repoをcloneする">
-<meta itemprop="description" content="ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id">
-<meta itemprop="datePublished" content="2019-11-28T00:00:00&#43;00:00" />
+<meta itemprop="name" content="kubectl logsに任意のログを表示する">
+<meta itemprop="description" content="kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。 1 2 3 $ kubectl exec -it pod-xxx bash # echo &#39;show as stdin&#39; &gt; /proc/1/fd/1 # echo &#39;show as stderr&#39; &gt; /proc/1/fd/2 1 2 3">
+<meta itemprop="datePublished" content="2021-09-08T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2021-11-29T11:39:56&#43;09:00" />
-<meta itemprop="wordCount" content="134">
+<meta itemprop="wordCount" content="81">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CircleCIでDeploy Keyを用いて別のprivate repoをcloneする"/>
-<meta name="twitter:description" content="ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id"/>
+<meta name="twitter:title" content="kubectl logsに任意のログを表示する"/>
+<meta name="twitter:description" content="kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。 1 2 3 $ kubectl exec -it pod-xxx bash # echo &#39;show as stdin&#39; &gt; /proc/1/fd/1 # echo &#39;show as stderr&#39; &gt; /proc/1/fd/2 1 2 3"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -118,15 +118,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</h1>
+      <h1 class="post-title">kubectl logsに任意のログを表示する</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2019-11-28 </span>
+        <span class="post-time"> 2021-09-08 </span>
         <div class="post-category">
-            <a href="/categories/ci/cd/"> CI/CD </a>
+            <a href="/categories/kubernetes/"> Kubernetes </a>
             <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
             </div>
-          <span class="more-meta"> 134 文字 </span>
+          <span class="more-meta"> 81 文字 </span>
           <span class="more-meta"> 読了時間: 1 分 </span>
         
       </div>
@@ -139,67 +139,52 @@
   </div>
 </div>
     <div class="post-content">
-      <ol>
-<li><code>ssh-keygen</code>コマンドで公開鍵/秘密鍵を生成する</li>
-<li><a href="https://developer.github.com/v3/guides/managing-deploy-keys/">公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する</a></li>
-<li><a href="https://circleci.com/docs/2.0/add-ssh-key/">秘密鍵(id_rsa)をCircleCIに登録する</a></li>
-<li>3.のfingerprintを↓にコピー</li>
-</ol>
+      <p>kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-some-repo/.circleci/config.yml" data-lang="some-repo/.circleci/config.yml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="m">2.1</span><span class="w">
-</span><span class="w"></span><span class="k">jobs</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">do-something-with-another-repository</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">docker</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="k">image</span><span class="p">:</span><span class="w"> </span>circleci/golang<span class="p">:</span><span class="m">1.11</span>-stretch<span class="w">
-</span><span class="w">    </span><span class="k">steps</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="k">add_ssh_keys</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">fingerprints</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- <span class="s2">&#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp&#34;</span><span class="w">
-</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w"> </span>GIT_SSH_COMMAND=<span class="s2">&#34;ssh -o StrictHostKeyChecking=no&#34;</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com<span class="p">:</span>aaaanwz/another-repository.git<span class="w">
-</span><span class="w">      </span>- <span class="k">run</span><span class="p">:</span><span class="w"> </span>echo<span class="w"> </span><span class="s1">&#39;Do something&#39;</span><span class="w">
-</span><span class="w"></span><span class="k">workflows</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">test</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">jobs</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- do-something-with-another-repository<span class="w">
-</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ kubectl exec -it pod-xxx bash
+# echo &#39;show as stdin&#39; &gt; /proc/1/fd/1
+# echo &#39;show as stderr&#39; &gt; /proc/1/fd/2
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">$ kubectl logs pod-xxx
+
+show as stdin
+show as stderr
+</code></pre></td></tr></table>
 </div>
 </div>
       
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fcircleci-deploy-key%2f&text=CircleCI%e3%81%a7Deploy%20Key%e3%82%92%e7%94%a8%e3%81%84%e3%81%a6%e5%88%a5%e3%81%aeprivate%20repo%e3%82%92clone%e3%81%99%e3%82%8b" class="twitter-share-button"> Tweet</a>
+      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fkubectl-logs%2f&text=kubectl%20logs%e3%81%ab%e4%bb%bb%e6%84%8f%e3%81%ae%e3%83%ad%e3%82%b0%e3%82%92%e8%a1%a8%e7%a4%ba%e3%81%99%e3%82%8b" class="twitter-share-button"> Tweet</a>
       <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fcircleci-deploy-key%2f&title=CircleCI%e3%81%a7Deploy%20Key%e3%82%92%e7%94%a8%e3%81%84%e3%81%a6%e5%88%a5%e3%81%aeprivate%20repo%e3%82%92clone%e3%81%99%e3%82%8b" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fkubectl-logs%2f&title=kubectl%20logs%e3%81%ab%e4%bb%bb%e6%84%8f%e3%81%ae%e3%83%ad%e3%82%b0%e3%82%92%e8%a1%a8%e7%a4%ba%e3%81%99%e3%82%8b" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
     </div>
 
     
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="/post/2020/apache-beam-example/">
+        <a class="prev" href="/post/2021/fluentd-s3-routing/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Apache beam サンプルコード</span>
+            <span class="prev-text nav-default">[fluetd] S3にアップロードされたキー名でルーティングする</span>
             <span class="prev-text nav-mobile">前の記事へ</span>
           </a>
-        <a class="next" href="/post/2019/github-actions-lambda-deploy/">
-            <span class="next-text nav-default">Github ActionsでAWS Lambdaにデプロイする</span>
+        <a class="next" href="/post/2021/vscode-remote-container-ssh/">
+            <span class="next-text nav-default">VSCode Remote ContainerからGitHubにssh接続する</span>
             <span class="next-text nav-mobile">次の記事へ</span>
             <i class="iconfont icon-right"></i>
           </a>

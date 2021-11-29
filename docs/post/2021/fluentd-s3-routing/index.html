@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[fluetd] S3にアップロードされたキー名でルーティングする - A4 tech note</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="aaaanwz" /><meta name="description" content="S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://aaaanwz.github.io/post/2021/fluentd-s3-routing/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[fluetd] S3にアップロードされたキー名でルーティングする" />
+<meta property="og:description" content="S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://aaaanwz.github.io/post/2021/fluentd-s3-routing/" />
+<meta property="article:published_time" content="2021-10-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-11-29T11:39:56+09:00" />
+<meta itemprop="name" content="[fluetd] S3にアップロードされたキー名でルーティングする">
+<meta itemprop="description" content="S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載">
+<meta itemprop="datePublished" content="2021-10-26T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-11-29T11:39:56&#43;09:00" />
+<meta itemprop="wordCount" content="600">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[fluetd] S3にアップロードされたキー名でルーティングする"/>
+<meta name="twitter:description" content="S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">A4 tech note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/portfolio">
+        <li class="mobile-menu-item">Portfolio</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">A4 tech note</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/portfolio">Portfolio</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[fluetd] S3にアップロードされたキー名でルーティングする</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-10-26 </span>
+        <div class="post-category">
+            <a href="/categories/etl/"> ETL </a>
+            </div>
+          <span class="more-meta"> 600 文字 </span>
+          <span class="more-meta"> 読了時間: 2 分 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">コンテンツ</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#fluentconf">fluent.conf</a></li>
+        <li><a href="#解説">解説</a>
+          <ul>
+            <li><a href="#source">source</a></li>
+            <li><a href="#rewrite_tag_filter">rewrite_tag_filter</a></li>
+            <li><a href="#filter">filter</a></li>
+            <li><a href="#bigquery_insert">bigquery_insert</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>S3にアップロードされたファイルをfluentdでBigQueryにinsertする際、S3キー名に応じてテーブルを振り分けるサンプルを掲載します。
+ここではフォーマットは<code>s3://my-bucket/{BigQueryデータセット名}/{テーブル名}/{uuid}.csv.gz</code> とします。</p>
+<h2 id="fluentconf">fluent.conf</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;source&gt;
+  tag s3
+  @type s3
+  s3_bucket my-bucket
+  s3_region ap-northeast-1
+  &lt;sqs&gt;
+    queue_name my-queue
+  &lt;/sqs&gt;
+&lt;/source&gt;
+&lt;match s3&gt;
+  @type rewrite_tag_filter
+  &lt;rule&gt;
+    key s3_key
+    pattern ^(.+?)/(.+?)/.+\.gz$
+    tag bigquery.$1.$2
+  &lt;/rule&gt;
+&lt;/match&gt;
+&lt;filter bigquery.hoge.fuga&gt;
+    @type parser
+    key_name message
+    &lt;parse&gt;
+        @type csv
+        keys id,family_name,first_name
+        null_empty_string true
+    &lt;/parse&gt;
+&lt;/filter&gt;
+&lt;filter bigquery.foo.bar&gt;
+    @type parser
+    key_name message
+    &lt;parse&gt;
+        @type csv
+        keys column_1,column_2
+        null_empty_string true
+    &lt;/parse&gt;
+&lt;/filter&gt;
+&lt;match bigquery.*&gt;
+  @type bigquery_insert
+  project my-project
+  dataset ${tag[1]}
+  table ${tag[2]}
+  auth_method application_default
+  fetch_schema true
+  &lt;buffer tag&gt;
+    @type memory
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="解説">解説</h2>
+<h3 id="source">source</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;source&gt;
+  tag s3
+  @type s3
+  s3_bucket my-bucket
+  s3_region ap-northeast-1
+  add_object_metadata true
+  &lt;sqs&gt;
+    queue_name my-queue
+  &lt;/sqs&gt;
+&lt;/source&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>以下のファイルをアップロードしたとします。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">1, tanaka, taro
+</code></pre></td></tr></table>
+</div>
+</div><p><code>add_object_metadata</code> オプションにより、以下の形にtransformされます。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">tag:s3 {&#34;message&#34;:&#34;1,tanaka,taro&#34;, &#34;s3_bucket&#34;:&#34;my-bucket&#34;, &#34;s3_key&#34;:&#34;hoge/fuga/uuid.csv.gz&#34;}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="rewrite_tag_filter">rewrite_tag_filter</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;match s3&gt;
+  @type rewrite_tag_filter
+  &lt;rule&gt;
+    key s3_key
+    pattern ^(.+?)/(.+?)/.+\.gz$
+    tag bigquery.$1.$2
+  &lt;/rule&gt;
+&lt;/match&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>s3_keyを正規表現で展開し、タグが書き換えられます。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">tag:bigquery.hoge.fuga {&#34;message&#34;:&#34;1,tanaka,taro&#34;, &#34;s3_bucket&#34;:&#34;my-bucket&#34;, &#34;s3_key&#34;:&#34;hoge/fuga/uuid.csv.gz&#34;}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="filter">filter</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;filter bigquery.hoge.fuga&gt;
+    @type parser
+    key_name message
+    &lt;parse&gt;
+        @type csv
+        keys id,family_name,first_name
+        null_empty_string true
+    &lt;/parse&gt;
+&lt;/filter&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>message以外のメタデータを捨て、csvデータをパースします。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">tag:bigquery.hoge.fuga {&#34;id&#34;:&#34;1&#34;, &#34;family_name&#34;:&#34;tanaka&#34;, &#34;first_name&#34;:&#34;taro&#34;}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="bigquery_insert">bigquery_insert</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;match bigquery.*&gt;
+  @type bigquery_insert
+  project my-project
+  dataset ${tag[1]}
+  table ${tag[2]}
+  auth_method application_default
+  fetch_schema true
+  &lt;buffer tag&gt;
+    @type memory
+  &lt;/buffer&gt;
+&lt;/match&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>タグからdatasetとtableを取得し、対象のテーブルにレコードをstreaming insertします。
+tagプレースホルダを使用するためには <code>&lt;buffer tag&gt;</code> の宣言が必要になります。</p>
+<p><code>my-project:hoge.fuga</code></p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>family_name</th>
+<th>first_name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>tanaka</td>
+<td>taro</td>
+</tr>
+</tbody>
+</table>
+
+      
+      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2ffluentd-s3-routing%2f&text=%5bfluetd%5d%20S3%e3%81%ab%e3%82%a2%e3%83%83%e3%83%97%e3%83%ad%e3%83%bc%e3%83%89%e3%81%95%e3%82%8c%e3%81%9f%e3%82%ad%e3%83%bc%e5%90%8d%e3%81%a7%e3%83%ab%e3%83%bc%e3%83%86%e3%82%a3%e3%83%b3%e3%82%b0%e3%81%99%e3%82%8b" class="twitter-share-button"> Tweet</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      
+      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2ffluentd-s3-routing%2f&title=%5bfluetd%5d%20S3%e3%81%ab%e3%82%a2%e3%83%83%e3%83%97%e3%83%ad%e3%83%bc%e3%83%89%e3%81%95%e3%82%8c%e3%81%9f%e3%82%ad%e3%83%bc%e5%90%8d%e3%81%a7%e3%83%ab%e3%83%bc%e3%83%86%e3%82%a3%e3%83%b3%e3%82%b0%e3%81%99%e3%82%8b" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/2021/argo-workflows-embulk/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">embulkをArgo workflowsで実行するTemplate</span>
+            <span class="prev-text nav-mobile">前の記事へ</span>
+          </a>
+        <a class="next" href="/post/2021/kubectl-logs/">
+            <span class="next-text nav-default">kubectl logsに任意のログを表示する</span>
+            <span class="next-text nav-mobile">次の記事へ</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+    <script src="https://utteranc.es/client.js"
+            repo="aaaanwz/aaaanwz.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
+  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">  
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span>	aaaanwz all rights reserved.<br>コンテンツを引用される際は当ブログのURLを併記してください</span>
+  </span>
+  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'G-CWBPGKYRHB', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

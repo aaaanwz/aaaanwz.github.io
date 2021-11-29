@@ -112,120 +112,119 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/github-actions-lambda-deploy/">Github ActionsでAWS Lambdaにデプロイする</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2020/gcp-serviceaccount-error/">GCPでカスタムロールをサービスアカウントにbindingしようとしてエラーになる場合</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-11-28 </span>
+      <span class="post-time"> 2020-03-03 </span>
       <div class="post-category">
-          <a href="/categories/ci/cd/"> CI/CD </a>
-          <a href="/categories/aws/"> AWS </a>
+          <a href="/categories/gcp/"> GCP </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
           </div>
-        <span class="more-meta"> 180 文字 </span>
+        <span class="more-meta"> 111 文字 </span>
         <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      GitHubでreleaseが作成された時、Lambdaにコードを反映させバージョンを更新するワークフローの単純な実装です サンプルディレクト
+      1 2 3 4 $ gcloud projects add-iam-policy-binding myproject --member=serviceAccount:myserviceaccount@myproject.iam.gserviceaccount.com --role=&#39;roles/mycustomrole&#39; ERROR: Policy modification failed. For a binding with condition, run &#34;gcloud alpha iam policies lint-condition&#34; to identify issues in condition. ERROR: (gcloud.projects.add-iam-policy-binding) INVALID_ARGUMENT: Role roles/mycustomrole is not supported for this resource. --role の指定を roles/mycustomrole ではなく projects/myproject
     </div>
     <div class="read-more">
-      <a href="/post/2019/github-actions-lambda-deploy/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2020/gcp-serviceaccount-error/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/java-create-maven-project/">mavenプロジェクト作成からCIOps構築まで</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2020/keyboard-jj50/">自作キーボード JJ50 ビルドログ</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-24 </span>
+      <span class="post-time"> 2020-02-23 </span>
       <div class="post-category">
-          <a href="/categories/java/"> java </a>
-          <a href="/categories/ci/cd/"> CI/CD </a>
-          <a href="/categories/kubernetes/"> kubernetes </a>
+          <a href="/categories/%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89/"> 自作キーボード </a>
           </div>
-        <span class="more-meta"> 2657 文字 </span>
-        <span class="more-meta"> 読了時間: 6 分 </span>
+        <span class="more-meta"> 1506 文字 </span>
+        <span class="more-meta"> 読了時間: 4 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      git branchに変更が加わった際、 JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。 本番運用ではA
+      HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し
     </div>
     <div class="read-more">
-      <a href="/post/2019/java-create-maven-project/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2020/keyboard-jj50/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/java-k8s-liveness-probe/">Kubernetes Liveness ProbeでJavaプロセスを監視する</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2020/bigquery-deduplication/">BigQueryで重複レコードを削除するSQL</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-02 </span>
+      <span class="post-time"> 2020-02-05 </span>
       <div class="post-category">
-          <a href="/categories/java/"> java </a>
-          <a href="/categories/kubernetes/"> kubernetes </a>
+          <a href="/categories/bigquery/"> BigQuery </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
           </div>
-        <span class="more-meta"> 670 文字 </span>
+        <span class="more-meta"> 467 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      オペミスやat-least-onceセマンティクスによってINSERTされてしまった重複レコードを消すSQLです。 完全に同一な重複レコードを
+    </div>
+    <div class="read-more">
+      <a href="/post/2020/bigquery-deduplication/" class="read-more-link">続きを読む...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2020/apache-beam-example/">Apache beam サンプルコード</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-02-01 </span>
+      <div class="post-category">
+          <a href="/categories/data-pipeline/"> Data-pipeline </a>
+          <a href="/categories/java/"> Java </a>
+          </div>
+        <span class="more-meta"> 770 文字 </span>
         <span class="more-meta"> 読了時間: 2 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。 Kubernetes LivenessProbeに関する詳細はこ
+      Apache beamのJava quickstartがいまいち分かりづらかったため、最小コードとデプロイ手順(Google Cloud Dataflow, AWS EMR)を備忘録としてま
     </div>
     <div class="read-more">
-      <a href="/post/2019/java-k8s-liveness-probe/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2020/apache-beam-example/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/juniversalchardet/">Javaで文字コードを推測する</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/2019/circleci-deploy-key/">CircleCIでDeploy Keyを用いて別のprivate repoをcloneする</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-06-27 </span>
+      <span class="post-time"> 2019-11-28 </span>
       <div class="post-category">
-          <a href="/categories/java/"> java </a>
+          <a href="/categories/ci/cd/"> CI/CD </a>
+          <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
           </div>
-        <span class="more-meta"> 1139 文字 </span>
-        <span class="more-meta"> 読了時間: 3 分 </span>
+        <span class="more-meta"> 134 文字 </span>
+        <span class="more-meta"> 読了時間: 1 分 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      juniversalchardetを使用して、 ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデ
+      ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id
     </div>
     <div class="read-more">
-      <a href="/post/2019/juniversalchardet/" class="read-more-link">続きを読む...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/2019/kafkastreams-3/">Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-06-07 </span>
-      <div class="post-category">
-          <a href="/categories/java/"> java </a>
-          <a href="/categories/kafka/"> kafka </a>
-          </div>
-        <span class="more-meta"> 2671 文字 </span>
-        <span class="more-meta"> 読了時間: 6 分 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま
-    </div>
-    <div class="read-more">
-      <a href="/post/2019/kafkastreams-3/" class="read-more-link">続きを読む...</a>
+      <a href="/post/2019/circleci-deploy-key/" class="read-more-link">続きを読む...</a>
     </div>
   </div>
 </article>

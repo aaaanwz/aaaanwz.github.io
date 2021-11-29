@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
-    <lastBuildDate>Sun, 23 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Jun 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://aaaanwz.github.io/categories/%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>自作キーボードYMDK/SP64ビルドログ</title>
+      <link>https://aaaanwz.github.io/post/2021/keyboard-sp64/</link>
+      <pubDate>Sat, 26 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2021/keyboard-sp64/</guid>
+      <description>標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み</description>
+    </item>
     
     <item>
       <title>自作キーボード JJ50 ビルドログ</title>

@@ -4,6 +4,9 @@
 
 ![gravatar](https://www.gravatar.com/avatar/b215de5931a59ca93dd9420d0bf3e65e?s=200)
 
+<i class="iconfont icon-twitter"></i>[twitter](https://twitter.com/aaaanwz)  
+<i class="iconfont icon-github"></i>[github](https://github.com/aaaanwz)
+
 ## 得意分野
 
 - データパイプライン構築 (ETL, ELT, batch, streaming)
@@ -13,6 +16,8 @@
 ---
 
 # Skills
+
+resumeはDM等でお送りします
 
 <details><summary><font color="blue">Infra👇</font></summary><div>
 
@@ -92,11 +97,3 @@
 - Dump analysis (ISPF)
 
 </div></details>
-
----
-
-# Contact
-
-resumeはDM等でお送りします
-
-<a href="https://twitter.com/intent/tweet?screen_name=aaaanwz&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">Tweet to @aaaanwz</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

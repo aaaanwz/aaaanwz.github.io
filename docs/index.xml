@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>	aaaanwz all rights reserved.&lt;br&gt;コンテンツを引用される際は当ブログのURLを併記してください</copyright>
-    <lastBuildDate>Mon, 01 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Nov 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://aaaanwz.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ubuntu desktop初期設定メモ</title>
+      <link>https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/</link>
+      <pubDate>Sun, 21 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/</guid>
+      <description>M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &amp;gt; 地域と言語 &amp;gt;</description>
+    </item>
     
     <item>
       <title>ArgoCD GitOpsにおけるSecret管理</title>

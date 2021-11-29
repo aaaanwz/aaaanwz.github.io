@@ -1,377 +1,162 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>自作キーボード JJ50 ビルドログ - A4 tech note</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="aaaanwz" /><meta name="description" content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
-
-
-<link rel="canonical" href="https://aaaanwz.github.io/post/2020/keyboard-jj50/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="自作キーボード JJ50 ビルドログ" />
-<meta property="og:description" content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2020/keyboard-jj50/" />
-<meta property="article:published_time" content="2020-02-23T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T12:26:56+09:00" />
-<meta itemprop="name" content="自作キーボード JJ50 ビルドログ">
-<meta itemprop="description" content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し">
-<meta itemprop="datePublished" content="2020-02-23T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T12:26:56&#43;09:00" />
-<meta itemprop="wordCount" content="1506">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="自作キーボード JJ50 ビルドログ"/>
-<meta name="twitter:description" content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">A4 tech note</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/portfolio">
-        <li class="mobile-menu-item">Portfolio</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">A4 tech note</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/portfolio">Portfolio</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">自作キーボード JJ50 ビルドログ</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2020-02-23 </span>
-        <div class="post-category">
-            <a href="/categories/%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89/"> 自作キーボード </a>
-            </div>
-          <span class="more-meta"> 1506 文字 </span>
-          <span class="more-meta"> 読了時間: 4 分 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">コンテンツ</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#パーツ購入">パーツ購入</a></li>
-    <li><a href="#組み立て">組み立て</a></li>
-    <li><a href="#ファームウェア焼き">ファームウェア焼き</a>
-      <ul>
-        <li><a href="#ビルド環境セットアップ-mac">ビルド環境セットアップ (Mac)</a></li>
-        <li><a href="#キーマップの作成">キーマップの作成</a></li>
-        <li><a href="#ファームウェア焼き-1">ファームウェア焼き</a></li>
-      </ul>
-    </li>
-    <li><a href="#感想">感想</a></li>
-  </ul>
-</nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>HHKB Professionalを終のキーボードにしようと思っていましたが、</p>
-<ul>
-<li>長時間コーディングをしていると小指が痛くなる</li>
-<li>なんだかんだ矢印キーは欲しい</li>
-</ul>
-<p>という事で、最近流行りの自作キーボードをやってみようかという運びになりました。</p>
-<h1 id="パーツ購入">パーツ購入</h1>
-<ul>
-<li><code>1</code> ~ <code>=</code> が上段に並んでいて欲しい</li>
-<li>小指で押していたShift、Enter、Deleteを親指付近に移動させたい</li>
-</ul>
-<p>という理由によりサイズは12列5行に決定、このサイズのPCBを探したところAliExpressで <code>JJ50</code> という製品を見つけました。<br>
-同時にステンレス製ケース、キーキャップ、CherryMX銀軸を購入。</p>
-<p><img src="/images/keyboard-jj50/1.jpeg" alt="jj50-1"></p>
-<p>総額は¥14800(PCB¥3700、ケース¥4100、キーキャップ¥3600、スイッチ¥3400)程度でした。</p>
-<p>説明書なんてものは当然ありません。ドキュメントの類は<a href="https://github.com/qmk/qmk_firmware/tree/master/keyboards/jj50">これ</a>が全て。</p>
-<h1 id="組み立て">組み立て</h1>
-<ul>
-<li>
-<p>ケースにスイッチを取り付ける<br>
-<img src="/images/keyboard-jj50/2.jpeg" alt="jj50-2"></p>
-</li>
-<li>
-<p>PCBを載せて半田付け<br>
-<img src="/images/keyboard-jj50/3.jpeg" alt="jj50-3"></p>
-</li>
-<li>
-<p>キーキャップを取り付けてハードウェアは完成<br>
-<img src="/images/keyboard-jj50/4.jpeg" alt="jj50-4"></p>
-</li>
-</ul>
-<p>表面実装部品は予めついていたため拍子抜けするほど簡単でした。</p>
-<h1 id="ファームウェア焼き">ファームウェア焼き</h1>
-<h2 id="ビルド環境セットアップ-mac">ビルド環境セットアップ (Mac)</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ git clone https://github.com/qmk/qmk_firmware
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>自作キーボード JJ50 ビルドログ - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2020/keyboard-jj50/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="自作キーボード JJ50 ビルドログ"><meta property="og:description" content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2020/keyboard-jj50/"><meta property="article:published_time" content="2020-02-23T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-29T12:36:26+09:00"><meta itemprop=name content="自作キーボード JJ50 ビルドログ"><meta itemprop=description content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し"><meta itemprop=datePublished content="2020-02-23T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-29T12:36:26+09:00"><meta itemprop=wordCount content="1506"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="自作キーボード JJ50 ビルドログ"><meta name=twitter:description content="HHKB Professionalを終のキーボードにしようと思っていましたが、 長時間コーディングをしていると小指が痛くなる なんだかんだ矢印キーは欲し"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/portfolio><li class=mobile-menu-item>Portfolio</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/portfolio>Portfolio</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>自作キーボード JJ50 ビルドログ</h1><div class=post-meta><span class=post-time>2020-02-23</span><div class=post-category><a href=/categories/%E8%87%AA%E4%BD%9C%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89/>自作キーボード</a></div><span class=more-meta>1506 文字</span>
+<span class=more-meta>読了時間: 4 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><a href=#パーツ購入>パーツ購入</a></li><li><a href=#組み立て>組み立て</a></li><li><a href=#ファームウェア焼き>ファームウェア焼き</a><ul><li><a href=#ビルド環境セットアップ-mac>ビルド環境セットアップ (Mac)</a></li><li><a href=#キーマップの作成>キーマップの作成</a></li><li><a href=#ファームウェア焼き-1>ファームウェア焼き</a></li></ul></li><li><a href=#感想>感想</a></li></ul></nav></div></div><div class=post-content><p>HHKB Professionalを終のキーボードにしようと思っていましたが、</p><ul><li>長時間コーディングをしていると小指が痛くなる</li><li>なんだかんだ矢印キーは欲しい</li></ul><p>という事で、最近流行りの自作キーボードをやってみようかという運びになりました。</p><h1 id=パーツ購入>パーツ購入</h1><ul><li><code>1</code> ~ <code>=</code> が上段に並んでいて欲しい</li><li>小指で押していたShift、Enter、Deleteを親指付近に移動させたい</li></ul><p>という理由によりサイズは12列5行に決定、このサイズのPCBを探したところAliExpressで <code>JJ50</code> という製品を見つけました。<br>同時にステンレス製ケース、キーキャップ、CherryMX銀軸を購入。</p><p><img src=/images/keyboard-jj50/1.jpeg alt=jj50-1></p><p>総額は¥14800(PCB¥3700、ケース¥4100、キーキャップ¥3600、スイッチ¥3400)程度でした。</p><p>説明書なんてものは当然ありません。ドキュメントの類は<a href=https://github.com/qmk/qmk_firmware/tree/master/keyboards/jj50>これ</a>が全て。</p><h1 id=組み立て>組み立て</h1><ul><li><p>ケースにスイッチを取り付ける<br><img src=/images/keyboard-jj50/2.jpeg alt=jj50-2></p></li><li><p>PCBを載せて半田付け<br><img src=/images/keyboard-jj50/3.jpeg alt=jj50-3></p></li><li><p>キーキャップを取り付けてハードウェアは完成<br><img src=/images/keyboard-jj50/4.jpeg alt=jj50-4></p></li></ul><p>表面実装部品は予めついていたため拍子抜けするほど簡単でした。</p><h1 id=ファームウェア焼き>ファームウェア焼き</h1><h2 id=ビルド環境セットアップ-mac>ビルド環境セットアップ (Mac)</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>$ git clone https://github.com/qmk/qmk_firmware
 $ cd qmk_firmware
 $ util/qmk_install.sh
 $ make git-submodule
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="キーマップの作成">キーマップの作成</h2>
-<p>マクロや３つ以上のレイヤーは使う予定が無いので、とてもシンプルなコードです。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-c:keyboards/jj50/keymaps/mykeyboard/keymap.c" data-lang="c:keyboards/jj50/keymaps/mykeyboard/keymap.c"><span class="cp">#include</span> <span class="cpf">QMK_KEYBOARD_H</span><span class="cp">
-</span><span class="cp"></span>
-<span class="cp">#define ______ KC_TRNS
-</span><span class="cp">#define _DEFLT 0
-</span><span class="cp">#define _FN 1
-</span><span class="cp"></span>
-<span class="kt">bool</span> <span class="nf">process_record_user</span><span class="p">(</span><span class="n">uint16_t</span> <span class="n">keycode</span><span class="p">,</span> <span class="n">keyrecord_t</span> <span class="o">*</span><span class="n">record</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-<span class="p">};</span>
+</code></pre></td></tr></table></div></div><h2 id=キーマップの作成>キーマップの作成</h2><p>マクロや３つ以上のレイヤーは使う予定が無いので、とてもシンプルなコードです。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-c:keyboards/jj50/keymaps/mykeyboard/keymap.c data-lang=c:keyboards/jj50/keymaps/mykeyboard/keymap.c><span class=cp>#include</span> <span class=cpf>QMK_KEYBOARD_H</span><span class=cp>
+</span><span class=cp></span>
+<span class=cp>#define ______ KC_TRNS
+</span><span class=cp>#define _DEFLT 0
+</span><span class=cp>#define _FN 1
+</span><span class=cp></span>
+<span class=kt>bool</span> <span class=nf>process_record_user</span><span class=p>(</span><span class=n>uint16_t</span> <span class=n>keycode</span><span class=p>,</span> <span class=n>keyrecord_t</span> <span class=o>*</span><span class=n>record</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+<span class=p>};</span>
 
-<span class="k">const</span> <span class="n">uint16_t</span> <span class="n">PROGMEM</span> <span class="n">keymaps</span><span class="p">[][</span><span class="n">MATRIX_ROWS</span><span class="p">][</span><span class="n">MATRIX_COLS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<span class=k>const</span> <span class=n>uint16_t</span> <span class=n>PROGMEM</span> <span class=n>keymaps</span><span class=p>[][</span><span class=n>MATRIX_ROWS</span><span class=p>][</span><span class=n>MATRIX_COLS</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span>
 
-    <span class="cm">/* Default
-</span><span class="cm">     * ,-----------------------------------------------------------------------------------.
-</span><span class="cm">     * |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |  =   |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |   [  |   ]  |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |   &#34;  |   `  |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |  Up  |   \  |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |  Fn  | Ctrl |  Alt |  GUI | Space| Enter| Shift| Bksp |  Tab | Left | Down | Right|
-</span><span class="cm">     * `-----------------------------------------------------------------------------------&#39;
-</span><span class="cm">     */</span>
-    <span class="p">[</span><span class="n">_DEFLT</span><span class="p">]</span> <span class="o">=</span> <span class="n">LAYOUT</span><span class="p">(</span> \
-        <span class="n">KC_1</span><span class="p">,</span>    <span class="n">KC_2</span><span class="p">,</span>    <span class="n">KC_3</span><span class="p">,</span>    <span class="n">KC_4</span><span class="p">,</span>    <span class="n">KC_5</span><span class="p">,</span>    <span class="n">KC_6</span><span class="p">,</span>    <span class="n">KC_7</span><span class="p">,</span>    <span class="n">KC_8</span><span class="p">,</span>    <span class="n">KC_9</span><span class="p">,</span>    <span class="n">KC_0</span><span class="p">,</span>    <span class="n">KC_MINS</span><span class="p">,</span> <span class="n">KC_EQL</span><span class="p">,</span>  \
-        <span class="n">KC_Q</span><span class="p">,</span>    <span class="n">KC_W</span><span class="p">,</span>    <span class="n">KC_E</span><span class="p">,</span>    <span class="n">KC_R</span><span class="p">,</span>    <span class="n">KC_T</span><span class="p">,</span>    <span class="n">KC_Y</span><span class="p">,</span>    <span class="n">KC_U</span><span class="p">,</span>    <span class="n">KC_I</span><span class="p">,</span>    <span class="n">KC_O</span><span class="p">,</span>    <span class="n">KC_P</span><span class="p">,</span>    <span class="n">KC_LBRC</span><span class="p">,</span> <span class="n">KC_RBRC</span><span class="p">,</span> \
-        <span class="n">KC_A</span><span class="p">,</span>    <span class="n">KC_S</span><span class="p">,</span>    <span class="n">KC_D</span><span class="p">,</span>    <span class="n">KC_F</span><span class="p">,</span>    <span class="n">KC_G</span><span class="p">,</span>    <span class="n">KC_H</span><span class="p">,</span>    <span class="n">KC_J</span><span class="p">,</span>    <span class="n">KC_K</span><span class="p">,</span>    <span class="n">KC_L</span><span class="p">,</span>    <span class="n">KC_SCLN</span><span class="p">,</span> <span class="n">KC_QUOT</span><span class="p">,</span> <span class="n">KC_GRV</span><span class="p">,</span>  \
-        <span class="n">KC_Z</span><span class="p">,</span>    <span class="n">KC_X</span><span class="p">,</span>    <span class="n">KC_C</span><span class="p">,</span>    <span class="n">KC_V</span><span class="p">,</span>    <span class="n">KC_B</span><span class="p">,</span>    <span class="n">KC_N</span><span class="p">,</span>    <span class="n">KC_M</span><span class="p">,</span>    <span class="n">KC_COMM</span><span class="p">,</span> <span class="n">KC_DOT</span><span class="p">,</span>  <span class="n">KC_SLSH</span><span class="p">,</span> <span class="n">KC_UP</span>  <span class="p">,</span> <span class="n">KC_BSLS</span><span class="p">,</span> \
-        <span class="n">MO</span><span class="p">(</span><span class="n">_FN</span><span class="p">),</span> <span class="n">KC_LCTL</span><span class="p">,</span> <span class="n">KC_LALT</span><span class="p">,</span> <span class="n">KC_LGUI</span><span class="p">,</span> <span class="n">KC_SPC</span><span class="p">,</span>  <span class="n">KC_ENT</span><span class="p">,</span>  <span class="n">KC_LSFT</span><span class="p">,</span> <span class="n">KC_BSPC</span><span class="p">,</span> <span class="n">KC_TAB</span><span class="p">,</span>  <span class="n">KC_LEFT</span><span class="p">,</span> <span class="n">KC_DOWN</span><span class="p">,</span> <span class="n">KC_RGHT</span>  \
-    <span class="p">),</span>
+    <span class=cm>/* Default
+</span><span class=cm>     * ,-----------------------------------------------------------------------------------.
+</span><span class=cm>     * |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |  =   |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |   [  |   ]  |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |   &#34;  |   `  |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |  Up  |   \  |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |  Fn  | Ctrl |  Alt |  GUI | Space| Enter| Shift| Bksp |  Tab | Left | Down | Right|
+</span><span class=cm>     * `-----------------------------------------------------------------------------------&#39;
+</span><span class=cm>     */</span>
+    <span class=p>[</span><span class=n>_DEFLT</span><span class=p>]</span> <span class=o>=</span> <span class=n>LAYOUT</span><span class=p>(</span> \
+        <span class=n>KC_1</span><span class=p>,</span>    <span class=n>KC_2</span><span class=p>,</span>    <span class=n>KC_3</span><span class=p>,</span>    <span class=n>KC_4</span><span class=p>,</span>    <span class=n>KC_5</span><span class=p>,</span>    <span class=n>KC_6</span><span class=p>,</span>    <span class=n>KC_7</span><span class=p>,</span>    <span class=n>KC_8</span><span class=p>,</span>    <span class=n>KC_9</span><span class=p>,</span>    <span class=n>KC_0</span><span class=p>,</span>    <span class=n>KC_MINS</span><span class=p>,</span> <span class=n>KC_EQL</span><span class=p>,</span>  \
+        <span class=n>KC_Q</span><span class=p>,</span>    <span class=n>KC_W</span><span class=p>,</span>    <span class=n>KC_E</span><span class=p>,</span>    <span class=n>KC_R</span><span class=p>,</span>    <span class=n>KC_T</span><span class=p>,</span>    <span class=n>KC_Y</span><span class=p>,</span>    <span class=n>KC_U</span><span class=p>,</span>    <span class=n>KC_I</span><span class=p>,</span>    <span class=n>KC_O</span><span class=p>,</span>    <span class=n>KC_P</span><span class=p>,</span>    <span class=n>KC_LBRC</span><span class=p>,</span> <span class=n>KC_RBRC</span><span class=p>,</span> \
+        <span class=n>KC_A</span><span class=p>,</span>    <span class=n>KC_S</span><span class=p>,</span>    <span class=n>KC_D</span><span class=p>,</span>    <span class=n>KC_F</span><span class=p>,</span>    <span class=n>KC_G</span><span class=p>,</span>    <span class=n>KC_H</span><span class=p>,</span>    <span class=n>KC_J</span><span class=p>,</span>    <span class=n>KC_K</span><span class=p>,</span>    <span class=n>KC_L</span><span class=p>,</span>    <span class=n>KC_SCLN</span><span class=p>,</span> <span class=n>KC_QUOT</span><span class=p>,</span> <span class=n>KC_GRV</span><span class=p>,</span>  \
+        <span class=n>KC_Z</span><span class=p>,</span>    <span class=n>KC_X</span><span class=p>,</span>    <span class=n>KC_C</span><span class=p>,</span>    <span class=n>KC_V</span><span class=p>,</span>    <span class=n>KC_B</span><span class=p>,</span>    <span class=n>KC_N</span><span class=p>,</span>    <span class=n>KC_M</span><span class=p>,</span>    <span class=n>KC_COMM</span><span class=p>,</span> <span class=n>KC_DOT</span><span class=p>,</span>  <span class=n>KC_SLSH</span><span class=p>,</span> <span class=n>KC_UP</span>  <span class=p>,</span> <span class=n>KC_BSLS</span><span class=p>,</span> \
+        <span class=n>MO</span><span class=p>(</span><span class=n>_FN</span><span class=p>),</span> <span class=n>KC_LCTL</span><span class=p>,</span> <span class=n>KC_LALT</span><span class=p>,</span> <span class=n>KC_LGUI</span><span class=p>,</span> <span class=n>KC_SPC</span><span class=p>,</span>  <span class=n>KC_ENT</span><span class=p>,</span>  <span class=n>KC_LSFT</span><span class=p>,</span> <span class=n>KC_BSPC</span><span class=p>,</span> <span class=n>KC_TAB</span><span class=p>,</span>  <span class=n>KC_LEFT</span><span class=p>,</span> <span class=n>KC_DOWN</span><span class=p>,</span> <span class=n>KC_RGHT</span>  \
+    <span class=p>),</span>
 
-    <span class="cm">/* Fn
-</span><span class="cm">     * ,-----------------------------------------------------------------------------------.
-</span><span class="cm">     * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |      |      |  Esc |      |      |      |      |      |      |      |      |      |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |      |      |      |      |      |      |      |      |      |      |      |      |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |      |      |      |      |      |      |      |      |      |      | PgUp |      |
-</span><span class="cm">     * |------+------+------+------+------+------+------+------+------+------+------+------|
-</span><span class="cm">     * |      |      |      |      |      |      |      |Delete|      | Home | PgDn |  End |
-</span><span class="cm">     * `-----------------------------------------------------------------------------------&#39;
-</span><span class="cm">     */</span>
-    <span class="p">[</span><span class="n">_FN</span><span class="p">]</span> <span class="o">=</span> <span class="n">LAYOUT</span><span class="p">(</span> \
-       <span class="n">KC_F1</span><span class="p">,</span>   <span class="n">KC_F2</span><span class="p">,</span>   <span class="n">KC_F3</span><span class="p">,</span>   <span class="n">KC_F4</span><span class="p">,</span>   <span class="n">KC_F5</span><span class="p">,</span>   <span class="n">KC_F6</span><span class="p">,</span>   <span class="n">KC_F7</span><span class="p">,</span>   <span class="n">KC_F8</span><span class="p">,</span>   <span class="n">KC_F9</span><span class="p">,</span>   <span class="n">KC_F10</span><span class="p">,</span>  <span class="n">KC_F11</span><span class="p">,</span>  <span class="n">KC_F12</span><span class="p">,</span>  \
-       <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">KC_ESC</span><span class="p">,</span>  <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> \
-       <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> \
-       <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">KC_PGUP</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> \
-       <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">_______</span><span class="p">,</span> <span class="n">KC_DEL</span><span class="p">,</span>  <span class="n">_______</span><span class="p">,</span> <span class="n">KC_HOME</span><span class="p">,</span> <span class="n">KC_PGDN</span><span class="p">,</span> <span class="n">KC_END</span>   \
-    <span class="p">)</span>
-<span class="p">};</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>クローズドな金属ケースのため、LEDを無効にします。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-makefile:keyboards/jj50/rules.mk" data-lang="makefile:keyboards/jj50/rules.mk"><span class="err">...</span>
-<span class="nv">BACKLIGHT_ENABLE</span> <span class="o">=</span> no
-<span class="nv">RGBLIGHT_ENABLE</span> <span class="o">=</span> no
-<span class="err">...</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="ファームウェア焼き-1">ファームウェア焼き</h2>
-<ul>
-<li><strong>最も右上の一個下のキー(このキーボードの場合は <code>]</code>) を押しながらPCにUSB接続します。</strong></li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ make jj50:mykeyboard:flash
+    <span class=cm>/* Fn
+</span><span class=cm>     * ,-----------------------------------------------------------------------------------.
+</span><span class=cm>     * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |      |      |  Esc |      |      |      |      |      |      |      |      |      |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |      |      |      |      |      |      |      |      |      |      |      |      |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |      |      |      |      |      |      |      |      |      |      | PgUp |      |
+</span><span class=cm>     * |------+------+------+------+------+------+------+------+------+------+------+------|
+</span><span class=cm>     * |      |      |      |      |      |      |      |Delete|      | Home | PgDn |  End |
+</span><span class=cm>     * `-----------------------------------------------------------------------------------&#39;
+</span><span class=cm>     */</span>
+    <span class=p>[</span><span class=n>_FN</span><span class=p>]</span> <span class=o>=</span> <span class=n>LAYOUT</span><span class=p>(</span> \
+       <span class=n>KC_F1</span><span class=p>,</span>   <span class=n>KC_F2</span><span class=p>,</span>   <span class=n>KC_F3</span><span class=p>,</span>   <span class=n>KC_F4</span><span class=p>,</span>   <span class=n>KC_F5</span><span class=p>,</span>   <span class=n>KC_F6</span><span class=p>,</span>   <span class=n>KC_F7</span><span class=p>,</span>   <span class=n>KC_F8</span><span class=p>,</span>   <span class=n>KC_F9</span><span class=p>,</span>   <span class=n>KC_F10</span><span class=p>,</span>  <span class=n>KC_F11</span><span class=p>,</span>  <span class=n>KC_F12</span><span class=p>,</span>  \
+       <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>KC_ESC</span><span class=p>,</span>  <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> \
+       <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> \
+       <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>KC_PGUP</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> \
+       <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>_______</span><span class=p>,</span> <span class=n>KC_DEL</span><span class=p>,</span>  <span class=n>_______</span><span class=p>,</span> <span class=n>KC_HOME</span><span class=p>,</span> <span class=n>KC_PGDN</span><span class=p>,</span> <span class=n>KC_END</span>   \
+    <span class=p>)</span>
+<span class=p>};</span>
+</code></pre></td></tr></table></div></div><p>クローズドな金属ケースのため、LEDを無効にします。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-makefile:keyboards/jj50/rules.mk data-lang=makefile:keyboards/jj50/rules.mk><span class=err>...</span>
+<span class=nv>BACKLIGHT_ENABLE</span> <span class=o>=</span> no
+<span class=nv>RGBLIGHT_ENABLE</span> <span class=o>=</span> no
+<span class=err>...</span>
+</code></pre></td></tr></table></div></div><h2 id=ファームウェア焼き-1>ファームウェア焼き</h2><ul><li><strong>最も右上の一個下のキー(このキーボードの場合は <code>]</code>) を押しながらPCにUSB接続します。</strong></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>$ make jj50:mykeyboard:flash
 QMK Firmware 0.7.163
 Making jj50 with keymap mykeyboard and target flash
 
@@ -404,106 +189,12 @@ Device size = 32768 (0x8000); 30720 bytes remaining
 Uploading 15232 (0x3b80) bytes starting at 0 (0x0)
 0x03b00 ... 0x03b80
 0x03b00 ... 0x03b80
-</code></pre></td></tr></table>
-</div>
-</div><p>QMKの公式では <code>QMK toolbox</code>というツールが推奨されていますが、私の環境ではキーボードを認識しませんでした。</p>
-<h1 id="感想">感想</h1>
-<ul>
-<li>作業時間は2時間くらい、特に問題もなく完了。</li>
-<li>キーマップ以前に格子配列に慣れが必要。この記事を書くのに相当時間かかった。</li>
-<li>JJ50は手頃な価格でサイズも過不足なくお勧め。同じKPrepublicが販売しているキーキャップも良い品質。ケースは精度・仕上げに難ありで他で買った方が良い。</li>
-</ul>
-
-      
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2020%2fkeyboard-jj50%2f&text=%e8%87%aa%e4%bd%9c%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%20JJ50%20%e3%83%93%e3%83%ab%e3%83%89%e3%83%ad%e3%82%b0" class="twitter-share-button"> Tweet</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2020%2fkeyboard-jj50%2f&title=%e8%87%aa%e4%bd%9c%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%20JJ50%20%e3%83%93%e3%83%ab%e3%83%89%e3%83%ad%e3%82%b0" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-    </div>
-
-    
-<footer class="post-footer">
-      
-      <nav class="post-nav">
-        <a class="prev" href="/post/2020/gcp-serviceaccount-error/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">GCPでカスタムロールをサービスアカウントにbindingしようとしてエラーになる場合</span>
-            <span class="prev-text nav-mobile">前の記事へ</span>
-          </a>
-        <a class="next" href="/post/2020/bigquery-deduplication/">
-            <span class="next-text nav-default">BigQueryで重複レコードを削除するSQL</span>
-            <span class="next-text nav-mobile">次の記事へ</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-    <script src="https://utteranc.es/client.js"
-            repo="aaaanwz/aaaanwz.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">  
-  <span class="copyright-year">
-    &copy; 
-    2019 - 
-    2021<span>	@aaaanwz	コンテンツを引用される際は当ブログのURLを併記してください</span>
-  </span>
-  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-CWBPGKYRHB', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-</body>
-</html>
+</code></pre></td></tr></table></div></div><p>QMKの公式では <code>QMK toolbox</code>というツールが推奨されていますが、私の環境ではキーボードを認識しませんでした。</p><h1 id=感想>感想</h1><ul><li>作業時間は2時間くらい、特に問題もなく完了。</li><li>キーマップ以前に格子配列に慣れが必要。この記事を書くのに相当時間かかった。</li><li>JJ50は手頃な価格でサイズも過不足なくお勧め。同じKPrepublicが販売しているキーキャップも良い品質。ケースは精度・仕上げに難ありで他で買った方が良い。</li></ul><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2020%2fkeyboard-jj50%2f&text=%e8%87%aa%e4%bd%9c%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%20JJ50%20%e3%83%93%e3%83%ab%e3%83%89%e3%83%ad%e3%82%b0" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2020%2fkeyboard-jj50%2f&title=%e8%87%aa%e4%bd%9c%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%20JJ50%20%e3%83%93%e3%83%ab%e3%83%89%e3%83%ad%e3%82%b0" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=prev href=/post/2020/gcp-serviceaccount-error/><i class="iconfont icon-left"></i><span class="prev-text nav-default">GCPでカスタムロールをサービスアカウントにbindingしようとしてエラーになる場合</span>
+<span class="prev-text nav-mobile">前の記事へ</span></a>
+<a class=next href=/post/2020/bigquery-deduplication/><span class="next-text nav-default">BigQueryで重複レコードを削除するSQL</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2021<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','G-CWBPGKYRHB','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

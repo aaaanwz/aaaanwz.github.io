@@ -1,363 +1,70 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ubuntu desktop初期設定メモ - A4 tech note</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="aaaanwz" /><meta name="description" content="M1 Macに移行する気になれなかったのでメインマシンをx86 &#43; Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &amp;gt; 地域と言語 &amp;gt;" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
-
-
-<link rel="canonical" href="https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="Ubuntu desktop初期設定メモ" />
-<meta property="og:description" content="M1 Macに移行する気になれなかったのでメインマシンをx86 &#43; Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &gt; 地域と言語 &gt;" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/" />
-<meta property="article:published_time" content="2021-11-21T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T12:26:56+09:00" />
-<meta itemprop="name" content="Ubuntu desktop初期設定メモ">
-<meta itemprop="description" content="M1 Macに移行する気になれなかったのでメインマシンをx86 &#43; Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &gt; 地域と言語 &gt;">
-<meta itemprop="datePublished" content="2021-11-21T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T12:26:56&#43;09:00" />
-<meta itemprop="wordCount" content="432">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Ubuntu desktop初期設定メモ"/>
-<meta name="twitter:description" content="M1 Macに移行する気になれなかったのでメインマシンをx86 &#43; Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &gt; 地域と言語 &gt;"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">A4 tech note</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/portfolio">
-        <li class="mobile-menu-item">Portfolio</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">A4 tech note</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/portfolio">Portfolio</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Ubuntu desktop初期設定メモ</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-11-21 </span>
-        <div class="post-category">
-            <a href="/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/"> 小ネタ </a>
-            </div>
-          <span class="more-meta"> 432 文字 </span>
-          <span class="more-meta"> 読了時間: 1 分 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">コンテンツ</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#ime切り替えショートカットの設定">IME切り替えショートカットの設定</a></li>
-        <li><a href="#capslockをctrlに変更">CapsLockをCtrlに変更</a></li>
-        <li><a href="#chromeをダークモード化">Chromeをダークモード化</a></li>
-        <li><a href="#日本語ディレクトリを変更">日本語ディレクトリを変更</a></li>
-        <li><a href="#docker">Docker</a></li>
-        <li><a href="#wine">Wine</a></li>
-        <li><a href="#vscode">VSCode</a></li>
-        <li><a href="#slack">Slack</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。</p>
-<h2 id="ime切り替えショートカットの設定">IME切り替えショートカットの設定</h2>
-<ul>
-<li>設定 &gt; 地域と言語 &gt; 入力ソース で入力ソースを <code>日本語(Mozc)</code> のみにする</li>
-<li>Mozcプロパティ &gt; キー設定 &gt; 編集　で 入力キーが<code>Ctrl Space</code>のエントリーを削除し、以下のように設定</li>
-</ul>
-<p><img src="/images/ubuntu-desktop-config/mozc.png" alt="1"></p>
-<h2 id="capslockをctrlに変更">CapsLockをCtrlに変更</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo vi /etc/default/keyboard
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Ubuntu desktop初期設定メモ - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 &amp;gt; 地域と言語 &amp;gt;"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Ubuntu desktop初期設定メモ"><meta property="og:description" content="M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 > 地域と言語 >"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2021/ubuntu-desktop-config/"><meta property="article:published_time" content="2021-11-21T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-29T12:36:26+09:00"><meta itemprop=name content="Ubuntu desktop初期設定メモ"><meta itemprop=description content="M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 > 地域と言語 >"><meta itemprop=datePublished content="2021-11-21T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-29T12:36:26+09:00"><meta itemprop=wordCount content="432"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Ubuntu desktop初期設定メモ"><meta name=twitter:description content="M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。 IME切り替えショートカットの設定 設定 > 地域と言語 >"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/portfolio><li class=mobile-menu-item>Portfolio</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/portfolio>Portfolio</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Ubuntu desktop初期設定メモ</h1><div class=post-meta><span class=post-time>2021-11-21</span><div class=post-category><a href=/categories/%E5%B0%8F%E3%83%8D%E3%82%BF/>小ネタ</a></div><span class=more-meta>432 文字</span>
+<span class=more-meta>読了時間: 1 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#ime切り替えショートカットの設定>IME切り替えショートカットの設定</a></li><li><a href=#capslockをctrlに変更>CapsLockをCtrlに変更</a></li><li><a href=#chromeをダークモード化>Chromeをダークモード化</a></li><li><a href=#日本語ディレクトリを変更>日本語ディレクトリを変更</a></li><li><a href=#docker>Docker</a></li><li><a href=#wine>Wine</a></li><li><a href=#vscode>VSCode</a></li><li><a href=#slack>Slack</a></li></ul></li></ul></nav></div></div><div class=post-content><p>M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktopにしました。</p><h2 id=ime切り替えショートカットの設定>IME切り替えショートカットの設定</h2><ul><li>設定 > 地域と言語 > 入力ソース で入力ソースを <code>日本語(Mozc)</code> のみにする</li><li>Mozcプロパティ > キー設定 > 編集　で 入力キーが<code>Ctrl Space</code>のエントリーを削除し、以下のように設定</li></ul><p><img src=/images/ubuntu-desktop-config/mozc.png alt=1></p><h2 id=capslockをctrlに変更>CapsLockをCtrlに変更</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo vi /etc/default/keyboard
 ...
-<span class="nv">XKBOPTIONS</span><span class="o">=</span><span class="s2">&#34;ctrl:nocaps&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="chromeをダークモード化">Chromeをダークモード化</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo vi /opt/google/chrome/google-chrome
+<span class=nv>XKBOPTIONS</span><span class=o>=</span><span class=s2>&#34;ctrl:nocaps&#34;</span>
+</code></pre></td></tr></table></div></div><h2 id=chromeをダークモード化>Chromeをダークモード化</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo vi /opt/google/chrome/google-chrome
 ...
-<span class="nb">exec</span> -a <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$HERE</span><span class="s2">/chrome&#34;</span> <span class="s2">&#34;--enable-features=WebUIDarkMode&#34;</span> <span class="s2">&#34;--force-dark-mode&#34;</span> <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="日本語ディレクトリを変更">日本語ディレクトリを変更</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo vi .config/user-dirs.dirs
+<span class=nb>exec</span> -a <span class=s2>&#34;</span><span class=nv>$0</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$HERE</span><span class=s2>/chrome&#34;</span> <span class=s2>&#34;--enable-features=WebUIDarkMode&#34;</span> <span class=s2>&#34;--force-dark-mode&#34;</span> <span class=s2>&#34;</span><span class=nv>$@</span><span class=s2>&#34;</span>
+</code></pre></td></tr></table></div></div><h2 id=日本語ディレクトリを変更>日本語ディレクトリを変更</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo vi .config/user-dirs.dirs
 
-<span class="nv">XDG_DESKTOP_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Desktop&#34;</span>
-<span class="nv">XDG_DOWNLOAD_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Downloads&#34;</span>
-<span class="nv">XDG_TEMPLATES_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Templates&#34;</span>
-<span class="nv">XDG_PUBLICSHARE_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Share&#34;</span>
-<span class="nv">XDG_DOCUMENTS_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Documents&#34;</span>
-<span class="nv">XDG_MUSIC_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Music&#34;</span>
-<span class="nv">XDG_PICTURES_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Pictures&#34;</span>
-<span class="nv">XDG_VIDEOS_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/Videos&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="docker">Docker</h2>
-<p>sudo無しで使えるようにgroupにユーザーを入れる<br>
-<a href="https://docs.docker.com/engine/install/linux-postinstall/">https://docs.docker.com/engine/install/linux-postinstall/</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo snap install docker
+<span class=nv>XDG_DESKTOP_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Desktop&#34;</span>
+<span class=nv>XDG_DOWNLOAD_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Downloads&#34;</span>
+<span class=nv>XDG_TEMPLATES_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Templates&#34;</span>
+<span class=nv>XDG_PUBLICSHARE_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Share&#34;</span>
+<span class=nv>XDG_DOCUMENTS_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Documents&#34;</span>
+<span class=nv>XDG_MUSIC_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Music&#34;</span>
+<span class=nv>XDG_PICTURES_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Pictures&#34;</span>
+<span class=nv>XDG_VIDEOS_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>/Videos&#34;</span>
+</code></pre></td></tr></table></div></div><h2 id=docker>Docker</h2><p>sudo無しで使えるようにgroupにユーザーを入れる<br><a href=https://docs.docker.com/engine/install/linux-postinstall/>https://docs.docker.com/engine/install/linux-postinstall/</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo snap install docker
 $ sudo groupadd docker
-$ sudo usermod -aG docker <span class="nv">$USER</span>
+$ sudo usermod -aG docker <span class=nv>$USER</span>
 $ newgrp docker 
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="wine">Wine</h2>
-<p><a href="https://wiki.winehq.org/Ubuntu">https://wiki.winehq.org/Ubuntu</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo dpkg --add-architecture i386
+</code></pre></td></tr></table></div></div><h2 id=wine>Wine</h2><p><a href=https://wiki.winehq.org/Ubuntu>https://wiki.winehq.org/Ubuntu</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo dpkg --add-architecture i386
 $ wget -nc https://dl.winehq.org/wine-builds/winehq.key
 $ sudo apt-key add winehq.key
-$ sudo add-apt-repository <span class="s1">&#39;deb https://dl.winehq.org/wine-builds/ubuntu/ focal main&#39;</span>
+$ sudo add-apt-repository <span class=s1>&#39;deb https://dl.winehq.org/wine-builds/ubuntu/ focal main&#39;</span>
 $ sudo apt update
 $ sudo apt install --install-recommends winehq-stable
 $ winecfg
-</code></pre></td></tr></table>
-</div>
-</div><p>文字化け対策</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ sudo apt-get install winetricks
+</code></pre></td></tr></table></div></div><p>文字化け対策</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ sudo apt-get install winetricks
 $ winetricks fakejapanese
 $ winetricks corefonts
 $ winetricks cjkfonts
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="vscode">VSCode</h2>
-<p>snapで入れるとKubernetes拡張機能が動作しないなど不具合が多いので、公式から.debで入れたほうがいい</p>
-<h2 id="slack">Slack</h2>
-<p>snapで入れるとIME切り替えができない</p>
-
-      
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fubuntu-desktop-config%2f&text=Ubuntu%20desktop%e5%88%9d%e6%9c%9f%e8%a8%ad%e5%ae%9a%e3%83%a1%e3%83%a2" class="twitter-share-button"> Tweet</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fubuntu-desktop-config%2f&title=Ubuntu%20desktop%e5%88%9d%e6%9c%9f%e8%a8%ad%e5%ae%9a%e3%83%a1%e3%83%a2" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-    </div>
-
-    
-<footer class="post-footer">
-      
-      <nav class="post-nav">
-        
-        <a class="next" href="/post/2021/argocd-vault-plugin/">
-            <span class="next-text nav-default">ArgoCD GitOpsにおけるSecret管理</span>
-            <span class="next-text nav-mobile">次の記事へ</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-    <script src="https://utteranc.es/client.js"
-            repo="aaaanwz/aaaanwz.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">  
-  <span class="copyright-year">
-    &copy; 
-    2019 - 
-    2021<span>	@aaaanwz	コンテンツを引用される際は当ブログのURLを併記してください</span>
-  </span>
-  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-CWBPGKYRHB', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-</body>
-</html>
+</code></pre></td></tr></table></div></div><h2 id=vscode>VSCode</h2><p>snapで入れるとKubernetes拡張機能が動作しないなど不具合が多いので、公式から.debで入れたほうがいい</p><h2 id=slack>Slack</h2><p>snapで入れるとIME切り替えができない</p><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fubuntu-desktop-config%2f&text=Ubuntu%20desktop%e5%88%9d%e6%9c%9f%e8%a8%ad%e5%ae%9a%e3%83%a1%e3%83%a2" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fubuntu-desktop-config%2f&title=Ubuntu%20desktop%e5%88%9d%e6%9c%9f%e8%a8%ad%e5%ae%9a%e3%83%a1%e3%83%a2" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=next href=/post/2021/argocd-vault-plugin/><span class="next-text nav-default">ArgoCD GitOpsにおけるSecret管理</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2021<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','G-CWBPGKYRHB','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

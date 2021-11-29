@@ -1,248 +1,46 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>ArgoCD GitOpsにおけるSecret管理 - A4 tech note</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="aaaanwz" /><meta name="description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
-
-
-<link rel="canonical" href="https://aaaanwz.github.io/post/2021/argocd-vault-plugin/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="ArgoCD GitOpsにおけるSecret管理" />
-<meta property="og:description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2021/argocd-vault-plugin/" />
-<meta property="article:published_time" content="2021-11-01T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T12:26:56+09:00" />
-<meta itemprop="name" content="ArgoCD GitOpsにおけるSecret管理">
-<meta itemprop="description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す">
-<meta itemprop="datePublished" content="2021-11-01T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T12:26:56&#43;09:00" />
-<meta itemprop="wordCount" content="1469">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ArgoCD GitOpsにおけるSecret管理"/>
-<meta name="twitter:description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">A4 tech note</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/portfolio">
-        <li class="mobile-menu-item">Portfolio</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">A4 tech note</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/portfolio">Portfolio</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">ArgoCD GitOpsにおけるSecret管理</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-11-01 </span>
-        <div class="post-category">
-            <a href="/categories/kubernetes/"> kubernetes </a>
-            </div>
-          <span class="more-meta"> 1469 文字 </span>
-          <span class="more-meta"> 読了時間: 3 分 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">コンテンツ</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#テスト">テスト</a>
-      <ul>
-        <li><a href="#ローカル環境にインストール-mac">ローカル環境にインストール (Mac)</a></li>
-        <li><a href="#aws-secrets-mangerに機密文字列を登録する">AWS Secrets Mangerに機密文字列を登録する</a></li>
-        <li><a href="#kubernetes-manifestを作成する">Kubernetes Manifestを作成する</a></li>
-        <li><a href="#decryptのテスト">Decryptのテスト</a></li>
-      </ul>
-    </li>
-    <li><a href="#argocdへのpluginの導入">ArgoCDへのPluginの導入</a>
-      <ul>
-        <li><a href="#1-iam-userの設定">1. IAM Userの設定</a>
-          <ul>
-            <li><a href="#方法1-このcredentialだけは手動でapplyする">方法1. このcredentialだけは手動でapplyする</a></li>
-            <li><a href="#方法2-terraformで作成する">方法2. terraformで作成する</a></li>
-          </ul>
-        </li>
-        <li><a href="#2-argocd-with-avpのインストール">2. ArgoCD with AVPのインストール</a></li>
-        <li><a href="#3-argocdにapplicationを登録">3. ArgoCDにApplicationを登録</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。</p>
-<p>Sealed Secretsやkubesecなどの手元で暗号化する系<br>
-Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部シークレットストアから引っ張ってくる系<br>
-機密情報だけ別Repoにする</p>
-<p>など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。</p>
-<p>そんな中でIBM社が開発している<code>ArgoCD Vault Plugin</code>を触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>ArgoCD GitOpsにおけるSecret管理 - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2021/argocd-vault-plugin/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="ArgoCD GitOpsにおけるSecret管理"><meta property="og:description" content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2021/argocd-vault-plugin/"><meta property="article:published_time" content="2021-11-01T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-29T12:36:26+09:00"><meta itemprop=name content="ArgoCD GitOpsにおけるSecret管理"><meta itemprop=description content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"><meta itemprop=datePublished content="2021-11-01T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-29T12:36:26+09:00"><meta itemprop=wordCount content="1469"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="ArgoCD GitOpsにおけるSecret管理"><meta name=twitter:description content="KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。 Sealed Secretsやkubesecなどの手元で暗号化す"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/portfolio><li class=mobile-menu-item>Portfolio</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/portfolio>Portfolio</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>ArgoCD GitOpsにおけるSecret管理</h1><div class=post-meta><span class=post-time>2021-11-01</span><div class=post-category><a href=/categories/kubernetes/>kubernetes</a></div><span class=more-meta>1469 文字</span>
+<span class=more-meta>読了時間: 3 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><a href=#テスト>テスト</a><ul><li><a href=#ローカル環境にインストール-mac>ローカル環境にインストール (Mac)</a></li><li><a href=#aws-secrets-mangerに機密文字列を登録する>AWS Secrets Mangerに機密文字列を登録する</a></li><li><a href=#kubernetes-manifestを作成する>Kubernetes Manifestを作成する</a></li><li><a href=#decryptのテスト>Decryptのテスト</a></li></ul></li><li><a href=#argocdへのpluginの導入>ArgoCDへのPluginの導入</a><ul><li><a href=#1-iam-userの設定>1. IAM Userの設定</a><ul><li><a href=#方法1-このcredentialだけは手動でapplyする>方法1. このcredentialだけは手動でapplyする</a></li><li><a href=#方法2-terraformで作成する>方法2. terraformで作成する</a></li></ul></li><li><a href=#2-argocd-with-avpのインストール>2. ArgoCD with AVPのインストール</a></li><li><a href=#3-argocdにapplicationを登録>3. ArgoCDにApplicationを登録</a></li></ul></li></ul></nav></div></div><div class=post-content><p>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。</p><p>Sealed Secretsやkubesecなどの手元で暗号化する系<br>Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部シークレットストアから引っ張ってくる系<br>機密情報だけ別Repoにする</p><p>など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。</p><p>そんな中でIBM社が開発している<code>ArgoCD Vault Plugin</code>を触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。
 (上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します)
-ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。</p>
-<h1 id="テスト">テスト</h1>
-<p>AVPはbrewからも導入でき、手元で簡単にテストができます。
-シークレットストアはAWS Secrets Mangerを使う前提で解説します。</p>
-<h2 id="ローカル環境にインストール-mac">ローカル環境にインストール (Mac)</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ brew install argocd-vault-plugin
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="aws-secrets-mangerに機密文字列を登録する">AWS Secrets Mangerに機密文字列を登録する</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">key: my_secret
+ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。</p><h1 id=テスト>テスト</h1><p>AVPはbrewからも導入でき、手元で簡単にテストができます。
+シークレットストアはAWS Secrets Mangerを使う前提で解説します。</p><h2 id=ローカル環境にインストール-mac>ローカル環境にインストール (Mac)</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ brew install argocd-vault-plugin
+</code></pre></td></tr></table></div></div><h2 id=aws-secrets-mangerに機密文字列を登録する>AWS Secrets Mangerに機密文字列を登録する</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>key: my_secret
 value: foobar
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="kubernetes-manifestを作成する">Kubernetes Manifestを作成する</h2>
-<p>Secretの実装は非常に簡単で、</p>
-<ul>
-<li>アノテーションに参照するSecret Managerのパスを記述する</li>
-<li>Secret Managerのキー名を<code>&lt;&gt;</code> で囲う</li>
-</ul>
-<p>だけでOKです。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-secrets.yaml" data-lang="secrets.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>v1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Secret<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>credentials<span class="w">
-</span><span class="w">  </span><span class="k">annotations</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">avp.kubernetes.io/path</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;avp/test&#34;</span><span class="w">
-</span><span class="w"></span><span class="k">data</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">MY_SECRET</span><span class="p">:</span><span class="w"> </span>&lt;my_secret<span class="w"> </span>|<span class="w"> </span>base64encode&gt;<span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><h2 id="decryptのテスト">Decryptのテスト</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>xxxx
-$ <span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>xxxx
-$ <span class="nb">export</span> <span class="nv">AWS_REGION</span><span class="o">=</span>ap-northeast-1
-$ <span class="nb">export</span> <span class="nv">AVP_TYPE</span><span class="o">=</span>awssecretsmanager
+</code></pre></td></tr></table></div></div><h2 id=kubernetes-manifestを作成する>Kubernetes Manifestを作成する</h2><p>Secretの実装は非常に簡単で、</p><ul><li>アノテーションに参照するSecret Managerのパスを記述する</li><li>Secret Managerのキー名を<code>&lt;></code> で囲う</li></ul><p>だけでOKです。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-secrets.yaml data-lang=secrets.yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>v1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Secret<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>credentials<span class=w>
+</span><span class=w>  </span><span class=k>annotations</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>avp.kubernetes.io/path</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;avp/test&#34;</span><span class=w>
+</span><span class=w></span><span class=k>data</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>MY_SECRET</span><span class=p>:</span><span class=w> </span>&lt;my_secret<span class=w> </span>|<span class=w> </span>base64encode&gt;<span class=w>
+</span></code></pre></td></tr></table></div></div><h2 id=decryptのテスト>Decryptのテスト</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ <span class=nb>export</span> <span class=nv>AWS_ACCESS_KEY_ID</span><span class=o>=</span>xxxx
+$ <span class=nb>export</span> <span class=nv>AWS_SECRET_ACCESS_KEY</span><span class=o>=</span>xxxx
+$ <span class=nb>export</span> <span class=nv>AWS_REGION</span><span class=o>=</span>ap-northeast-1
+$ <span class=nb>export</span> <span class=nv>AVP_TYPE</span><span class=o>=</span>awssecretsmanager
 $ argocd-vault-plugin generate path/to/secrets.yaml
 apiVersion: v1
 kind: Secret
@@ -251,413 +49,278 @@ metadata:
   annotations:
     avp.kubernetes.io/path: avp/test
 data:
-  MY_SECRET: Zm9vYmFy <span class="c1"># == $(echo -n foobar | base64)</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>placeholderがSecrets Mangerに登録していた値に変換されました！
-これで安心してGitHub repoにpushできます。</p>
-<h1 id="argocdへのpluginの導入">ArgoCDへのPluginの導入</h1>
-<p>導入方法は<a href="https://ibm.github.io/argocd-vault-plugin/v1.4.0/installation/">公式ドキュメント</a>の方が参考になると思うので、ここではhelmでArgoCDを導入する場合のサンプルコードを掲載します。</p>
-<h2 id="1-iam-userの設定">1. IAM Userの設定</h2>
-<p>AVPがSecret ManagerにアクセスするためのIAM User credentialが必要です。
-このcredentialはAVPで管理できないため、どのようにAVPに渡すかは少し考える必要があります。</p>
-<h3 id="方法1-このcredentialだけは手動でapplyする">方法1. このcredentialだけは手動でapplyする</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-secret-iam.yaml" data-lang="secret-iam.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>v1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Secret<span class="w">
-</span><span class="w"></span><span class="k">type</span><span class="p">:</span><span class="w"> </span>Opaque<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin-iam<span class="w">
-</span><span class="w">  </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>argo<span class="w">
-</span><span class="w"></span><span class="k">data</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">AWS_ACCESS_KEY_ID</span><span class="p">:</span><span class="w"> </span>xxxxx<span class="w">
-</span><span class="w">  </span><span class="k">AWS_SECRET_ACCESS_KEY</span><span class="p">:</span><span class="w"> </span>xxxxx<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Secret<span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ kubectl apply -f secret-iam.yaml
-</code></pre></td></tr></table>
-</div>
-</div><h3 id="方法2-terraformで作成する">方法2. terraformで作成する</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">resource</span> <span class="s">&#34;aws_iam_user&#34; &#34;avp&#34;</span> {
-<span class="na">  name</span> <span class="o">=</span> <span class="s2">&#34;argocd-vault-plugin&#34;</span>
+  MY_SECRET: Zm9vYmFy <span class=c1># == $(echo -n foobar | base64)</span>
+</code></pre></td></tr></table></div></div><p>placeholderがSecrets Mangerに登録していた値に変換されました！
+これで安心してGitHub repoにpushできます。</p><h1 id=argocdへのpluginの導入>ArgoCDへのPluginの導入</h1><p>導入方法は<a href=https://ibm.github.io/argocd-vault-plugin/v1.4.0/installation/>公式ドキュメント</a>の方が参考になると思うので、ここではhelmでArgoCDを導入する場合のサンプルコードを掲載します。</p><h2 id=1-iam-userの設定>1. IAM Userの設定</h2><p>AVPがSecret ManagerにアクセスするためのIAM User credentialが必要です。
+このcredentialはAVPで管理できないため、どのようにAVPに渡すかは少し考える必要があります。</p><h3 id=方法1-このcredentialだけは手動でapplyする>方法1. このcredentialだけは手動でapplyする</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-secret-iam.yaml data-lang=secret-iam.yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>v1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Secret<span class=w>
+</span><span class=w></span><span class=k>type</span><span class=p>:</span><span class=w> </span>Opaque<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin-iam<span class=w>
+</span><span class=w>  </span><span class=k>namespace</span><span class=p>:</span><span class=w> </span>argo<span class=w>
+</span><span class=w></span><span class=k>data</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>AWS_ACCESS_KEY_ID</span><span class=p>:</span><span class=w> </span>xxxxx<span class=w>
+</span><span class=w>  </span><span class=k>AWS_SECRET_ACCESS_KEY</span><span class=p>:</span><span class=w> </span>xxxxx<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Secret<span class=w>
+</span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ kubectl apply -f secret-iam.yaml
+</code></pre></td></tr></table></div></div><h3 id=方法2-terraformで作成する>方法2. terraformで作成する</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-terraform data-lang=terraform><span class=kr>resource</span> <span class=s>&#34;aws_iam_user&#34; &#34;avp&#34;</span> {
+<span class=na>  name</span> <span class=o>=</span> <span class=s2>&#34;argocd-vault-plugin&#34;</span>
 }
 
-<span class="kr">resource</span> <span class="s">&#34;aws_secretsmanager_secret&#34; &#34;avp&#34;</span> {
-<span class="na">  name</span> <span class="o">=</span> <span class="s2">&#34;avp/test&#34;</span>
+<span class=kr>resource</span> <span class=s>&#34;aws_secretsmanager_secret&#34; &#34;avp&#34;</span> {
+<span class=na>  name</span> <span class=o>=</span> <span class=s2>&#34;avp/test&#34;</span>
 }
 
-<span class="kr">resource</span> <span class="s">&#34;aws_iam_user_policy&#34; &#34;avp&#34;</span> {
-<span class="na">  name</span> <span class="o">=</span> <span class="s2">&#34;ArgocdVaultPlugin&#34;</span>
-<span class="na">  user</span> <span class="o">=</span> <span class="err">aws_iam_user</span><span class="p">.</span><span class="err">avp</span><span class="p">.</span><span class="err">name</span>
+<span class=kr>resource</span> <span class=s>&#34;aws_iam_user_policy&#34; &#34;avp&#34;</span> {
+<span class=na>  name</span> <span class=o>=</span> <span class=s2>&#34;ArgocdVaultPlugin&#34;</span>
+<span class=na>  user</span> <span class=o>=</span> <span class=err>aws_iam_user</span><span class=p>.</span><span class=err>avp</span><span class=p>.</span><span class=err>name</span>
 
-<span class="na">  policy</span> <span class="o">=</span> <span class="err">jsonencode</span><span class="p">(</span>{
-    <span class="s2">&#34;Version&#34; : &#34;2012-10-17&#34;</span><span class="p">,</span>
-    <span class="s2">&#34;Statement&#34;</span> <span class="err">:</span> <span class="p">[</span>
+<span class=na>  policy</span> <span class=o>=</span> <span class=err>jsonencode</span><span class=p>(</span>{
+    <span class=s2>&#34;Version&#34; : &#34;2012-10-17&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Statement&#34;</span> <span class=err>:</span> <span class=p>[</span>
       {
-        <span class="s2">&#34;Effect&#34; : &#34;Allow&#34;</span><span class="p">,</span>
-        <span class="s2">&#34;Action&#34;</span> <span class="err">:</span> <span class="p">[</span>
-          <span class="s2">&#34;secretsmanager:GetResourcePolicy&#34;</span><span class="p">,</span>
-          <span class="s2">&#34;secretsmanager:GetSecretValue&#34;</span><span class="p">,</span>
-          <span class="s2">&#34;secretsmanager:DescribeSecret&#34;</span><span class="p">,</span>
-          <span class="s2">&#34;secretsmanager:ListSecretVersionIds&#34;</span>
-        <span class="p">],</span>
-        <span class="s2">&#34;Resource&#34;</span> <span class="err">:</span> <span class="p">[</span>
-          <span class="s2">&#34;${aws_secretsmanager_secret.avp.arn}&#34;</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class=s2>&#34;Effect&#34; : &#34;Allow&#34;</span><span class=p>,</span>
+        <span class=s2>&#34;Action&#34;</span> <span class=err>:</span> <span class=p>[</span>
+          <span class=s2>&#34;secretsmanager:GetResourcePolicy&#34;</span><span class=p>,</span>
+          <span class=s2>&#34;secretsmanager:GetSecretValue&#34;</span><span class=p>,</span>
+          <span class=s2>&#34;secretsmanager:DescribeSecret&#34;</span><span class=p>,</span>
+          <span class=s2>&#34;secretsmanager:ListSecretVersionIds&#34;</span>
+        <span class=p>],</span>
+        <span class=s2>&#34;Resource&#34;</span> <span class=err>:</span> <span class=p>[</span>
+          <span class=s2>&#34;${aws_secretsmanager_secret.avp.arn}&#34;</span><span class=p>,</span>
+        <span class=p>]</span>
       }
-    <span class="p">]</span>
-  }<span class="p">)</span>
+    <span class=p>]</span>
+  }<span class=p>)</span>
 }
 
-<span class="kr">resource</span> <span class="s">&#34;aws_iam_access_key&#34; &#34;avp&#34;</span> {
-<span class="na">  user</span> <span class="o">=</span> <span class="err">aws_iam_user</span><span class="p">.</span><span class="err">avp</span><span class="p">.</span><span class="err">name</span>
+<span class=kr>resource</span> <span class=s>&#34;aws_iam_access_key&#34; &#34;avp&#34;</span> {
+<span class=na>  user</span> <span class=o>=</span> <span class=err>aws_iam_user</span><span class=p>.</span><span class=err>avp</span><span class=p>.</span><span class=err>name</span>
 }
 
-<span class="kr">resource</span> <span class="s">&#34;kubernetes_secret&#34; &#34;argocd-vault&#34;</span> {
-  <span class="err">metadata</span> {
-<span class="na">    name</span>      <span class="o">=</span> <span class="s2">&#34;argocd-vault-plugin-iam&#34;</span>
-<span class="na">    namespace</span> <span class="o">=</span> <span class="s2">&#34;argo&#34;</span>
+<span class=kr>resource</span> <span class=s>&#34;kubernetes_secret&#34; &#34;argocd-vault&#34;</span> {
+  <span class=err>metadata</span> {
+<span class=na>    name</span>      <span class=o>=</span> <span class=s2>&#34;argocd-vault-plugin-iam&#34;</span>
+<span class=na>    namespace</span> <span class=o>=</span> <span class=s2>&#34;argo&#34;</span>
   }
 
-<span class="na">  data</span> <span class="o">=</span> {
-<span class="na">    &#34;AWS_ACCESS_KEY_ID&#34;</span>     <span class="o">=</span> <span class="err">aws_iam_access_key</span><span class="p">.</span><span class="err">argocd-vault</span><span class="p">.</span><span class="err">id</span>
-<span class="na">    &#34;AWS_SECRET_ACCESS_KEY&#34;</span> <span class="o">=</span> <span class="err">aws_iam_access_key</span><span class="p">.</span><span class="err">argocd-vault</span><span class="p">.</span><span class="err">secret</span>
+<span class=na>  data</span> <span class=o>=</span> {
+<span class=na>    &#34;AWS_ACCESS_KEY_ID&#34;</span>     <span class=o>=</span> <span class=err>aws_iam_access_key</span><span class=p>.</span><span class=err>argocd-vault</span><span class=p>.</span><span class=err>id</span>
+<span class=na>    &#34;AWS_SECRET_ACCESS_KEY&#34;</span> <span class=o>=</span> <span class=err>aws_iam_access_key</span><span class=p>.</span><span class=err>argocd-vault</span><span class=p>.</span><span class=err>secret</span>
   }
 
-<span class="na">  type</span> <span class="o">=</span> <span class="s2">&#34;Opaque&#34;</span>
+<span class=na>  type</span> <span class=o>=</span> <span class=s2>&#34;Opaque&#34;</span>
 }
 
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="2-argocd-with-avpのインストール">2. ArgoCD with AVPのインストール</h2>
-<p>公式のインストール手順をhelmにしました。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-values.yaml" data-lang="values.yaml">...<span class="w">
-</span><span class="w"></span><span class="k">repoServer</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">env</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>AVP_TYPE<span class="w">
-</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span>awssecretsmanager<span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>AWS_REGION<span class="w">
-</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span>ap-northeast<span class="m">-1</span><span class="w">
-</span><span class="w">  </span><span class="k">envFrom</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">secretRef</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin-iam<span class="w">
-</span><span class="w">  </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>custom-tools<span class="w">
-</span><span class="w">      </span><span class="k">emptyDir</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span><span class="w">  </span><span class="k">initContainers</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>download-tools<span class="w">
-</span><span class="w">      </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>alpine<span class="p">:</span><span class="m">3.8</span><span class="w">
-</span><span class="w">      </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>sh<span class="p">,</span><span class="w"> </span>-c<span class="p">]</span><span class="w">
-</span><span class="w">      </span><span class="k">args</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- &gt;<span class="sd">-
-</span><span class="sd">          wget -O argocd-vault-plugin</span><span class="w">
-</span><span class="w">          </span>https<span class="p">:</span>//github.com/IBM/argocd-vault-plugin/releases/download/v1<span class="m">.1.1</span>/argocd-vault-plugin_1<span class="m">.1</span>.1_linux_amd64<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w">
-</span><span class="w">          </span>chmod<span class="w"> </span>+x<span class="w"> </span>argocd-vault-plugin<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w">
-</span><span class="w">          </span>mv<span class="w"> </span>argocd-vault-plugin<span class="w"> </span>/custom-tools/<span class="w">
-</span><span class="w">      </span><span class="k">volumeMounts</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="k">mountPath</span><span class="p">:</span><span class="w"> </span>/custom-tools<span class="w">
-</span><span class="w">          </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>custom-tools<span class="w">
-</span><span class="w">  </span><span class="k">volumeMounts</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>custom-tools<span class="w">
-</span><span class="w">    </span><span class="k">mountPath</span><span class="p">:</span><span class="w"> </span>/usr/local/bin/argocd-vault-plugin<span class="w">
-</span><span class="w">    </span><span class="k">subPath</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin<span class="w">
-</span><span class="w"></span><span class="k">server</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">config</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">configManagementPlugins</span><span class="p">:</span><span class="w"> </span>|<span class="sd">-
-</span><span class="sd">      - name: argocd-vault-plugin</span><span class="w">
-</span><span class="w">        </span><span class="k">generate</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;argocd-vault-plugin&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">          </span><span class="k">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;generate&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;./&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">      </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin-helm<span class="w">
-</span><span class="w">        </span><span class="k">init</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>sh<span class="p">,</span><span class="w"> </span>-c<span class="p">]</span><span class="w">
-</span><span class="w">          </span><span class="k">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;helm dependency build&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">        </span><span class="k">generate</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;sh&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-c&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">          </span><span class="k">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;helm template $ARGOCD_APP_NAME ${helm_args} . | argocd-vault-plugin generate -&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">      </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin-kustomize<span class="w">
-</span><span class="w">        </span><span class="k">generate</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;sh&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-c&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w">          </span><span class="k">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;kustomize build . | argocd-vault-plugin generate -&#34;</span><span class="p">]</span><span class="w">
-</span><span class="w"></span>...<span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ helm repo add argo https://argoproj.github.io/argo-helm
+</code></pre></td></tr></table></div></div><h2 id=2-argocd-with-avpのインストール>2. ArgoCD with AVPのインストール</h2><p>公式のインストール手順をhelmにしました。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-values.yaml data-lang=values.yaml>...<span class=w>
+</span><span class=w></span><span class=k>repoServer</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>env</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>AVP_TYPE<span class=w>
+</span><span class=w>      </span><span class=k>value</span><span class=p>:</span><span class=w> </span>awssecretsmanager<span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>AWS_REGION<span class=w>
+</span><span class=w>      </span><span class=k>value</span><span class=p>:</span><span class=w> </span>ap-northeast<span class=m>-1</span><span class=w>
+</span><span class=w>  </span><span class=k>envFrom</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>secretRef</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>name</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin-iam<span class=w>
+</span><span class=w>  </span><span class=k>volumes</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>custom-tools<span class=w>
+</span><span class=w>      </span><span class=k>emptyDir</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>  </span><span class=k>initContainers</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>download-tools<span class=w>
+</span><span class=w>      </span><span class=k>image</span><span class=p>:</span><span class=w> </span>alpine<span class=p>:</span><span class=m>3.8</span><span class=w>
+</span><span class=w>      </span><span class=k>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span>sh<span class=p>,</span><span class=w> </span>-c<span class=p>]</span><span class=w>
+</span><span class=w>      </span><span class=k>args</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- &gt;<span class=sd>-
+</span><span class=sd>          wget -O argocd-vault-plugin</span><span class=w>
+</span><span class=w>          </span>https<span class=p>:</span>//github.com/IBM/argocd-vault-plugin/releases/download/v1<span class=m>.1.1</span>/argocd-vault-plugin_1<span class=m>.1</span>.1_linux_amd64<span class=w> </span><span class=cp>&amp;&amp;</span><span class=w>
+</span><span class=w>          </span>chmod<span class=w> </span>+x<span class=w> </span>argocd-vault-plugin<span class=w> </span><span class=cp>&amp;&amp;</span><span class=w>
+</span><span class=w>          </span>mv<span class=w> </span>argocd-vault-plugin<span class=w> </span>/custom-tools/<span class=w>
+</span><span class=w>      </span><span class=k>volumeMounts</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>mountPath</span><span class=p>:</span><span class=w> </span>/custom-tools<span class=w>
+</span><span class=w>          </span><span class=k>name</span><span class=p>:</span><span class=w> </span>custom-tools<span class=w>
+</span><span class=w>  </span><span class=k>volumeMounts</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>custom-tools<span class=w>
+</span><span class=w>    </span><span class=k>mountPath</span><span class=p>:</span><span class=w> </span>/usr/local/bin/argocd-vault-plugin<span class=w>
+</span><span class=w>    </span><span class=k>subPath</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin<span class=w>
+</span><span class=w></span><span class=k>server</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>config</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>configManagementPlugins</span><span class=p>:</span><span class=w> </span>|<span class=sd>-
+</span><span class=sd>      - name: argocd-vault-plugin</span><span class=w>
+</span><span class=w>        </span><span class=k>generate</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=k>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;argocd-vault-plugin&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>          </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;generate&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;./&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>      </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin-helm<span class=w>
+</span><span class=w>        </span><span class=k>init</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=k>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span>sh<span class=p>,</span><span class=w> </span>-c<span class=p>]</span><span class=w>
+</span><span class=w>          </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;helm dependency build&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>        </span><span class=k>generate</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=k>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;sh&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;-c&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>          </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;helm template $ARGOCD_APP_NAME ${helm_args} . | argocd-vault-plugin generate -&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>      </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin-kustomize<span class=w>
+</span><span class=w>        </span><span class=k>generate</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=k>command</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;sh&#34;</span><span class=p>,</span><span class=w> </span><span class=s2>&#34;-c&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w>          </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;kustomize build . | argocd-vault-plugin generate -&#34;</span><span class=p>]</span><span class=w>
+</span><span class=w></span>...<span class=w>
+</span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ helm repo add argo https://argoproj.github.io/argo-helm
 $ helm install argo/argo-cd -f values.yaml
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="3-argocdにapplicationを登録">3. ArgoCDにApplicationを登録</h2>
-<p>アプリケーションのデプロイ時に使用するplugin設定を定義します。
-例えばアプリケーションの実装がKustomizeであれば、前項で定義した <code>argocd-vault-plugin-kustomize</code>　を使う事で <code>kustomize build . | argocd-vault-plugin generate -</code> と同様の挙動になります。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-application.yaml" data-lang="application.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>argoproj.io/v1alpha1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Application<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>testapp<span class="w">
-</span><span class="w">  </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>argo<span class="w">
-</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">project</span><span class="p">:</span><span class="w"> </span>default<span class="w">
-</span><span class="w">  </span><span class="k">source</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">repoURL</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;git@github.com:my-org/my-repo.git&#39;</span><span class="w">
-</span><span class="w">    </span><span class="k">path</span><span class="p">:</span><span class="w"> </span>path/to/yaml<span class="w">
-</span><span class="w">    </span><span class="k">targetRevision</span><span class="p">:</span><span class="w"> </span>HEAD<span class="w">
-</span><span class="w">    </span><span class="k">plugin</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>argocd-vault-plugin-kustomize<span class="w">
-</span><span class="w">  </span><span class="k">destination</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">server</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;https://kubernetes.default.svc&#39;</span><span class="w">
-</span><span class="w">    </span><span class="k">namespace</span><span class="p">:</span><span class="w"> </span>default<span class="w">
-</span><span class="w">  </span><span class="k">syncPolicy</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">automated</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="k">prune</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="w">      </span><span class="k">selfHeal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><p>あとは[テストで作成したManifest](#Kubernetes Manifestを作成する)と同様の実装でrepoにpushすればOKです。</p>
-
-      
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&text=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class="twitter-share-button"> Tweet</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&title=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-    </div>
-
-    
-<footer class="post-footer">
-      
-      <nav class="post-nav">
-        <a class="prev" href="/post/2021/ubuntu-desktop-config/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Ubuntu desktop初期設定メモ</span>
-            <span class="prev-text nav-mobile">前の記事へ</span>
-          </a>
-        <a class="next" href="/post/2021/argo-workflows-exit-handler/">
-            <span class="next-text nav-default">Argo Workflowsの失敗時にデフォルトでSlackに通知する</span>
-            <span class="next-text nav-mobile">次の記事へ</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-    <script src="https://utteranc.es/client.js"
-            repo="aaaanwz/aaaanwz.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">  
-  <span class="copyright-year">
-    &copy; 
-    2019 - 
-    2021<span>	@aaaanwz	コンテンツを引用される際は当ブログのURLを併記してください</span>
-  </span>
-  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-CWBPGKYRHB', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-</body>
-</html>
+</code></pre></td></tr></table></div></div><h2 id=3-argocdにapplicationを登録>3. ArgoCDにApplicationを登録</h2><p>アプリケーションのデプロイ時に使用するplugin設定を定義します。
+例えばアプリケーションの実装がKustomizeであれば、前項で定義した <code>argocd-vault-plugin-kustomize</code>　を使う事で <code>kustomize build . | argocd-vault-plugin generate -</code> と同様の挙動になります。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-application.yaml data-lang=application.yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>argoproj.io/v1alpha1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Application<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>testapp<span class=w>
+</span><span class=w>  </span><span class=k>namespace</span><span class=p>:</span><span class=w> </span>argo<span class=w>
+</span><span class=w></span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>project</span><span class=p>:</span><span class=w> </span>default<span class=w>
+</span><span class=w>  </span><span class=k>source</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>repoURL</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;git@github.com:my-org/my-repo.git&#39;</span><span class=w>
+</span><span class=w>    </span><span class=k>path</span><span class=p>:</span><span class=w> </span>path/to/yaml<span class=w>
+</span><span class=w>    </span><span class=k>targetRevision</span><span class=p>:</span><span class=w> </span>HEAD<span class=w>
+</span><span class=w>    </span><span class=k>plugin</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=k>name</span><span class=p>:</span><span class=w> </span>argocd-vault-plugin-kustomize<span class=w>
+</span><span class=w>  </span><span class=k>destination</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>server</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;https://kubernetes.default.svc&#39;</span><span class=w>
+</span><span class=w>    </span><span class=k>namespace</span><span class=p>:</span><span class=w> </span>default<span class=w>
+</span><span class=w>  </span><span class=k>syncPolicy</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>automated</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=k>prune</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>      </span><span class=k>selfHeal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></code></pre></td></tr></table></div></div><p>あとは[テストで作成したManifest](#Kubernetes Manifestを作成する)と同様の実装でrepoにpushすればOKです。</p><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&text=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargocd-vault-plugin%2f&title=ArgoCD%20GitOps%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8bSecret%e7%ae%a1%e7%90%86" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=prev href=/post/2021/ubuntu-desktop-config/><i class="iconfont icon-left"></i><span class="prev-text nav-default">Ubuntu desktop初期設定メモ</span>
+<span class="prev-text nav-mobile">前の記事へ</span></a>
+<a class=next href=/post/2021/argo-workflows-exit-handler/><span class="next-text nav-default">Argo Workflowsの失敗時にデフォルトでSlackに通知する</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2021<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','G-CWBPGKYRHB','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

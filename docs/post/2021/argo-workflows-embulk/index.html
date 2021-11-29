@@ -1,171 +1,19 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>embulkをArgo workflowsで実行するTemplate - A4 tech note</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="aaaanwz" /><meta name="description" content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
-
-
-<link rel="canonical" href="https://aaaanwz.github.io/post/2021/argo-workflows-embulk/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="embulkをArgo workflowsで実行するTemplate" />
-<meta property="og:description" content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2021/argo-workflows-embulk/" />
-<meta property="article:published_time" content="2021-10-28T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T12:26:56+09:00" />
-<meta itemprop="name" content="embulkをArgo workflowsで実行するTemplate">
-<meta itemprop="description" content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml">
-<meta itemprop="datePublished" content="2021-10-28T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T12:26:56&#43;09:00" />
-<meta itemprop="wordCount" content="223">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="embulkをArgo workflowsで実行するTemplate"/>
-<meta name="twitter:description" content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">A4 tech note</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/portfolio">
-        <li class="mobile-menu-item">Portfolio</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">A4 tech note</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/portfolio">Portfolio</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">embulkをArgo workflowsで実行するTemplate</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-10-28 </span>
-        <div class="post-category">
-            <a href="/categories/kubernetes/"> Kubernetes </a>
-            <a href="/categories/etl/"> ETL </a>
-            </div>
-          <span class="more-meta"> 223 文字 </span>
-          <span class="more-meta"> 読了時間: 1 分 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">コンテンツ</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#dockerfile">Dockerfile</a></li>
-    <li><a href="#workflow-template">Workflow Template</a></li>
-    <li><a href="#workflow">Workflow</a></li>
-  </ul>
-</nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。<br>
-<code>config.yml</code>はartifactsとして渡します。</p>
-<h1 id="dockerfile">Dockerfile</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">FROM openjdk:8-jre-alpine
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>embulkをArgo workflowsで実行するTemplate - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2021/argo-workflows-embulk/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="embulkをArgo workflowsで実行するTemplate"><meta property="og:description" content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2021/argo-workflows-embulk/"><meta property="article:published_time" content="2021-10-28T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-29T12:36:26+09:00"><meta itemprop=name content="embulkをArgo workflowsで実行するTemplate"><meta itemprop=description content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml"><meta itemprop=datePublished content="2021-10-28T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-29T12:36:26+09:00"><meta itemprop=wordCount content="223"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="embulkをArgo workflowsで実行するTemplate"><meta name=twitter:description content="Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。 config.yml"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/portfolio><li class=mobile-menu-item>Portfolio</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/portfolio>Portfolio</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>embulkをArgo workflowsで実行するTemplate</h1><div class=post-meta><span class=post-time>2021-10-28</span><div class=post-category><a href=/categories/kubernetes/>Kubernetes</a>
+<a href=/categories/etl/>ETL</a></div><span class=more-meta>223 文字</span>
+<span class=more-meta>読了時間: 1 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><a href=#dockerfile>Dockerfile</a></li><li><a href=#workflow-template>Workflow Template</a></li><li><a href=#workflow>Workflow</a></li></ul></nav></div></div><div class=post-content><p>Argo Workflowsの公式ドキュメントが分かりづらかったので、試しにembulkを実行するテンプレートを作ってみました。<br><code>config.yml</code>はartifactsとして渡します。</p><h1 id=dockerfile>Dockerfile</h1><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>FROM openjdk:8-jre-alpine
 ARG VERSION=latest
 
 RUN mkdir -p /root/.embulk/bin \
@@ -178,229 +26,122 @@ RUN embulk gem install embulk-input-s3
 
 ENTRYPOINT [&#34;java&#34;, &#34;-jar&#34;, &#34;/root/.embulk/bin/embulk&#34;]
 
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-sh" data-lang="sh">$ <span class="nv">EMBULK_VERSION</span><span class="o">=</span>0.9.23
-$ docker build . -t embulk:<span class="nv">$EMBULK_VERSION</span> --build-arg <span class="nv">VERSION</span><span class="o">=</span><span class="nv">$EMBULK_VERSION</span>
-$ docker run -v /path/to/configfile:/config embulk:latest run /config/config.yml<span class="sb">`</span>
-</code></pre></td></tr></table>
-</div>
-</div><h1 id="workflow-template">Workflow Template</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-yaml:embulk-template.yaml" data-lang="yaml:embulk-template.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>argoproj.io/v1alpha1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>WorkflowTemplate<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>embulk-template<span class="w">
-</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">templates</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>embulk<span class="w">
-</span><span class="w">      </span><span class="k">container</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>embulk<span class="p">:</span>latest<span class="w">
-</span><span class="w">        </span><span class="k">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;run&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/input/config.yml.liquid&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-r&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/output/resume-state.yml&#39;</span><span class="p">]</span><span class="w">
-</span><span class="w">        </span><span class="k">resources</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="k">limits</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="k">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1Gi&#34;</span><span class="w">
-</span><span class="w">            </span><span class="k">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1&#34;</span><span class="w">
-</span><span class="w">        </span><span class="k">volumeMounts</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>output<span class="w">
-</span><span class="w">          </span><span class="k">mountPath</span><span class="p">:</span><span class="w"> </span>/output<span class="w">
-</span><span class="w">      </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>output<span class="w">
-</span><span class="w">          </span><span class="k">emptyDir</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span><span class="w">      </span><span class="k">inputs</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">artifacts</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>embulk-config<span class="w">
-</span><span class="w">          </span><span class="k">path</span><span class="p">:</span><span class="w"> </span>/input/config.yml.liquid<span class="w">
-</span><span class="w">      </span><span class="k">outputs</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">parameters</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>resume-state<span class="w">
-</span><span class="w">          </span><span class="k">valueFrom</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="k">path</span><span class="p">:</span><span class="w"> </span>/output/resume-state.yml<span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><h1 id="workflow">Workflow</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-yaml:workflow.yaml" data-lang="yaml:workflow.yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span>argoproj.io/v1alpha1<span class="w">
-</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span>Workflow<span class="w">
-</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>s3-to-stdout-sample<span class="w">
-</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">entrypoint</span><span class="p">:</span><span class="w"> </span>embulk<span class="w">
-</span><span class="w">  </span><span class="k">serviceAccountName</span><span class="p">:</span><span class="w"> </span>argo-workflow<span class="w">
-</span><span class="w">  </span><span class="k">arguments</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">artifacts</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>embulk-config<span class="w">
-</span><span class="w">      </span><span class="k">raw</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="k">data</span><span class="p">:</span><span class="w"> </span><span class="sd">|
-</span><span class="sd">          in:</span><span class="w">
-</span><span class="w">            </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>s3<span class="w">
-</span><span class="w">            </span><span class="k">bucket</span><span class="p">:</span><span class="w"> </span>my-bucket<span class="w">
-</span><span class="w">            </span><span class="k">path_prefix</span><span class="p">:</span><span class="w"> </span>path/to/file<span class="w">
-</span><span class="w">            </span><span class="k">endpoint</span><span class="p">:</span><span class="w"> </span>s3-ap-northeast<span class="m">-1.</span>amazonaws.com<span class="w">
-</span><span class="w">            </span><span class="k">access_key_id</span><span class="p">:</span><span class="w"> </span>{{<span class="w"> </span>env.AWS_ACCESS_KEY_ID<span class="w"> </span>}}<span class="w">
-</span><span class="w">            </span><span class="k">secret_access_key</span><span class="p">:</span><span class="w"> </span>{{<span class="w"> </span>env.AWS_SECRET_ACCESS_KEY<span class="w"> </span>}}<span class="w">
-</span><span class="w">          </span><span class="k">out</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="k">type</span><span class="p">:</span><span class="w"> </span>stdout<span class="w">
-</span><span class="w">  </span><span class="k">workflowTemplateRef</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">name</span><span class="p">:</span><span class="w"> </span>embulk-template<span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div>
-      
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargo-workflows-embulk%2f&text=embulk%e3%82%92Argo%20workflows%e3%81%a7%e5%ae%9f%e8%a1%8c%e3%81%99%e3%82%8bTemplate" class="twitter-share-button"> Tweet</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargo-workflows-embulk%2f&title=embulk%e3%82%92Argo%20workflows%e3%81%a7%e5%ae%9f%e8%a1%8c%e3%81%99%e3%82%8bTemplate" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-    </div>
-
-    
-<footer class="post-footer">
-      
-      <nav class="post-nav">
-        <a class="prev" href="/post/2021/argo-workflows-exit-handler/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Argo Workflowsの失敗時にデフォルトでSlackに通知する</span>
-            <span class="prev-text nav-mobile">前の記事へ</span>
-          </a>
-        <a class="next" href="/post/2021/fluentd-s3-routing/">
-            <span class="next-text nav-default">[fluetd] S3にアップロードされたキー名でルーティングする</span>
-            <span class="next-text nav-mobile">次の記事へ</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-    <script src="https://utteranc.es/client.js"
-            repo="aaaanwz/aaaanwz.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">  
-  <span class="copyright-year">
-    &copy; 
-    2019 - 
-    2021<span>	@aaaanwz	コンテンツを引用される際は当ブログのURLを併記してください</span>
-  </span>
-  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-CWBPGKYRHB', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-</body>
-</html>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ <span class=nv>EMBULK_VERSION</span><span class=o>=</span>0.9.23
+$ docker build . -t embulk:<span class=nv>$EMBULK_VERSION</span> --build-arg <span class=nv>VERSION</span><span class=o>=</span><span class=nv>$EMBULK_VERSION</span>
+$ docker run -v /path/to/configfile:/config embulk:latest run /config/config.yml<span class=sb>`</span>
+</code></pre></td></tr></table></div></div><h1 id=workflow-template>Workflow Template</h1><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml:embulk-template.yaml data-lang=yaml:embulk-template.yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>argoproj.io/v1alpha1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>WorkflowTemplate<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>embulk-template<span class=w>
+</span><span class=w></span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>templates</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>embulk<span class=w>
+</span><span class=w>      </span><span class=k>container</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>image</span><span class=p>:</span><span class=w> </span>embulk<span class=p>:</span>latest<span class=w>
+</span><span class=w>        </span><span class=k>args</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s1>&#39;run&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;/input/config.yml.liquid&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;-r&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;/output/resume-state.yml&#39;</span><span class=p>]</span><span class=w>
+</span><span class=w>        </span><span class=k>resources</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span><span class=k>limits</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span><span class=k>memory</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1Gi&#34;</span><span class=w>
+</span><span class=w>            </span><span class=k>cpu</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1&#34;</span><span class=w>
+</span><span class=w>        </span><span class=k>volumeMounts</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>output<span class=w>
+</span><span class=w>          </span><span class=k>mountPath</span><span class=p>:</span><span class=w> </span>/output<span class=w>
+</span><span class=w>      </span><span class=k>volumes</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>output<span class=w>
+</span><span class=w>          </span><span class=k>emptyDir</span><span class=p>:</span><span class=w> </span>{}<span class=w>
+</span><span class=w>      </span><span class=k>inputs</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>artifacts</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>embulk-config<span class=w>
+</span><span class=w>          </span><span class=k>path</span><span class=p>:</span><span class=w> </span>/input/config.yml.liquid<span class=w>
+</span><span class=w>      </span><span class=k>outputs</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>parameters</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>resume-state<span class=w>
+</span><span class=w>          </span><span class=k>valueFrom</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span><span class=k>path</span><span class=p>:</span><span class=w> </span>/output/resume-state.yml<span class=w>
+</span></code></pre></td></tr></table></div></div><h1 id=workflow>Workflow</h1><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml:workflow.yaml data-lang=yaml:workflow.yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>argoproj.io/v1alpha1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Workflow<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>s3-to-stdout-sample<span class=w>
+</span><span class=w></span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>entrypoint</span><span class=p>:</span><span class=w> </span>embulk<span class=w>
+</span><span class=w>  </span><span class=k>serviceAccountName</span><span class=p>:</span><span class=w> </span>argo-workflow<span class=w>
+</span><span class=w>  </span><span class=k>arguments</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>artifacts</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>embulk-config<span class=w>
+</span><span class=w>      </span><span class=k>raw</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>data</span><span class=p>:</span><span class=w> </span><span class=sd>|
+</span><span class=sd>          in:</span><span class=w>
+</span><span class=w>            </span><span class=k>type</span><span class=p>:</span><span class=w> </span>s3<span class=w>
+</span><span class=w>            </span><span class=k>bucket</span><span class=p>:</span><span class=w> </span>my-bucket<span class=w>
+</span><span class=w>            </span><span class=k>path_prefix</span><span class=p>:</span><span class=w> </span>path/to/file<span class=w>
+</span><span class=w>            </span><span class=k>endpoint</span><span class=p>:</span><span class=w> </span>s3-ap-northeast<span class=m>-1.</span>amazonaws.com<span class=w>
+</span><span class=w>            </span><span class=k>access_key_id</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span>env.AWS_ACCESS_KEY_ID<span class=w> </span>}}<span class=w>
+</span><span class=w>            </span><span class=k>secret_access_key</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span>env.AWS_SECRET_ACCESS_KEY<span class=w> </span>}}<span class=w>
+</span><span class=w>          </span><span class=k>out</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span><span class=k>type</span><span class=p>:</span><span class=w> </span>stdout<span class=w>
+</span><span class=w>  </span><span class=k>workflowTemplateRef</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>name</span><span class=p>:</span><span class=w> </span>embulk-template<span class=w>
+</span></code></pre></td></tr></table></div></div><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargo-workflows-embulk%2f&text=embulk%e3%82%92Argo%20workflows%e3%81%a7%e5%ae%9f%e8%a1%8c%e3%81%99%e3%82%8bTemplate" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2021%2fargo-workflows-embulk%2f&title=embulk%e3%82%92Argo%20workflows%e3%81%a7%e5%ae%9f%e8%a1%8c%e3%81%99%e3%82%8bTemplate" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=prev href=/post/2021/argo-workflows-exit-handler/><i class="iconfont icon-left"></i><span class="prev-text nav-default">Argo Workflowsの失敗時にデフォルトでSlackに通知する</span>
+<span class="prev-text nav-mobile">前の記事へ</span></a>
+<a class=next href=/post/2021/fluentd-s3-routing/><span class="next-text nav-default">[fluetd] S3にアップロードされたキー名でルーティングする</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2021<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','G-CWBPGKYRHB','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

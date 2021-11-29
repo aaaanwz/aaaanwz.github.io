@@ -1,197 +1,26 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編) - A4 tech note</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="aaaanwz" /><meta name="description" content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま" /><meta name="keywords" content="aaaanwz, データエンジニア, テックブログ" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
-
-
-<link rel="canonical" href="https://aaaanwz.github.io/post/2019/kafkastreams-3/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
-<meta property="og:title" content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)" />
-<meta property="og:description" content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aaaanwz.github.io/post/2019/kafkastreams-3/" />
-<meta property="article:published_time" content="2019-06-07T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-11-29T12:26:56+09:00" />
-<meta itemprop="name" content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)">
-<meta itemprop="description" content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま">
-<meta itemprop="datePublished" content="2019-06-07T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-11-29T12:26:56&#43;09:00" />
-<meta itemprop="wordCount" content="2671">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)"/>
-<meta name="twitter:description" content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">A4 tech note</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a><a href="/portfolio">
-        <li class="mobile-menu-item">Portfolio</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">A4 tech note</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/portfolio">Portfolio</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2019-06-07 </span>
-        <div class="post-category">
-            <a href="/categories/java/"> java </a>
-            <a href="/categories/kafka/"> kafka </a>
-            </div>
-          <span class="more-meta"> 2671 文字 </span>
-          <span class="more-meta"> 読了時間: 6 分 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">コンテンツ</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#実際にやってみる">実際にやってみる</a>
-          <ul>
-            <li><a href="#ktable">KTable</a></li>
-            <li><a href="#aggregate">Aggregate</a></li>
-            <li><a href="#count">count</a></li>
-            <li><a href="#windowing">Windowing</a></li>
-            <li><a href="#join">Join</a></li>
-          </ul>
-        </li>
-        <li><a href="#ステートフルfizzbuzzを実装する">ステートフルFizzBuzzを実装する</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-</div>
-    <div class="post-content">
-      <p>Kafka Streams DSLのうち、ステートフルな操作(<code>join</code>,<code>reduce</code>,<code>aggregate</code>,<code>windowing</code>など)を実際に触り、動作を確認します。</p>
-<p>また最後に、本稿と<a href="https://qiita.com/aaaanwz/items/4695bb9439a2b0b9b898">前回</a>で登場した関数を使用してステートフルなストリームFizzBuzzを実装してみます。</p>
-<h2 id="実際にやってみる">実際にやってみる</h2>
-<p><a href="https://qiita.com/aaaanwz/items/d17ae435f6cff14d243c">前々回の記事(準備編)</a>のプロジェクトが作成済みである事を前提とします。</p>
-<h3 id="ktable">KTable</h3>
-<p>まずはじめに、<code>KTable</code>,<code>KGroupedStream</code>について知っておく必要があります。
-<code>KGroupedStream</code>はkeyの値毎にグループ化された<code>KStream</code>で、<code>KTable</code>はkeyとvalueの最新状態を保持するテーブルとして扱えるものです。<br>
-KTableは<code>new StreamsBuilder().table(&quot;topic-name&quot;)...</code>のように直接トピックから生成したり、<code>KGroupedStream</code>を集約して生成したりと様々なルートで生成することができます。<br>
-公式ドキュメントの以下の図が非常に分かりやすいです。</p>
-<p><img src="https://kafka.apache.org/20/images/streams-stateful_operations.png" alt="">
-<a href="https://kafka.apache.org/20/documentation/streams/developer-guide/dsl-api.html#id11">画像リンク元ページ</a></p>
-<h3 id="aggregate">Aggregate</h3>
-<p><code>KGroupedStream</code>をkeyごとに集約し、<code>KTable</code>に変換します。
-コードと実行結果を見るのが一番早いと思います。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  private static Initializer&lt;String&gt; initializer = () -&gt; &#34;InitVal&#34;;
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編) - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2019/kafkastreams-3/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)"><meta property="og:description" content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2019/kafkastreams-3/"><meta property="article:published_time" content="2019-06-07T00:00:00+00:00"><meta property="article:modified_time" content="2021-11-29T12:36:26+09:00"><meta itemprop=name content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)"><meta itemprop=description content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま"><meta itemprop=datePublished content="2019-06-07T00:00:00+00:00"><meta itemprop=dateModified content="2021-11-29T12:36:26+09:00"><meta itemprop=wordCount content="2671"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)"><meta name=twitter:description content="Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。 ま"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/portfolio><li class=mobile-menu-item>Portfolio</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/portfolio>Portfolio</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)</h1><div class=post-meta><span class=post-time>2019-06-07</span><div class=post-category><a href=/categories/java/>java</a>
+<a href=/categories/kafka/>kafka</a></div><span class=more-meta>2671 文字</span>
+<span class=more-meta>読了時間: 6 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#実際にやってみる>実際にやってみる</a><ul><li><a href=#ktable>KTable</a></li><li><a href=#aggregate>Aggregate</a></li><li><a href=#count>count</a></li><li><a href=#windowing>Windowing</a></li><li><a href=#join>Join</a></li></ul></li><li><a href=#ステートフルfizzbuzzを実装する>ステートフルFizzBuzzを実装する</a></li></ul></li></ul></nav></div></div><div class=post-content><p>Kafka Streams DSLのうち、ステートフルな操作(<code>join</code>,<code>reduce</code>,<code>aggregate</code>,<code>windowing</code>など)を実際に触り、動作を確認します。</p><p>また最後に、本稿と<a href=https://qiita.com/aaaanwz/items/4695bb9439a2b0b9b898>前回</a>で登場した関数を使用してステートフルなストリームFizzBuzzを実装してみます。</p><h2 id=実際にやってみる>実際にやってみる</h2><p><a href=https://qiita.com/aaaanwz/items/d17ae435f6cff14d243c>前々回の記事(準備編)</a>のプロジェクトが作成済みである事を前提とします。</p><h3 id=ktable>KTable</h3><p>まずはじめに、<code>KTable</code>,<code>KGroupedStream</code>について知っておく必要があります。
+<code>KGroupedStream</code>はkeyの値毎にグループ化された<code>KStream</code>で、<code>KTable</code>はkeyとvalueの最新状態を保持するテーブルとして扱えるものです。<br>KTableは<code>new StreamsBuilder().table("topic-name")...</code>のように直接トピックから生成したり、<code>KGroupedStream</code>を集約して生成したりと様々なルートで生成することができます。<br>公式ドキュメントの以下の図が非常に分かりやすいです。</p><p><img src=https://kafka.apache.org/20/images/streams-stateful_operations.png alt>
+<a href=https://kafka.apache.org/20/documentation/streams/developer-guide/dsl-api.html#id11>画像リンク元ページ</a></p><h3 id=aggregate>Aggregate</h3><p><code>KGroupedStream</code>をkeyごとに集約し、<code>KTable</code>に変換します。
+コードと実行結果を見るのが一番早いと思います。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  private static Initializer&lt;String&gt; initializer = () -&gt; &#34;InitVal&#34;;
 
   private static Aggregator&lt;String, String, String&gt; aggregator =
       (key, val, agg) -&gt; agg + &#34; &amp; &#34; + val;
@@ -208,28 +37,20 @@ KTableは<code>new StreamsBuilder().table(&quot;topic-name&quot;)...</code>の�
 
     return builder.build();
   }
-</code></pre></td></tr></table>
-</div>
-</div><p><code>Initializer</code>は初期値を返す関数で、Java streamで言うと<code>Supplier</code>です。<br>
-<code>Aggregator</code>は<code>key</code>,<code>value</code>,<code>現在のステート</code>の3つを引数として受け取り、新たなステートを生成するための関数です。
-<code>aggregate</code>の結果はKTableですが、更新結果を確認するために<code>toStream()</code>を使います。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  @Test
+</code></pre></td></tr></table></div></div><p><code>Initializer</code>は初期値を返す関数で、Java streamで言うと<code>Supplier</code>です。<br><code>Aggregator</code>は<code>key</code>,<code>value</code>,<code>現在のステート</code>の3つを引数として受け取り、新たなステートを生成するための関数です。
+<code>aggregate</code>の結果はKTableですが、更新結果を確認するために<code>toStream()</code>を使います。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  @Test
   void test() throws InterruptedException {
     inputRecord(&#34;input-topic&#34;, &#34;key1&#34;, &#34;hoge&#34;);
     inputRecord(&#34;input-topic&#34;, &#34;key1&#34;, &#34;fuga&#34;);
@@ -241,42 +62,28 @@ KTableは<code>new StreamsBuilder().table(&quot;topic-name&quot;)...</code>の�
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">topic=output-topic, key=key1, value=InitVal &amp; hoge
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>topic=output-topic, key=key1, value=InitVal &amp; hoge
 topic=output-topic, key=key1, value=InitVal &amp; hoge &amp; fuga
 topic=output-topic, key=key2, value=InitVal &amp; foo
 topic=output-topic, key=key2, value=InitVal &amp; foo &amp; bar
-</code></pre></td></tr></table>
-</div>
-</div><p>keyに対応するvalueが、aggregatorに記述した通りにどんどん連結されていっていますね。</p>
-<p>簡易版のような機能として<code>reduce</code>と<code>count</code>も用意されています。
-reduceはinitializerが無いaggregateのようなもので、特定のkeyに対して最初に来たvalueが初期値になります。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">private static Reducer&lt;String&gt; reducer = (val, agg) -&gt; agg + &#34; &amp; &#34; + val;
+</code></pre></td></tr></table></div></div><p>keyに対応するvalueが、aggregatorに記述した通りにどんどん連結されていっていますね。</p><p>簡易版のような機能として<code>reduce</code>と<code>count</code>も用意されています。
+reduceはinitializerが無いaggregateのようなもので、特定のkeyに対して最初に来たvalueが初期値になります。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>private static Reducer&lt;String&gt; reducer = (val, agg) -&gt; agg + &#34; &amp; &#34; + val;
 
 ...
 
@@ -288,38 +95,23 @@ reduceはinitializerが無いaggregateのようなもので、特定のkeyに対
     .to(&#34;output-topic&#34;);
 
 ...
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">key=key1, value=hoge
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>key=key1, value=hoge
 key=key1, value=hoge &amp; fuga
-</code></pre></td></tr></table>
-</div>
-</div><h3 id="count">count</h3>
-<p>簡易版aggregateで、keyに対するレコード数をカウントするKTableを生成します。<br>
-元のレコード内容は失われてしまうので、<code>through</code>などで別のストリームを生やして使うのが一般的かと思います。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  public static Topology getTopology() {
+</code></pre></td></tr></table></div></div><h3 id=count>count</h3><p>簡易版aggregateで、keyに対するレコード数をカウントするKTableを生成します。<br>元のレコード内容は失われてしまうので、<code>through</code>などで別のストリームを生やして使うのが一般的かと思います。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  public static Topology getTopology() {
     StreamsBuilder builder = new StreamsBuilder();
 
     builder
@@ -331,30 +123,24 @@ key=key1, value=hoge &amp; fuga
 
     return builder.build();
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  private ProducerRecord&lt;String, Long&gt; getOutputRecord(String topicName) {
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  private ProducerRecord&lt;String, Long&gt; getOutputRecord(String topicName) {
     return testDriver.readOutput(topicName, Serdes.String().deserializer(),
         Serdes.Long().deserializer());
   }
@@ -371,46 +157,31 @@ key=key1, value=hoge &amp; fuga
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">topic=output-topic, key=key1, value=1
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>topic=output-topic, key=key1, value=1
 topic=output-topic, key=key1, value=2
 topic=output-topic, key=key2, value=1
 topic=output-topic, key=key2, value=2
-</code></pre></td></tr></table>
-</div>
-</div><h3 id="windowing">Windowing</h3>
-<p>ストリームを時間枠で切り取ります。Tubling, Hopping, Sliding, Sessionの4種類がありここでは紹介しきれないため、<a href="https://docs.confluent.io/current/streams/developer-guide/dsl-api.html#windowing">公式ドキュメント</a>の図を見ていただくのが最もわかりやすいかと思います。</p>
-<p>今回は1000msのTumblingでレコードをcountしてみます。
+</code></pre></td></tr></table></div></div><h3 id=windowing>Windowing</h3><p>ストリームを時間枠で切り取ります。Tubling, Hopping, Sliding, Sessionの4種類がありここでは紹介しきれないため、<a href=https://docs.confluent.io/current/streams/developer-guide/dsl-api.html#windowing>公式ドキュメント</a>の図を見ていただくのが最もわかりやすいかと思います。</p><p>今回は1000msのTumblingでレコードをcountしてみます。
 <code>windowedBy</code>を行うと、<code>Windowed</code>オブジェクトがkeyとして使用されます。
-試しに<code>.toString()</code>でkeyの内容も確認してみましょう</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  public static Topology getTopology() {
+試しに<code>.toString()</code>でkeyの内容も確認してみましょう</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  public static Topology getTopology() {
     StreamsBuilder builder = new StreamsBuilder();
 
     builder
@@ -424,26 +195,20 @@ topic=output-topic, key=key2, value=2
 
     return builder.build();
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  @Test
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  @Test
   void test() throws InterruptedException {
     inputRecord(&#34;input-topic&#34;, &#34;key1&#34;, &#34;hoge&#34;);
     inputRecord(&#34;input-topic&#34;, &#34;key1&#34;, &#34;fuga&#34;);
@@ -456,47 +221,32 @@ topic=output-topic, key=key2, value=2
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">topic=output-topic, key=[key1@1559886985000/1559886986000], value=1
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>topic=output-topic, key=[key1@1559886985000/1559886986000], value=1
 topic=output-topic, key=[key1@1559886985000/1559886986000], value=2
 topic=output-topic, key=[key1@1559886985000/1559886986000], value=3
 topic=output-topic, key=[key1@1559886986000/1559886987000], value=1
-</code></pre></td></tr></table>
-</div>
-</div><p>keyが<code>{元のkey値}@{window開始時刻}/{window終了時刻}</code>になっていますね。
-そして<code>hoge``fuga``foo</code>は同一window内でカウントされ、時間が開いた<code>bar</code>は次のwindowに入っています。</p>
-<h3 id="join">Join</h3>
-<p>同一のkeyを持つ2つのレコードを組み合わせ、新たなストリームを生成します。
+</code></pre></td></tr></table></div></div><p>keyが<code>{元のkey値}@{window開始時刻}/{window終了時刻}</code>になっていますね。
+そして<code>hoge``fuga``foo</code>は同一window内でカウントされ、時間が開いた<code>bar</code>は次のwindowに入っています。</p><h3 id=join>Join</h3><p>同一のkeyを持つ2つのレコードを組み合わせ、新たなストリームを生成します。
 KStream同士、KStreamとKTable、KTable同士それぞれで実行できます。
-例としてKStream同士のjoinを行ってみます。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  private static ValueJoiner&lt;String, String, String&gt; joiner = (left, right) -&gt; left + &#34; &amp; &#34; + right;
+例としてKStream同士のjoinを行ってみます。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  private static ValueJoiner&lt;String, String, String&gt; joiner = (left, right) -&gt; left + &#34; &amp; &#34; + right;
 
   public static Topology getTopology() {
     StreamsBuilder builder = new StreamsBuilder();
@@ -510,26 +260,18 @@ KStream同士、KStreamとKTable、KTable同士それぞれで実行できます
 
     return builder.build();
   }
-</code></pre></td></tr></table>
-</div>
-</div><p><code>ValueJoiner</code>は2つのvalueから新たなvalueを生成する関数です。</p>
-<p><code>KStream</code>同士をjoinする場合は、<code>JoinWindows</code>で2つのレコードが揃うまでの待ち受け時間を定義します。相手がKTableの場合はkeyに対する最後(最新)のvalueの値がjoinされるため、Windowの定義は不要です。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  @Test
+</code></pre></td></tr></table></div></div><p><code>ValueJoiner</code>は2つのvalueから新たなvalueを生成する関数です。</p><p><code>KStream</code>同士をjoinする場合は、<code>JoinWindows</code>で2つのレコードが揃うまでの待ち受け時間を定義します。相手がKTableの場合はkeyに対する最後(最新)のvalueの値がjoinされるため、Windowの定義は不要です。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  @Test
   void test() throws InterruptedException {
     inputRecord(&#34;input-topicA&#34;, &#34;key1&#34;, &#34;hoge&#34;);
     inputRecord(&#34;input-topicB&#34;, &#34;key1&#34;, &#34;fuga&#34;);
@@ -540,65 +282,44 @@ KStream同士、KStreamとKTable、KTable同士それぞれで実行できます
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
     System.out.println(getOutputRecord(&#34;output-topic&#34;));
   }
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">topic=output-topic, key=key1, value=hoge &amp; fuga
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>topic=output-topic, key=key1, value=hoge &amp; fuga
 null
-</code></pre></td></tr></table>
-</div>
-</div><p><code>key1</code>を持つ<code>hoge</code>と<code>fuga</code>が結合しています。また、<code>foo</code>と<code>bar</code>はJoinWindow内に収まっていないため、joinが実施されていません。</p>
-<p><code>join</code>の他に<code>leftJoin</code>と<code>outerJoin</code>が用意されています。<code>KSQL</code>同様、リレーショナルDBの感覚ですね。</p>
-<h2 id="ステートフルfizzbuzzを実装する">ステートフルFizzBuzzを実装する</h2>
-<p>さて、長くなりましたがKafka Streams DSLの大方を触ってみました。<br>
-これまで見てきた物を使って、ステートフルなFizzBuzzを実装してみましょう。
-以下の要件でやってみます。</p>
-<ul>
-<li>自然数をconsumeする度に加算していき、総和が3の倍数ならFizz, 5の倍数ならBuzz, 15の倍数ならFizzBuzz、それ以外なら現在の総和をoutput-topicにproduceする。</li>
-<li>FizzBuzzが出力されるか、5秒以上入力レコードが来なければ総和を0に戻す</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">  private static Aggregator&lt;String, Integer, String&gt; aggregator = (k, v, a) -&gt; {
+</code></pre></td></tr></table></div></div><p><code>key1</code>を持つ<code>hoge</code>と<code>fuga</code>が結合しています。また、<code>foo</code>と<code>bar</code>はJoinWindow内に収まっていないため、joinが実施されていません。</p><p><code>join</code>の他に<code>leftJoin</code>と<code>outerJoin</code>が用意されています。<code>KSQL</code>同様、リレーショナルDBの感覚ですね。</p><h2 id=ステートフルfizzbuzzを実装する>ステートフルFizzBuzzを実装する</h2><p>さて、長くなりましたがKafka Streams DSLの大方を触ってみました。<br>これまで見てきた物を使って、ステートフルなFizzBuzzを実装してみましょう。
+以下の要件でやってみます。</p><ul><li>自然数をconsumeする度に加算していき、総和が3の倍数ならFizz, 5の倍数ならBuzz, 15の倍数ならFizzBuzz、それ以外なら現在の総和をoutput-topicにproduceする。</li><li>FizzBuzzが出力されるか、5秒以上入力レコードが来なければ総和を0に戻す</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>  private static Aggregator&lt;String, Integer, String&gt; aggregator = (k, v, a) -&gt; {
     Integer sum;
     try {
       sum = Integer.valueOf(a);
@@ -630,103 +351,14 @@ null
 
     return builder.build();
   }
-</code></pre></td></tr></table>
-</div>
-</div><p>あまり美しくはないですが、最も単純に「前回の計算結果をそのままステートにする」実装にしてみました。
-是非実際のKafka環境をセットアップして遊んでみてください。</p>
-<p>Consume/Publishで実装するとちょっと面倒な要件も、非常にシンプルに記述できることが実感できたかと思います。
-これで完結となります、ご覧いただきありがとうございました！</p>
-
-      
-      <a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fkafkastreams-3%2f&text=Kafka%20Streams%20DSL%e3%82%92%e4%b8%80%e9%80%9a%e3%82%8a%e4%bd%93%e9%a8%93%e3%81%99%e3%82%8b%20%283.%20%e3%82%b9%e3%83%86%e3%83%bc%e3%83%88%e3%83%95%e3%83%ab%e5%87%a6%e7%90%86%e5%ae%9f%e8%b7%b5%e7%b7%a8%29" class="twitter-share-button"> Tweet</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      
-      <a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fkafkastreams-3%2f&title=Kafka%20Streams%20DSL%e3%82%92%e4%b8%80%e9%80%9a%e3%82%8a%e4%bd%93%e9%a8%93%e3%81%99%e3%82%8b%20%283.%20%e3%82%b9%e3%83%86%e3%83%bc%e3%83%88%e3%83%95%e3%83%ab%e5%87%a6%e7%90%86%e5%ae%9f%e8%b7%b5%e7%b7%a8%29" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-label" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
-    </div>
-
-    
-<footer class="post-footer">
-      
-      <nav class="post-nav">
-        <a class="prev" href="/post/2019/juniversalchardet/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Javaで文字コードを推測する</span>
-            <span class="prev-text nav-mobile">前の記事へ</span>
-          </a>
-        <a class="next" href="/post/2019/kafkastreams-2/">
-            <span class="next-text nav-default">Kafka Streams DSLを一通り体験する (2. ステートレス処理実践編)</span>
-            <span class="next-text nav-mobile">次の記事へ</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-    <script src="https://utteranc.es/client.js"
-            repo="aaaanwz/aaaanwz.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/utterance">comments powered by utterances.</a></noscript>
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="https://twitter.com/aaaanwz" class="iconfont icon-twitter" title="twitter"></a>
-      <a href="https://github.com/aaaanwz" class="iconfont icon-github" title="github"></a>
-  <a href="https://aaaanwz.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
-</div>
-
-<div class="copyright">  
-  <span class="copyright-year">
-    &copy; 
-    2019 - 
-    2021<span>	@aaaanwz	コンテンツを引用される際は当ブログのURLを併記してください</span>
-  </span>
-  <img src='https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg'></img>
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-CWBPGKYRHB', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-
-
-
-
-
-</body>
-</html>
+</code></pre></td></tr></table></div></div><p>あまり美しくはないですが、最も単純に「前回の計算結果をそのままステートにする」実装にしてみました。
+是非実際のKafka環境をセットアップして遊んでみてください。</p><p>Consume/Publishで実装するとちょっと面倒な要件も、非常にシンプルに記述できることが実感できたかと思います。
+これで完結となります、ご覧いただきありがとうございました！</p><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fkafkastreams-3%2f&text=Kafka%20Streams%20DSL%e3%82%92%e4%b8%80%e9%80%9a%e3%82%8a%e4%bd%93%e9%a8%93%e3%81%99%e3%82%8b%20%283.%20%e3%82%b9%e3%83%86%e3%83%bc%e3%83%88%e3%83%95%e3%83%ab%e5%87%a6%e7%90%86%e5%ae%9f%e8%b7%b5%e7%b7%a8%29" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2019%2fkafkastreams-3%2f&title=Kafka%20Streams%20DSL%e3%82%92%e4%b8%80%e9%80%9a%e3%82%8a%e4%bd%93%e9%a8%93%e3%81%99%e3%82%8b%20%283.%20%e3%82%b9%e3%83%86%e3%83%bc%e3%83%88%e3%83%95%e3%83%ab%e5%87%a6%e7%90%86%e5%ae%9f%e8%b7%b5%e7%b7%a8%29" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=prev href=/post/2019/juniversalchardet/><i class="iconfont icon-left"></i><span class="prev-text nav-default">Javaで文字コードを推測する</span>
+<span class="prev-text nav-mobile">前の記事へ</span></a>
+<a class=next href=/post/2019/kafkastreams-2/><span class="next-text nav-default">Kafka Streams DSLを一通り体験する (2. ステートレス処理実践編)</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2021<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','G-CWBPGKYRHB','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

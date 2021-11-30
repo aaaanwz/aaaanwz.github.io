@@ -19,25 +19,25 @@
 
 resumeはDM等でお送りします
 
-<details><summary><font color="blue">Infra👇</font></summary><div>
+<details><summary><font color="blue">Infra▼</font></summary><div>
 
 - AWS
 - GCP
 - Kubernetes
 - terraform
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">DevOps👇</font></summary><div>
+<details><summary><font color="blue">DevOps▼</font></summary><div>
 
 - CircleCI
 - GitHub Actions
 - ArgoCD
 - Terraform Cloud
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">DWH/DB👇</font></summary><div>
+<details><summary><font color="blue">DWH/DB▼</font></summary><div>
 
 - AWS RedShift
 - GCP BigQuery
@@ -46,18 +46,18 @@ resumeはDM等でお送りします
 - PostgreSQL
 - ElasticSearch
 
-</div></details>
+</div></details><br>
 
 
-<details><summary><font color="blue">Message Queue👇</font></summary><div>
+<details><summary><font color="blue">Message Queue▼</font></summary><div>
 
 - AWS Kinesis
 - Apache Kafka
 - GCP Pub/Sub
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">Data pipeline👇</font></summary><div>
+<details><summary><font color="blue">Data pipeline▼</font></summary><div>
 
 - Apache Airflow
 - Argo Workflows
@@ -68,27 +68,27 @@ resumeはDM等でお送りします
 - Kafka Streams
 - AWS DMS
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">Monitoring👇</font></summary><div>
+<details><summary><font color="blue">Monitoring▼</font></summary><div>
 
 - grafana
 - Prometheus
 - Datadog
 - NewRelic
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">Language👇</font></summary><div>
+<details><summary><font color="blue">Language▼</font></summary><div>
 
 - Java
 - Python
 - golang
 - Node.js
 
-</div></details>
+</div></details><br>
 
-<details><summary><font color="blue">Legacy👇</font></summary><div>
+<details><summary><font color="blue">Legacy▼</font></summary><div>
 
 - IBM z/OS
 - DB2

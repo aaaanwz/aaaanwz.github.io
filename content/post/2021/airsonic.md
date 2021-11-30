@@ -45,7 +45,7 @@ UIは使いづらく、バックグラウンド再生できず、ロードは遅
 まず初めに、Podからホストマシンのストレージを使うためのPersistentVolume(PV)とPersistentVolumeClaim(PVC)を作成します。
 今回は `node1` の `/mnt/hdd` に音楽データとメタデータ(設定、アカウント情報など)を永続化するとします。
 
-<details><summary><font color="blue">pv.yaml👇</font></summary><div>
+<details><summary><font color="blue">pv.yaml▼</font></summary><div>
 
 ```yaml:pv.yaml
 apiVersion: v1
@@ -141,7 +141,7 @@ kind: PersistentVolume
 sambaで一番人気のDocker imageである[dperson/samba](https://hub.docker.com/r/dperson/samba) をデプロイします。
 上で作成したPVCを `/music` にマウントします。
 
-<details><summary><font color="blue">samba-deployment.yaml👇🔽</font></summary><div>
+<details><summary><font color="blue">samba-deployment.yaml▼</font></summary><div>
 
 ```yaml:samba-deployment.yaml
 apiVersion: apps/v1
@@ -210,7 +210,7 @@ $ sudo microk8s.enable metallb:192.168.0.AAA-192.168.0.BBB
 samba Podの139番と445番ポートをローカルIPアドレス192.168.0.YYYとしてクラスタ外に公開します。
 (YYYはMetalLBのアドレスプールの範囲で未使用のアドレスを設定します)
 
-<details><summary><font color="blue">samba-svc.yaml👇</font></summary><div>
+<details><summary><font color="blue">samba-svc.yaml▼</font></summary><div>
 
 ```yaml:samba-svc.yaml
 apiVersion: v1
@@ -263,7 +263,7 @@ sanbaでも用いた music PVCを `/music` にマウントします。
 > Airsonicは内蔵DB(HSQLDB)だけでなくPostgresやMySQLなどの外部DBにも対応しています。
 外部DBをStatefulSetとしてk8s上に構築すればAirsonicをstatelessにできて良さそうですが、[パフォーマンスに問題を抱えている](https://github.com/airsonic/airsonic/issues/1340)ため今回は見送りました。
 
-<details><summary><font color="blue">airsonic-deployment.yaml👇</font></summary><div>
+<details><summary><font color="blue">airsonic-deployment.yaml▼</font></summary><div>
 
 ```yaml:airsonic-deployment.yaml
 apiVersion: apps/v1
@@ -323,7 +323,7 @@ spec:
 
 Sambaとは異なりServiceをクラスタ外に公開する必要は無いため、[Headless Service](https://kubernetes.io/ja/docs/concepts/services-networking/service/#headless-service)として実装します。
 
-<details><summary><font color="blue">airsonic-svc.yaml👇</font></summary><div>
+<details><summary><font color="blue">airsonic-svc.yaml▼</font></summary><div>
 
 ```yaml:airsonic-svc.yaml
 apiVersion: v1
@@ -355,7 +355,7 @@ AirsonicはWebアプリケーションのため、L7ロードバランサーに�
 クラスターエンドポイントIPへのhttpアクセスをairsonicのServiceに転送する設定でIngressをデプロイします。
 https化は次のステップで実施します。
 
-<details><summary><font color="blue">airsonic-ingress-http.yaml👇</font></summary><div>
+<details><summary><font color="blue">airsonic-ingress-http.yaml▼</font></summary><div>
 
 ```yaml:airsonic-ingress-http.yaml
 apiVersion: networking.k8s.io/v1
@@ -424,7 +424,7 @@ Let's Encryptの本番環境で試行錯誤しているとレート制限に引�
 `spec.acme.solvers.http01.ingress.class` の値は環境に応じて設定してください。
 
 
-<details><summary><font color="blue">issuer.yaml👇</font></summary><div>
+<details><summary><font color="blue">issuer.yaml▼</font></summary><div>
 
 ```yaml:issuer.yaml
 apiVersion: cert-manager.io/v1
@@ -469,7 +469,7 @@ $ kubectl delete ingress airsonic-http
 $ kubectl create -f airsonic-ingress.yaml
 ```
 
-<details><summary><font color="blue">airsonic-ingress.yaml👇</font></summary><div>
+<details><summary><font color="blue">airsonic-ingress.yaml▼</font></summary><div>
 
 ```yaml:airsonic-ingress.yaml
 apiVersion: networking.k8s.io/v1

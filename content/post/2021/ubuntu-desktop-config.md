@@ -48,16 +48,17 @@ XDG_VIDEOS_DIR="$HOME/Videos"
 
 ## デスクトップとファイルマネージャの間でファイルの移動ができるようにする
 
-### 元々のDesktop Iconsを無効化
-デスクトップを右クリック -> 設定
-- デスクトップにホームフォルダーを表示する
-- デスクトップにゴミ箱を表示する
-をオフにする
-
-> Gnome tweaksからも設定可能
-
 ### GNOME拡張のDesktop Icons NG (DING)をインストール
 https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/
+
+### 元々のDesktop Iconsを無効化
+デスクトップアイコンが二重に表示されるので、元々の機能を無効化する
+
+```sh
+$ sudo apt install gnome-shell-extension-prefs
+```
+
+メニュー > 拡張機能 でDesktop Iconsをオフにする
 
 ## Docker
 

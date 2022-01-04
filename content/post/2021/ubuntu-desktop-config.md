@@ -8,6 +8,12 @@ categories:
 
 M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktop 20.04にしました。  
 
+## GPUドライバのインストール
+
+```sh
+$ sudo ubuntu-drivers autoinstall
+```
+
 ## IME切り替えショートカットを `Ctrl + Space` に設定
 
 - 設定 > 地域と言語 > 入力ソース で入力ソースを `日本語(Mozc)` のみにする

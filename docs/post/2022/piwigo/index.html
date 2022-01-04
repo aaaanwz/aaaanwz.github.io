@@ -1,0 +1,123 @@
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Kubernetesに写真サーバーを構築する - A4 tech note</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="aaaanwz"><meta name=description content="2021年6月1日からGoogle Photoの容量が無制限ではなくなり、無料枠は15GBに制限されてしまいました。 完全に音楽サーバーを構築し"><meta name=keywords content="aaaanwz,データエンジニア,テックブログ"><meta name=generator content="Hugo 0.68.3 with theme even"><link rel=canonical href=https://aaaanwz.github.io/post/2022/piwigo/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Kubernetesに写真サーバーを構築する"><meta property="og:description" content="2021年6月1日からGoogle Photoの容量が無制限ではなくなり、無料枠は15GBに制限されてしまいました。 完全に音楽サーバーを構築し"><meta property="og:type" content="article"><meta property="og:url" content="https://aaaanwz.github.io/post/2022/piwigo/"><meta property="article:published_time" content="2022-01-04T00:00:00+00:00"><meta property="article:modified_time" content="2022-01-05T03:59:21+09:00"><meta itemprop=name content="Kubernetesに写真サーバーを構築する"><meta itemprop=description content="2021年6月1日からGoogle Photoの容量が無制限ではなくなり、無料枠は15GBに制限されてしまいました。 完全に音楽サーバーを構築し"><meta itemprop=datePublished content="2022-01-04T00:00:00+00:00"><meta itemprop=dateModified content="2022-01-05T03:59:21+09:00"><meta itemprop=wordCount content="855"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Kubernetesに写真サーバーを構築する"><meta name=twitter:description content="2021年6月1日からGoogle Photoの容量が無制限ではなくなり、無料枠は15GBに制限されてしまいました。 完全に音楽サーバーを構築し"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>A4 tech note</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Blog</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/author><li class=mobile-menu-item>Author</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>A4 tech note</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Blog</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/author>Author</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Kubernetesに写真サーバーを構築する</h1><div class=post-meta><span class=post-time>2022-01-04</span><div class=post-category><a href=/categories/kubernetes/>kubernetes</a>
+<a href=/categories/%E8%87%AA%E5%AE%85%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC/>自宅サーバー</a></div><span class=more-meta>855 文字</span>
+<span class=more-meta>読了時間: 2 分</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>コンテンツ</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#デプロイ>デプロイ</a></li><li><a href=#写真の追加>写真の追加</a></li><li><a href=#プラグイン>プラグイン</a></li></ul></li></ul></nav></div></div><div class=post-content><p>2021年6月1日からGoogle Photoの容量が無制限ではなくなり、無料枠は15GBに制限されてしまいました。<br>完全に<a href=https://aaaanwz.github.io/post/2021/airsonic/>音楽サーバーを構築した話</a>の二番煎じですが、自宅k8sに写真サーバーを構築してそちらに移行する事にしました。</p><h2 id=デプロイ>デプロイ</h2><p>self-hostedな写真サーバーで最もメジャーなプロダクトは<a href=https://piwigo.org/>Piwigo</a>の模様。<br>サクっとyamlを書いてデプロイします。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-yaml data-lang=yaml><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>apps/v1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Deployment<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w></span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>replicas</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span><span class=w>  </span><span class=k>selector</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>matchLabels</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=k>app</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w>  </span><span class=k>template</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=k>labels</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=k>app</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w>    </span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=k>containers</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w>          </span><span class=k>image</span><span class=p>:</span><span class=w> </span>lscr.io/linuxserver/piwigo<span class=w>
+</span><span class=w>          </span><span class=k>env</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>TZ<span class=w>
+</span><span class=w>            </span><span class=k>value</span><span class=p>:</span><span class=w> </span>Asia/Tokyo<span class=w>
+</span><span class=w>          </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>PUID<span class=w>
+</span><span class=w>            </span><span class=k>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1000&#34;</span><span class=w>
+</span><span class=w>          </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>PGID<span class=w>
+</span><span class=w>            </span><span class=k>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1000&#34;</span><span class=w>
+</span><span class=w>          </span><span class=k>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span>- <span class=k>containerPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span><span class=w>              </span><span class=k>protocol</span><span class=p>:</span><span class=w> </span>TCP<span class=w>
+</span><span class=w>          </span><span class=k>livenessProbe</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span><span class=k>httpGet</span><span class=p>:</span><span class=w>
+</span><span class=w>              </span><span class=k>path</span><span class=p>:</span><span class=w> </span>/<span class=w>
+</span><span class=w>              </span><span class=k>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span><span class=w>          </span><span class=k>volumeMounts</span><span class=p>:</span><span class=w>
+</span><span class=w>          </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>myvolume<span class=w>
+</span><span class=w>            </span><span class=k>subPath</span><span class=p>:</span><span class=w> </span>piwigo/config<span class=w>
+</span><span class=w>            </span><span class=k>mountPath</span><span class=p>:</span><span class=w> </span>/config<span class=w>
+</span><span class=w>          </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>myvolume<span class=w>
+</span><span class=w>            </span><span class=k>subPath</span><span class=p>:</span><span class=w> </span>piwigo/gallery<span class=w>
+</span><span class=w>            </span><span class=k>mountPath</span><span class=p>:</span><span class=w> </span>/gallery<span class=w>
+</span><span class=w>      </span><span class=k>volumes</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>myvolume<span class=w>
+</span><span class=w>          </span><span class=k>persistentVolumeClaim</span><span class=p>:</span><span class=w>
+</span><span class=w>            </span><span class=k>claimName</span><span class=p>:</span><span class=w> </span>myvolume<span class=w>
+</span><span class=w></span>---<span class=w>
+</span><span class=w></span><span class=k>apiVersion</span><span class=p>:</span><span class=w> </span>v1<span class=w>
+</span><span class=w></span><span class=k>kind</span><span class=p>:</span><span class=w> </span>Service<span class=w>
+</span><span class=w></span><span class=k>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>name</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w>  </span><span class=k>namespace</span><span class=p>:</span><span class=w> </span>default<span class=w>
+</span><span class=w></span><span class=k>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=k>ports</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=k>name</span><span class=p>:</span><span class=w> </span>http<span class=w>
+</span><span class=w>      </span><span class=k>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span><span class=w>      </span><span class=k>protocol</span><span class=p>:</span><span class=w> </span>TCP<span class=w>
+</span><span class=w>  </span><span class=k>selector</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=k>app</span><span class=p>:</span><span class=w> </span>piwigo<span class=w>
+</span><span class=w>  </span><span class=k>clusterIP</span><span class=p>:</span><span class=w> </span>None<span class=w>
+</span></code></pre></td></tr></table></div></div><p>別途MySQLも必要なので、<a href=https://kubernetes.io/ja/docs/tasks/run-application/run-replicated-stateful-application/#mysql%E3%82%92%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B>Kubernetes公式ドキュメントのサンプルコード</a>あたりを参考にしてデプロイしておきます。</p><h2 id=写真の追加>写真の追加</h2><p>画像データをmyvolumeの <code>piwigo/gallery/galleries/{アルバム名}/{サブアルバム名}...</code> 以下に追加し、Web UIのAdminメニューから <code>Synchronize</code>を実行すればアルバムが自動で作成されます。</p><p>この際、Simulationというdry-run的な機能が用意されており便利です。ファイル名にはスペースや全角文字が使えない等の制約がありますが、<a href="https://piwigo.org/ext/extension_view.php?eid=902">Presync AutoRename</a>というプラグインを使うとある程度は自動でリネームできて便利です。</p><p>もしくは以下のワンライナーでもOK。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>$ find . -name <span class=s2>&#34;*{置換したい文字列}*&#34;</span> <span class=p>|</span> rename <span class=s1>&#39;s/{置換したい文字列}/{置換先文字列}/g&#39;</span>
+</code></pre></td></tr></table></div></div><h2 id=プラグイン>プラグイン</h2><p>画像を表示する際にデフォルトでは解像度がかなり落とされるので、<a href="https://piwigo.org/ext/extension_view.php?eid=702">Automatic Size</a>プラグインを導入しました。</p><blockquote><p>他に良さげなプラグインがあれば随時追記予定</p></blockquote><hr><p>モバイルアプリもあり、Google Photoからの移行はスムーズに完了しました。<br>スマホからの自動同期が無い点だけが不満ですが、容量を気にせず突っ込めるメリットは大きいです。</p><p>クラウドサービスからオンプレへの回帰が進み、自宅サーバーがどんどんミッションクリティカルになってきた&mldr;</p><a href="http://twitter.com/intent/tweet?url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2022%2fpiwigo%2f&text=Kubernetes%e3%81%ab%e5%86%99%e7%9c%9f%e3%82%b5%e3%83%bc%e3%83%90%e3%83%bc%e3%82%92%e6%a7%8b%e7%af%89%e3%81%99%e3%82%8b" class=twitter-share-button>Tweet</a>
+<script async src=https://platform.twitter.com/widgets.js></script><a href="http://b.hatena.ne.jp/add?mode=confirm&url=https%3a%2f%2faaaanwz.github.io%2fpost%2f2022%2fpiwigo%2f&title=Kubernetes%e3%81%ab%e5%86%99%e7%9c%9f%e3%82%b5%e3%83%bc%e3%83%90%e3%83%bc%e3%82%92%e6%a7%8b%e7%af%89%e3%81%99%e3%82%8b" class=hatena-bookmark-button data-hatena-bookmark-layout=basic-label data-hatena-bookmark-lang=ja title=このエントリーをはてなブックマークに追加><img src=https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png alt=このエントリーをはてなブックマークに追加 width=20 height=20 style=border:none></a><script type=text/javascript src=https://b.st-hatena.com/js/bookmark_button.js async></script></div><footer class=post-footer><nav class=post-nav><a class=next href=/post/2021/airsonic/><span class="next-text nav-default">おうちKubernetesに音楽ストリーミングサーバー(兼ファイルサーバー)を構築する</span>
+<span class="next-text nav-mobile">次の記事へ</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=aaaanwz/aaaanwz.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://twitter.com/aaaanwz class="iconfont icon-twitter" title=twitter></a><a href=https://github.com/aaaanwz class="iconfont icon-github" title=github></a><a href=https://aaaanwz.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=copyright-year>&copy;
+2019 -
+2022<span> @aaaanwz コンテンツを引用される際は当ブログのURLを併記してください</span></span>
+<img src=https://github.com/aaaanwz/aaaanwz.github.io/actions/workflows/hugo.yml/badge.svg></img></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script type=text/javascript src=/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js></script></body></html>

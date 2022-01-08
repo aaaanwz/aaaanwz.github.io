@@ -1,0 +1,116 @@
+publishDir: docs
+baseURL: "https://aaaanwz.github.io/"
+languageCode: ja
+title: "A4 tech note"
+theme: PaperMod
+
+enableInlineShortCodes: true
+enableEmoji: true
+
+googleAnalytics: "G-CWBPGKYRHB"
+enableRobotsTXT: true
+minify:
+    disableXML: true
+    # minifyOutput: true
+
+menu:
+    main:
+        - name: Categories
+          url: categories/
+          weight: 1
+        - name: Archive
+          url: archives
+          weight: 2
+        - name: Portfolio
+          url: portfolio/
+          weight: 3
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON
+
+params:
+    env: production
+    description: ""
+    defaultTheme: auto
+    disableThemeToggle: true
+    ShowShareButtons: false
+    ShowReadingTime: false
+    disableSpecial1stPost: true
+    displayFullLangName: true
+    ShowPostNavLinks: true
+    ShowBreadCrumbs: false
+    ShowCodeCopyButtons: true
+    ShowToc: true
+    TocOpen: true
+    comments: true
+
+    profileMode:
+        enabled: false
+
+    homeInfoParams:
+        Content: |
+          author: aaaanwz
+          [![gravatar](https://www.gravatar.com/avatar/b215de5931a59ca93dd9420d0bf3e65e?s=200)](/portfolio)
+    socialIcons:
+        - name: github
+          url: "https://github.com/aaaanwz"
+        - name: twitter
+          url: "https://twitter.com/aaaanwz"
+        - name: linkedin
+          url: "https://www.linkedin.com/in/takao-anazawa-b41a821aa/"
+        - name: RSS
+          url: "index.xml"
+
+    # editPost:
+    #     URL: "https://github.com/aaaanwz/aaaanwz.github.io/tree/main/content"
+    #     Text: "Suggest Changes"
+    #     appendFilePath: true
+
+    # label:
+    #     text: "Home"
+    #     icon: icon.png
+    #     iconHeight: 35
+
+    # analytics:
+    #     google:
+    #         SiteVerificationTag: 
+
+    # assets:
+    #     favicon: "<link / abs url>"
+    #     favicon16x16: "<link / abs url>"
+    #     favicon32x32: "<link / abs url>"
+    #     apple_touch_icon: "<link / abs url>"
+    #     safari_pinned_tab: "<link / abs url>"
+
+    # cover:
+    #     hidden: true # hide everywhere but not in structured data
+    #     hiddenInList: true # hide on list pages and home
+    #     hiddenInSingle: true # hide on single page
+
+    fuseOpts:
+        isCaseSensitive: false
+        shouldSort: true
+        location: 0
+        distance: 1000
+        threshold: 0.4
+        minMatchCharLength: 0
+        keys: ["title", "permalink", "summary", "content"]
+
+taxonomies:
+    category: categories
+    #tag: tags
+    #series: series
+
+markup:
+    goldmark:
+        renderer:
+            unsafe: true
+    highlight:
+        # anchorLineNos: true
+        codeFences: true
+        guessSyntax: true
+        lineNos: true
+        # noClasses: false
+        style: monokai

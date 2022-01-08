@@ -14,6 +14,8 @@ categories:
 self-hostedな写真サーバーで最もメジャーなプロダクトは[Piwigo](https://piwigo.org/)の模様。  
 サクっとyamlを書いてデプロイします。
 
+<div class="toc"><details><summary accesskey="c">deployment.yaml</summary>
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -72,6 +74,8 @@ spec:
     app: piwigo
   clusterIP: None
 ```
+
+</details></div>
 
 別途MySQLも必要なので、[Kubernetes公式ドキュメントのサンプルコード](https://kubernetes.io/ja/docs/tasks/run-application/run-replicated-stateful-application/#mysql%E3%82%92%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B)あたりを参考にしてデプロイしておきます。
 

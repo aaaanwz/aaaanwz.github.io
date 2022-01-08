@@ -45,7 +45,7 @@ UIは使いづらく、バックグラウンド再生できず、ロードは遅
 まず初めに、Podからホストマシンのストレージを使うためのPersistentVolume(PV)とPersistentVolumeClaim(PVC)を作成します。
 今回は `node1` の `/mnt/hdd` に音楽データとメタデータ(設定、アカウント情報など)を永続化するとします。
 
-<details><summary><font color="blue">pv.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">pv.yaml</summary>
 
 ```yaml:pv.yaml
 apiVersion: v1
@@ -112,7 +112,7 @@ spec:
 
 ```
 
-</div></details>
+</details></div>
 
 サンプルコードでは [local volume](https://kubernetes.io/docs/concepts/storage/volumes/#local) にしているため、この後にデプロイするAirsonicとsambaはnodeAffinityによって `node1` にスケジューリングされる事になります。
 物理ストレージが接続されているノードとは別のノードでPodを稼働させたい場合は[nfs volume](https://kubernetes.io/docs/concepts/storage/volumes/#nfs)にすればOKです。
@@ -141,7 +141,7 @@ kind: PersistentVolume
 sambaで一番人気のDocker imageである[dperson/samba](https://hub.docker.com/r/dperson/samba) をデプロイします。
 上で作成したPVCを `/music` にマウントします。
 
-<details><summary><font color="blue">samba-deployment.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">samba-deployment.yaml</summary>
 
 ```yaml:samba-deployment.yaml
 apiVersion: apps/v1
@@ -187,7 +187,7 @@ spec:
           persistentVolumeClaim:
             claimName: music
 ```
-</div></details>
+</details></div>
 <br>
 
 ### MetalLB
@@ -210,7 +210,7 @@ $ sudo microk8s.enable metallb:192.168.0.AAA-192.168.0.BBB
 samba Podの139番と445番ポートをローカルIPアドレス192.168.0.YYYとしてクラスタ外に公開します。
 (YYYはMetalLBのアドレスプールの範囲で未使用のアドレスを設定します)
 
-<details><summary><font color="blue">samba-svc.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">samba-svc.yaml</summary>
 
 ```yaml:samba-svc.yaml
 apiVersion: v1
@@ -231,7 +231,7 @@ spec:
       port: 445
       targetPort: 445
 ```
-</div></details>
+</details></div>
 
 EXTERNAL-IPが割り当てられている事を確認します。
 
@@ -263,7 +263,7 @@ sanbaでも用いた music PVCを `/music` にマウントします。
 > Airsonicは内蔵DB(HSQLDB)だけでなくPostgresやMySQLなどの外部DBにも対応しています。
 外部DBをStatefulSetとしてk8s上に構築すればAirsonicをstatelessにできて良さそうですが、[パフォーマンスに問題を抱えている](https://github.com/airsonic/airsonic/issues/1340)ため今回は見送りました。
 
-<details><summary><font color="blue">airsonic-deployment.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">airsonic-deployment.yaml</summary>
 
 ```yaml:airsonic-deployment.yaml
 apiVersion: apps/v1
@@ -317,13 +317,13 @@ spec:
             claimName: config
 ```
 
-</div></details>
+</details></div>
 
 ### Service
 
 Sambaとは異なりServiceをクラスタ外に公開する必要は無いため、[Headless Service](https://kubernetes.io/ja/docs/concepts/services-networking/service/#headless-service)として実装します。
 
-<details><summary><font color="blue">airsonic-svc.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">airsonic-svc.yaml</summary>
 
 ```yaml:airsonic-svc.yaml
 apiVersion: v1
@@ -341,7 +341,7 @@ spec:
       port: 4040
       protocol: TCP
 ```
-</div></details>
+</details></div>
 
 ### Nginx Ingress Controller
 
@@ -355,7 +355,7 @@ AirsonicはWebアプリケーションのため、L7ロードバランサーに�
 クラスターエンドポイントIPへのhttpアクセスをairsonicのServiceに転送する設定でIngressをデプロイします。
 https化は次のステップで実施します。
 
-<details><summary><font color="blue">airsonic-ingress-http.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">airsonic-ingress-http.yaml</summary>
 
 ```yaml:airsonic-ingress-http.yaml
 apiVersion: networking.k8s.io/v1
@@ -376,7 +376,7 @@ spec:
               number: 4040
 ```
 
-</div></details>
+</details></div>
 
 
 ```sh
@@ -424,7 +424,7 @@ Let's Encryptの本番環境で試行錯誤しているとレート制限に引�
 `spec.acme.solvers.http01.ingress.class` の値は環境に応じて設定してください。
 
 
-<details><summary><font color="blue">issuer.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">issuer.yaml</summary>
 
 ```yaml:issuer.yaml
 apiVersion: cert-manager.io/v1
@@ -458,7 +458,7 @@ spec:
           class: public # UPDATE HERE
 ```
 
-</div></details>
+</details></div>
 
 ### Ingressを更新
 
@@ -469,7 +469,7 @@ $ kubectl delete ingress airsonic-http
 $ kubectl create -f airsonic-ingress.yaml
 ```
 
-<details><summary><font color="blue">airsonic-ingress.yaml▼</font></summary><div>
+<div class="toc"><details><summary accesskey="c">airsonic-ingress.yaml</summary>
 
 ```yaml:airsonic-ingress.yaml
 apiVersion: networking.k8s.io/v1
@@ -497,7 +497,7 @@ spec:
               number: 4040
 ```
 
-</div></details>
+</details></div>
 
 Ingressを作成すると証明書リクエストが実施されます。リクエストは CertificateRequest としてk8sリソースになっています。
 

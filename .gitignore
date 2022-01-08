@@ -1,6 +1,4 @@
 docs
-go.mod
-go.sum
 resources/_gen
 !.github
 !.devcontainer

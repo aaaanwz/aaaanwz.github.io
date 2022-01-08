@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: https://aaaanwz.github.io/sitemap.xml

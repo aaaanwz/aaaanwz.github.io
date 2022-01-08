@@ -1,0 +1,169 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Posts | A4 tech note</title>
+<meta name=keywords content>
+<meta name=description content="Posts - A4 tech note">
+<meta name=author content>
+<link rel=canonical href=https://aaaanwz.github.io/post/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<link rel=icon href=https://aaaanwz.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://aaaanwz.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://aaaanwz.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://aaaanwz.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://aaaanwz.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.91.2">
+<link rel=alternate type=application/rss+xml href=https://aaaanwz.github.io/post/index.xml>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CWBPGKYRHB"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-CWBPGKYRHB',{anonymize_ip:!1})}</script>
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aaaanwz.github.io/post/">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://aaaanwz.github.io/post/"}]}</script>
+</head>
+<body class=list id=top>
+<script>window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://aaaanwz.github.io/ accesskey=h title="A4 tech note (Alt + H)">A4 tech note</a>
+<span class=logo-switches>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://aaaanwz.github.io/categories/ title=Categories>
+<span>Categories</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/archives title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/portfolio/ title=Portfolio>
+<span>Portfolio</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<header class=page-header>
+<h1>Posts</h1>
+</header>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Kubernetes Liveness ProbeでJavaプロセスを監視する
+</h2>
+</header>
+<section class=entry-content>
+<p>Javaプロセスを一定時間毎にチェックし、ハングしていればPodを再起動する仕組みの備忘録です。
+Kubernetes LivenessProbeに関する詳細はこちらをご参照ください。
+Java実装 監視対象クラス テスト用に、インスタンスが生成されてから10秒後に isAlive() == falseになるように実装します。
+1 2 3 4 5 6 7 8 9 10 public class SomeResource { final long createdTime; public SomeResource() { this.createdTime = System.currentTimeMillis(); } public boolean isAlive() { return System.currentTimeMillis() - createdTime &lt; 10000; } } 監視用エンドポイント SomeResource#isAlive() == trueの時はレスポンスコード 200, falseの時は 500を返すように実装します。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 import com....</p>
+</section>
+<footer class=entry-footer><span title="2019-07-02 00:00:00 +0000 UTC">July 2, 2019</span></footer>
+<a class=entry-link aria-label="post link to Kubernetes Liveness ProbeでJavaプロセスを監視する" href=https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Javaで文字コードを推測する
+</h2>
+</header>
+<section class=entry-content>
+<p>juniversalchardetを使用して、
+ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする の2つのサンプルプログラムを作成してみます。
+juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。
+開発環境 OpenJDK 11 Maven 3.6 下準備 以下をmaven dependenciesに追加します
+1 2 3 4 5 &lt;dependency> &lt;groupId>com.googlecode.juniversalchardet&lt;/groupId> &lt;artifactId>juniversalchardet&lt;/artifactId> &lt;version>1.0.3&lt;/version> &lt;/dependency> サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 import java....</p>
+</section>
+<footer class=entry-footer><span title="2019-06-27 00:00:00 +0000 UTC">June 27, 2019</span></footer>
+<a class=entry-link aria-label="post link to Javaで文字コードを推測する" href=https://aaaanwz.github.io/post/2019/juniversalchardet/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)
+</h2>
+</header>
+<section class=entry-content>
+<p>Kafka Streams DSLのうち、ステートフルな操作(join,reduce,aggregate,windowingなど)を実際に触り、動作を確認します。
+また最後に、本稿と前回で登場した関数を使用してステートフルなストリームFizzBuzzを実装してみます。
+実際にやってみる 前々回の記事(準備編)のプロジェクトが作成済みである事を前提とします。
+KTable まずはじめに、KTable,KGroupedStreamについて知っておく必要があります。 KGroupedStreamはkeyの値毎にグループ化されたKStreamで、KTableはkeyとvalueの最新状態を保持するテーブルとして扱えるものです。
+KTableはnew StreamsBuilder().table("topic-name")...のように直接トピックから生成したり、KGroupedStreamを集約して生成したりと様々なルートで生成することができます。
+公式ドキュメントの以下の図が非常に分かりやすいです。
+画像リンク元ページ
+Aggregate KGroupedStreamをkeyごとに集約し、KTableに変換します。 コードと実行結果を見るのが一番早いと思います。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 private static Initializer&lt;String> initializer = () -> "InitVal"; private static Aggregator&lt;String, String, String> aggregator = (key, val, agg) -> agg + " & " + val; public static Topology getTopology() { StreamsBuilder builder = new StreamsBuilder(); builder ....</p>
+</section>
+<footer class=entry-footer><span title="2019-06-07 00:00:00 +0000 UTC">June 7, 2019</span></footer>
+<a class=entry-link aria-label="post link to Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)" href=https://aaaanwz.github.io/post/2019/kafkastreams-3/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Kafka Streams DSLを一通り体験する (2. ステートレス処理実践編)
+</h2>
+</header>
+<section class=entry-content>
+<p>Kafka Streams DSLのうち、ステートレスな操作(branch,map,mergeなど)を実際に触り、動作を確認します。 また最後に、本稿で登場する関数を使用してストリーム処理のFizzBuzzを実装してみます。
+前回の記事(準備編)のプロジェクトが作成済みである事を前提とします。
+実際にやってみる Filter Java StreamのByPredicateと同じと思って差し支えありません。Java StreamのPredicateと紛らわしいのでimport対象に注意しましょう。
+key, valueを引数にbooleanを返し、falseの場合はレコードが除外されます。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 import org.apache.kafka.streams.kstream.Predicate; ... private static Predicate&lt;String, String> predicate = (key, value) -> value.startsWith("あ"); public static Topology getTopology() { StreamsBuilder builder = new StreamsBuilder(); builder .stream("input-topic", Consumed.with(Serdes.String(), Serdes.String())) //使用するデシリアライザにStringを明示指定します .filter(predicate) .to("output-topic"); return builder.build(); } ここでConsumed.with(...)が新たに登場しました。Predicateの引数がString型なので、デシリアライザも明示指定する必要があるためです。
+また.filter((key, value)-> value.startsWith("あ"))のように直接ラムダ式を記述することももちろん可能です。
+さて、テストを実行してみましょう。
+1 2 3 4 5 6 7 @Test void test() { inputRecord("input-topic", "key1", "あけまして"); System....</p>
+</section>
+<footer class=entry-footer><span title="2019-06-05 00:00:00 +0000 UTC">June 5, 2019</span></footer>
+<a class=entry-link aria-label="post link to Kafka Streams DSLを一通り体験する (2. ステートレス処理実践編)" href=https://aaaanwz.github.io/post/2019/kafkastreams-2/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>Kafka Streams DSLを一通り体験する(1. 準備編)
+</h2>
+</header>
+<section class=entry-content>
+<p>Kafka Streamsを使ってステートフルなストリーム処理を実装したいと思い立ったものの、Kafka Streams Developer guideを読んでもいまいちよくわからなかったため、自分で一通り試してみました。
+この記事ではAggregate Reduce Join Windowingなど、Kafka Streams DSLでできる事を順番にテストし、挙動を確認していきます。また、kafka-streams-test-utilsを用いたJUnitの実装についても解説します。
+開発環境 OpenJDK 11 Maven 3.6 Kafka 2.1.1 下準備 プロジェクトの作成 以下の依存関係を追加します
+kafka-streams kafka-streams-test-utils junit-jupiter-api junit-jupiter-engine maven-surefire-plugin 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 &lt;project xmlns="http://maven....</p>
+</section>
+<footer class=entry-footer><span title="2019-06-04 00:00:00 +0000 UTC">June 4, 2019</span></footer>
+<a class=entry-link aria-label="post link to Kafka Streams DSLを一通り体験する(1. 準備編)" href=https://aaaanwz.github.io/post/2019/kafkastreams-1/></a>
+</article>
+<footer class=page-footer>
+<nav class=pagination>
+<a class=prev href=https://aaaanwz.github.io/post/page/2/>« Prev Page</a>
+</nav>
+</footer>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://aaaanwz.github.io/>A4 tech note</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+</body>
+</html>

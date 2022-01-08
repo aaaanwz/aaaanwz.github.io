@@ -1,0 +1,150 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする | A4 tech note</title>
+<meta name=keywords content>
+<meta name=description content=" ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - &#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp&#34; - run: GIT_SSH_COMMAND=&#34;ssh -o StrictHostKeyChecking=no&#34; git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository   ">
+<meta name=author content>
+<link rel=canonical href=https://aaaanwz.github.io/post/2019/circleci-deploy-key/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://aaaanwz.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://aaaanwz.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://aaaanwz.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://aaaanwz.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://aaaanwz.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.91.2">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CWBPGKYRHB"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-CWBPGKYRHB',{anonymize_ip:!1})}</script>
+<meta property="og:title" content="CircleCIでDeploy Keyを用いて別のprivate repoをcloneする">
+<meta property="og:description" content=" ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - &#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp&#34; - run: GIT_SSH_COMMAND=&#34;ssh -o StrictHostKeyChecking=no&#34; git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository   ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aaaanwz.github.io/post/2019/circleci-deploy-key/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2019-11-28T00:00:00+00:00">
+<meta property="article:modified_time" content="2019-11-28T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="CircleCIでDeploy Keyを用いて別のprivate repoをcloneする">
+<meta name=twitter:description content=" ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - &#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp&#34; - run: GIT_SSH_COMMAND=&#34;ssh -o StrictHostKeyChecking=no&#34; git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository   ">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://aaaanwz.github.io/post/"},{"@type":"ListItem","position":2,"name":"CircleCIでDeploy Keyを用いて別のprivate repoをcloneする","item":"https://aaaanwz.github.io/post/2019/circleci-deploy-key/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"CircleCIでDeploy Keyを用いて別のprivate repoをcloneする","name":"CircleCIでDeploy Keyを用いて別のprivate repoをcloneする","description":" ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - \u0026#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp\u0026#34; - run: GIT_SSH_COMMAND=\u0026#34;ssh -o StrictHostKeyChecking=no\u0026#34; git clone git@github.com:aaaanwz/another-repository.git - run: echo \u0026#39;Do something\u0026#39; workflows: test: jobs: - do-something-with-another-repository   ","keywords":[],"articleBody":" ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - \"aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp\" - run: GIT_SSH_COMMAND=\"ssh -o StrictHostKeyChecking=no\" git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository   ","wordCount":"52","inLanguage":"en","datePublished":"2019-11-28T00:00:00Z","dateModified":"2019-11-28T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://aaaanwz.github.io/post/2019/circleci-deploy-key/"},"publisher":{"@type":"Organization","name":"A4 tech note","logo":{"@type":"ImageObject","url":"https://aaaanwz.github.io/favicon.ico"}}}</script>
+</head>
+<body id=top>
+<script>window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://aaaanwz.github.io/ accesskey=h title="A4 tech note (Alt + H)">A4 tech note</a>
+<span class=logo-switches>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://aaaanwz.github.io/categories/ title=Categories>
+<span>Categories</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/archives title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/portfolio/ title=Portfolio>
+<span>Portfolio</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<h1 class=post-title>
+CircleCIでDeploy Keyを用いて別のprivate repoをcloneする
+</h1>
+<div class=post-meta><span title="2019-11-28 00:00:00 +0000 UTC">November 28, 2019</span>
+</div>
+</header>
+<div class=post-content><ol>
+<li><code>ssh-keygen</code>コマンドで公開鍵/秘密鍵を生成する</li>
+<li><a href=https://developer.github.com/v3/guides/managing-deploy-keys/>公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する</a></li>
+<li><a href=https://circleci.com/docs/2.0/add-ssh-key/>秘密鍵(id_rsa)をCircleCIに登録する</a></li>
+<li>3.のfingerprintを↓にコピー</li>
+</ol>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-some-repo/.circleci/config.yml data-lang=some-repo/.circleci/config.yml><span style=color:#f92672>version</span>: <span style=color:#ae81ff>2.1</span>
+<span style=color:#f92672>jobs</span>:
+  <span style=color:#f92672>do-something-with-another-repository</span>:
+    <span style=color:#f92672>docker</span>:
+      - <span style=color:#f92672>image</span>: <span style=color:#ae81ff>circleci/golang:1.11-stretch</span>
+    <span style=color:#f92672>steps</span>:
+      - <span style=color:#f92672>add_ssh_keys</span>:
+          <span style=color:#f92672>fingerprints</span>:
+            - <span style=color:#e6db74>&#34;aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp&#34;</span>
+      - <span style=color:#f92672>run</span>: <span style=color:#ae81ff>GIT_SSH_COMMAND=&#34;ssh -o StrictHostKeyChecking=no&#34; git clone git@github.com:aaaanwz/another-repository.git</span>
+      - <span style=color:#f92672>run</span>: <span style=color:#ae81ff>echo &#39;Do something&#39;</span>
+<span style=color:#f92672>workflows</span>:
+  <span style=color:#f92672>test</span>:
+    <span style=color:#f92672>jobs</span>:
+      - <span style=color:#ae81ff>do-something-with-another-repository</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://aaaanwz.github.io/post/2020/apache-beam-example/>
+<span class=title>« Prev Page</span>
+<br>
+<span>Apache beam サンプルコード</span>
+</a>
+<a class=next href=https://aaaanwz.github.io/post/2019/github-actions-lambda-deploy/>
+<span class=title>Next Page »</span>
+<br>
+<span>Github ActionsでAWS Lambdaにデプロイする</span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://aaaanwz.github.io/>A4 tech note</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Javaで文字コードを推測する | A4 tech note</title>
+<meta name=keywords content>
+<meta name=description content="juniversalchardetを使用して、
+ ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。
+juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。
+開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します
+1 2 3 4 5  <dependency> <groupId>com.googlecode.juniversalchardet</groupId> <artifactId>juniversalchardet</artifactId> <version>1.0.3</version> </dependency>   サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.">
+<meta name=author content>
+<link rel=canonical href=https://aaaanwz.github.io/post/2019/juniversalchardet/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://aaaanwz.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://aaaanwz.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://aaaanwz.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://aaaanwz.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://aaaanwz.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.91.2">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CWBPGKYRHB"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-CWBPGKYRHB',{anonymize_ip:!1})}</script>
+<meta property="og:title" content="Javaで文字コードを推測する">
+<meta property="og:description" content="juniversalchardetを使用して、
+ ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。
+juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。
+開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します
+1 2 3 4 5  <dependency> <groupId>com.googlecode.juniversalchardet</groupId> <artifactId>juniversalchardet</artifactId> <version>1.0.3</version> </dependency>   サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aaaanwz.github.io/post/2019/juniversalchardet/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2019-06-27T00:00:00+00:00">
+<meta property="article:modified_time" content="2019-06-27T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Javaで文字コードを推測する">
+<meta name=twitter:description content="juniversalchardetを使用して、
+ ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。
+juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。
+開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します
+1 2 3 4 5  <dependency> <groupId>com.googlecode.juniversalchardet</groupId> <artifactId>juniversalchardet</artifactId> <version>1.0.3</version> </dependency>   サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://aaaanwz.github.io/post/"},{"@type":"ListItem","position":2,"name":"Javaで文字コードを推測する","item":"https://aaaanwz.github.io/post/2019/juniversalchardet/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Javaで文字コードを推測する","name":"Javaで文字コードを推測する","description":"juniversalchardetを使用して、\n ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。\njuniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。\n開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します\n1 2 3 4 5  \u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.googlecode.juniversalchardet\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;juniversalchardet\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.0.3\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt;   サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.","keywords":[],"articleBody":"juniversalchardetを使用して、\n ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。\njuniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。\n開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します\n1 2 3 4 5   com.googlecode.juniversalchardet juniversalchardet 1.0.3    サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.io.IOException; import java.io.InputStream; import java.nio.charset.Charset; import org.mozilla.universalchardet.UniversalDetector; public class Detector { public static Charset getCharsetName(InputStream is) throws IOException { //4kbのメモリバッファを確保する  byte[] buf = new byte[4096]; UniversalDetector detector = new UniversalDetector(null); //文字コードの推測結果が得られるまでInputStreamを読み進める  int nread; while ((nread = is.read(buf))  0 \u0026\u0026 !detector.isDone()) { detector.handleData(buf, 0, nread); } //推測結果を取得する  detector.dataEnd(); final String detectedCharset = detector.getDetectedCharset(); detector.reset(); if (detectedCharset != null) { return Charset.forName(detectedCharset); } //文字コードを取得できなかった場合、環境のデフォルトを使用する  return Charset.forName(System.getProperty(\"file.encoding\")); } }   Mainクラス ファイルの文字コードを判別し、コンソールに出力します。\nFileInputStreamはmark/resetをサポートしていないため、文字コード判別とコンソール出力で別のインスタンスを生成します。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  import java.io.BufferedReader; import java.io.FileInputStream; import java.io.IOException; import java.io.InputStreamReader; import java.nio.charset.Charset; public class Main { public static void main(String[] args) throws IOException { final String path = \"./test.txt\"; Charset cs; try (FileInputStream fis = new FileInputStream(path)) { cs = Detector.getCharsetName(fis); System.out.println(\"charset:\" + cs); } try (BufferedReader br =new BufferedReader(new InputStreamReader(new FileInputStream(path), cs))) { br.lines().forEach(s - System.out.println(s)); } } }   実行例 1 2  charset:SHIFT-JIS あいうえお   サンプル2. URLのデコード 追加でApache commons codecを使用します。\n1 2 3 4 5   commons-codec commons-codec 1.12    Detectorクラス 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  import java.io.IOException; import java.io.InputStream; import java.nio.charset.Charset; import org.mozilla.universalchardet.UniversalDetector; public class Detector { public static Charset getCharsetName(byte[] bytes) { UniversalDetector detector = new UniversalDetector(null); //入力文字列が短すぎると推測ができないため、入力を繰り返す while (!detector.isDone()) { detector.handleData(bytes, 0, bytes.length); detector.dataEnd(); } final String charsetName = detector.getDetectedCharset(); detector.reset(); if (charsetName != null) { return Charset.forName(charsetName); } return Charset.forName(System.getProperty(\"file.encoding\")); } }   Mainクラス 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  import java.io.UnsupportedEncodingException; import java.nio.charset.Charset; import java.nio.charset.StandardCharsets; import org.apache.commons.codec.DecoderException; import org.apache.commons.codec.net.URLCodec; public class Main { public static void main(String[] args) throws DecoderException, UnsupportedEncodingException { final String str= \"%82%a0%82%a2%82%a4%82%a6%82%a8\"; //URLエンコード文字列をパースし、バイト配列にする byte[] bytes = new URLCodec() .decode(str, StandardCharsets.ISO_8859_1.name()) .getBytes(StandardCharsets.ISO_8859_1.name()); Charset cs = Detector.getCharsetName(bytes); System.out.println(\"charset:\"+cs); //バイト配列を検出したcharsetを用いて文字列にする final String s = new String(bytes,cs); System.out.println(s); } }   実行例 1 2  charset:SHIFT-JIS あいうえお   ","wordCount":"382","inLanguage":"en","datePublished":"2019-06-27T00:00:00Z","dateModified":"2019-06-27T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://aaaanwz.github.io/post/2019/juniversalchardet/"},"publisher":{"@type":"Organization","name":"A4 tech note","logo":{"@type":"ImageObject","url":"https://aaaanwz.github.io/favicon.ico"}}}</script>
+</head>
+<body id=top>
+<script>window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://aaaanwz.github.io/ accesskey=h title="A4 tech note (Alt + H)">A4 tech note</a>
+<span class=logo-switches>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://aaaanwz.github.io/categories/ title=Categories>
+<span>Categories</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/archives title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/portfolio/ title=Portfolio>
+<span>Portfolio</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<h1 class=post-title>
+Javaで文字コードを推測する
+</h1>
+<div class=post-meta><span title="2019-06-27 00:00:00 +0000 UTC">June 27, 2019</span>
+</div>
+</header> <div class=toc>
+<details open>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#%e9%96%8b%e7%99%ba%e7%92%b0%e5%a2%83 aria-label=開発環境>開発環境</a></li>
+<li>
+<a href=#%e4%b8%8b%e6%ba%96%e5%82%99 aria-label=下準備>下準備</a></li>
+<li>
+<a href=#%e3%82%b5%e3%83%b3%e3%83%97%e3%83%ab1-%e3%83%95%e3%82%a1%e3%82%a4%e3%83%ab%e8%aa%ad%e3%81%bf%e8%be%bc%e3%81%bf aria-label="サンプル1. ファイル読み込み">サンプル1. ファイル読み込み</a><ul>
+<li>
+<a href=#detector%e3%82%af%e3%83%a9%e3%82%b9 aria-label=Detectorクラス>Detectorクラス</a></li>
+<li>
+<a href=#main%e3%82%af%e3%83%a9%e3%82%b9 aria-label=Mainクラス>Mainクラス</a></li>
+<li>
+<a href=#%e5%ae%9f%e8%a1%8c%e4%be%8b aria-label=実行例>実行例</a></li></ul>
+</li>
+<li>
+<a href=#%e3%82%b5%e3%83%b3%e3%83%97%e3%83%ab2-url%e3%81%ae%e3%83%87%e3%82%b3%e3%83%bc%e3%83%89 aria-label="サンプル2. URLのデコード">サンプル2. URLのデコード</a><ul>
+<li>
+<a href=#detector%e3%82%af%e3%83%a9%e3%82%b9-1 aria-label=Detectorクラス>Detectorクラス</a></li>
+<li>
+<a href=#main%e3%82%af%e3%83%a9%e3%82%b9-1 aria-label=Mainクラス>Mainクラス</a></li>
+<li>
+<a href=#%e5%ae%9f%e8%a1%8c%e4%be%8b-1 aria-label=実行例>実行例</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><p><a href=https://code.google.com/archive/p/juniversalchardet/>juniversalchardet</a>を使用して、</p>
+<ul>
+<li>ファイルの文字コードを推測・デコード・コンソールへの表示を行う</li>
+<li>URLエンコードされた文字列をデコードする</li>
+</ul>
+<p>の2つのサンプルプログラムを作成してみます。</p>
+<p>juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。</p>
+<h2 id=開発環境>開発環境<a hidden class=anchor aria-hidden=true href=#開発環境>#</a></h2>
+<ul>
+<li>OpenJDK 11</li>
+<li>Maven 3.6</li>
+</ul>
+<h2 id=下準備>下準備<a hidden class=anchor aria-hidden=true href=#下準備>#</a></h2>
+<p>以下をmaven dependenciesに追加します</p>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml:pom.xml data-lang=xml:pom.xml><span style=color:#f92672>&lt;dependency&gt;</span>
+    <span style=color:#f92672>&lt;groupId&gt;</span>com.googlecode.juniversalchardet<span style=color:#f92672>&lt;/groupId&gt;</span>
+    <span style=color:#f92672>&lt;artifactId&gt;</span>juniversalchardet<span style=color:#f92672>&lt;/artifactId&gt;</span>
+    <span style=color:#f92672>&lt;version&gt;</span>1.0.3<span style=color:#f92672>&lt;/version&gt;</span>
+<span style=color:#f92672>&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id=サンプル1-ファイル読み込み>サンプル1. ファイル読み込み<a hidden class=anchor aria-hidden=true href=#サンプル1-ファイル読み込み>#</a></h2>
+<h3 id=detectorクラス>Detectorクラス<a hidden class=anchor aria-hidden=true href=#detectorクラス>#</a></h3>
+<p>今回は汎用性のためにInputStreamを引数としてみます。
+引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。
+UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。</p>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java:Detector.java data-lang=java:Detector.java><span style=color:#f92672>import</span> java.io.IOException<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.io.InputStream<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.nio.charset.Charset<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> org.mozilla.universalchardet.UniversalDetector<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Detector</span> <span style=color:#f92672>{</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> Charset <span style=color:#a6e22e>getCharsetName</span><span style=color:#f92672>(</span>InputStream is<span style=color:#f92672>)</span> <span style=color:#66d9ef>throws</span> IOException <span style=color:#f92672>{</span>
+    <span style=color:#75715e>//4kbのメモリバッファを確保する
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>byte</span><span style=color:#f92672>[]</span> buf <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#66d9ef>byte</span><span style=color:#f92672>[</span>4096<span style=color:#f92672>];</span>
+    UniversalDetector detector <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> UniversalDetector<span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
+
+    <span style=color:#75715e>//文字コードの推測結果が得られるまでInputStreamを読み進める
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>int</span> nread<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>while</span> <span style=color:#f92672>((</span>nread <span style=color:#f92672>=</span> is<span style=color:#f92672>.</span><span style=color:#a6e22e>read</span><span style=color:#f92672>(</span>buf<span style=color:#f92672>))</span> <span style=color:#f92672>&gt;</span> 0 <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span>detector<span style=color:#f92672>.</span><span style=color:#a6e22e>isDone</span><span style=color:#f92672>())</span> <span style=color:#f92672>{</span>
+      detector<span style=color:#f92672>.</span><span style=color:#a6e22e>handleData</span><span style=color:#f92672>(</span>buf<span style=color:#f92672>,</span> 0<span style=color:#f92672>,</span> nread<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+    
+    <span style=color:#75715e>//推測結果を取得する
+</span><span style=color:#75715e></span>    detector<span style=color:#f92672>.</span><span style=color:#a6e22e>dataEnd</span><span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>final</span> String detectedCharset <span style=color:#f92672>=</span> detector<span style=color:#f92672>.</span><span style=color:#a6e22e>getDetectedCharset</span><span style=color:#f92672>();</span>
+    
+    detector<span style=color:#f92672>.</span><span style=color:#a6e22e>reset</span><span style=color:#f92672>();</span>
+
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>detectedCharset <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+      <span style=color:#66d9ef>return</span> Charset<span style=color:#f92672>.</span><span style=color:#a6e22e>forName</span><span style=color:#f92672>(</span>detectedCharset<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#75715e>//文字コードを取得できなかった場合、環境のデフォルトを使用する
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>return</span> Charset<span style=color:#f92672>.</span><span style=color:#a6e22e>forName</span><span style=color:#f92672>(</span>System<span style=color:#f92672>.</span><span style=color:#a6e22e>getProperty</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;file.encoding&#34;</span><span style=color:#f92672>));</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=mainクラス>Mainクラス<a hidden class=anchor aria-hidden=true href=#mainクラス>#</a></h3>
+<p>ファイルの文字コードを判別し、コンソールに出力します。<br>
+FileInputStreamはmark/resetをサポートしていないため、文字コード判別とコンソール出力で別のインスタンスを生成します。</p>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+public class Main {
+  public static void main(String[] args) throws IOException {
+    final String path = &#34;./test.txt&#34;;
+
+    Charset cs;
+    try (FileInputStream fis = new FileInputStream(path)) {
+      cs = Detector.getCharsetName(fis);
+      System.out.println(&#34;charset:&#34; + cs);
+    }
+
+    try (BufferedReader br =new BufferedReader(new InputStreamReader(new FileInputStream(path), cs))) {
+      br.lines().forEach(s -&gt; System.out.println(s));
+    }
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=実行例>実行例<a hidden class=anchor aria-hidden=true href=#実行例>#</a></h3>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>charset:SHIFT-JIS
+あいうえお
+</code></pre></td></tr></table>
+</div>
+</div><h2 id=サンプル2-urlのデコード>サンプル2. URLのデコード<a hidden class=anchor aria-hidden=true href=#サンプル2-urlのデコード>#</a></h2>
+<p>追加でApache commons codecを使用します。</p>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml:pom.xml data-lang=xml:pom.xml><span style=color:#f92672>&lt;dependency&gt;</span>
+    <span style=color:#f92672>&lt;groupId&gt;</span>commons-codec<span style=color:#f92672>&lt;/groupId&gt;</span>
+    <span style=color:#f92672>&lt;artifactId&gt;</span>commons-codec<span style=color:#f92672>&lt;/artifactId&gt;</span>
+    <span style=color:#f92672>&lt;version&gt;</span>1.12<span style=color:#f92672>&lt;/version&gt;</span>
+<span style=color:#f92672>&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=detectorクラス-1>Detectorクラス<a hidden class=anchor aria-hidden=true href=#detectorクラス-1>#</a></h3>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import org.mozilla.universalchardet.UniversalDetector;
+
+public class Detector {
+  public static Charset getCharsetName(byte[] bytes) {
+    UniversalDetector detector = new UniversalDetector(null);
+    //入力文字列が短すぎると推測ができないため、入力を繰り返す
+    while (!detector.isDone()) {
+      detector.handleData(bytes, 0, bytes.length);
+      detector.dataEnd();
+    }
+    final String charsetName = detector.getDetectedCharset();
+    detector.reset();
+    if (charsetName != null) {
+      return Charset.forName(charsetName);
+    }
+    return Charset.forName(System.getProperty(&#34;file.encoding&#34;));
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=mainクラス-1>Mainクラス<a hidden class=anchor aria-hidden=true href=#mainクラス-1>#</a></h3>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.net.URLCodec;
+
+public class Main {
+  public static void main(String[] args) throws DecoderException, UnsupportedEncodingException {
+    final String str= &#34;%82%a0%82%a2%82%a4%82%a6%82%a8&#34;;
+    //URLエンコード文字列をパースし、バイト配列にする
+    byte[] bytes = new URLCodec()
+        .decode(str, StandardCharsets.ISO_8859_1.name())
+        .getBytes(StandardCharsets.ISO_8859_1.name());
+    
+    Charset cs = Detector.getCharsetName(bytes);
+    System.out.println(&#34;charset:&#34;+cs);
+
+    //バイト配列を検出したcharsetを用いて文字列にする
+    final String s = new String(bytes,cs);
+    System.out.println(s);
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=実行例-1>実行例<a hidden class=anchor aria-hidden=true href=#実行例-1>#</a></h3>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>charset:SHIFT-JIS
+あいうえお
+</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://aaaanwz.github.io/post/2019/java-k8s-liveness-probe/>
+<span class=title>« Prev Page</span>
+<br>
+<span>Kubernetes Liveness ProbeでJavaプロセスを監視する</span>
+</a>
+<a class=next href=https://aaaanwz.github.io/post/2019/kafkastreams-3/>
+<span class=title>Next Page »</span>
+<br>
+<span>Kafka Streams DSLを一通り体験する (3. ステートフル処理実践編)</span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://aaaanwz.github.io/>A4 tech note</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

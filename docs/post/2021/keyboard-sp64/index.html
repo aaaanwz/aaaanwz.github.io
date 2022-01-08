@@ -1,0 +1,266 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>自作キーボードYMDK/SP64ビルドログ | A4 tech note</title>
+<meta name=keywords content>
+<meta name=description content="標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。
+HHKB liteっぽくキーマップを実装。
+左スペースキー横は日英切り替え(`Alt + ``)にしてみる。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68  #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer  _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record->event.">
+<meta name=author content>
+<link rel=canonical href=https://aaaanwz.github.io/post/2021/keyboard-sp64/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css integrity="sha256-yIlj/i15RiAA/Q+xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://aaaanwz.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://aaaanwz.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://aaaanwz.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://aaaanwz.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://aaaanwz.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.91.2">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CWBPGKYRHB"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-CWBPGKYRHB',{anonymize_ip:!1})}</script>
+<meta property="og:title" content="自作キーボードYMDK/SP64ビルドログ">
+<meta property="og:description" content="標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。
+HHKB liteっぽくキーマップを実装。
+左スペースキー横は日英切り替え(`Alt + ``)にしてみる。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68  #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer  _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record->event.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aaaanwz.github.io/post/2021/keyboard-sp64/"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-06-26T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-06-26T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="自作キーボードYMDK/SP64ビルドログ">
+<meta name=twitter:description content="標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。
+HHKB liteっぽくキーマップを実装。
+左スペースキー横は日英切り替え(`Alt + ``)にしてみる。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68  #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer  _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record->event.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://aaaanwz.github.io/post/"},{"@type":"ListItem","position":2,"name":"自作キーボードYMDK/SP64ビルドログ","item":"https://aaaanwz.github.io/post/2021/keyboard-sp64/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"自作キーボードYMDK/SP64ビルドログ","name":"自作キーボードYMDK\/SP64ビルドログ","description":"標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。\nHHKB liteっぽくキーマップを実装。\n左スペースキー横は日英切り替え(`Alt + ``)にしてみる。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68  #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer  _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record-\u0026gt;event.","keywords":[],"articleBody":"標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。\nHHKB liteっぽくキーマップを実装。\n左スペースキー横は日英切り替え(`Alt + ``)にしてみる。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68  #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer  _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record-event.pressed) { switch(keycode) { case M_KANA: SEND_STRING(SS_LALT(\"`\")); return false; } } return true; }; const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = { /* Keymap 0: Basic layer * * ┌-----┬-----┬-----┬-----┬-----┬-----┬-----┐ ┌-----┬-----┬-----┬-----┬-----┬-----┬----------┐ * │ ~ │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ │ 7 │ 8 │ 9 │ 0 │ - │ = │ \\ │ * ├-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┘ ┌--┴-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬-------┤ * │ Tab │ Q │ W │ E │ R │ T │ │ Y │ U │ I │ O │ P │ [ │ ] │ BkSp │ * ├--------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐ └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴-------┤ * │ Ctrl │ A │ S │ D │ F │ G │ │ H │ J │ K │ L │ ; │ ' │ Enter │ * ├---------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐ └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬-----┬-----┤ * │ LShift │ Z │ X │ C │ V │ B │ │ N │ M │ │ ? │ Sft │ Up │ Fn │ * ├------┬---┴-┬---┴--┬--┴-----┴----┬┴----┬┘ ┌┴-----┴-----┴--┬--┴----┬┴-----┼-----┼-----┼-----┤ * │ Fn │ Alt │ Win │ │ Kana│ │ │ Win │ Alt │ Lft │ Dwn │ Rgt │ * └------┴-----┴------┴-------------┴-----┘ └---------------┴-------┴------┴-----┴-----┴-----┘ */ [BASE] = LAYOUT( KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINUS, KC_EQUAL, KC_BSLS, KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRACKET, KC_RBRACKET, KC_BSPACE, KC_LCTL, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCOLON, KC_QUOTE, KC_ENTER, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, MO(_FN), MO(_FN), KC_LALT, KC_LGUI, KC_SPACE, M_KANA, KC_SPACE, KC_RGUI, KC_RALT, KC_LEFT, KC_DOWN, KC_RIGHT ), /* Function * * ┌-----┬-----┬-----┬-----┬-----┬-----┬-----┐ ┌-----┬-----┬-----┬-----┬-----┬-----┬----------┐ * │ Esc │ F1 │ F2 │ F3 │ F4 │ F5 │ F6 │ │ F7 │ F8 │ F9 │ F10 │ F11 │ F12 │ Ins │ * ├-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┘ ┌--┴-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬-------┤ * │ Caps │ │ │ │ │ │ │ │ │ │ │ │ Up │ │ Del │ * ├--------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐ └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴-------┤ * │ │ │ │ │ │ │ │ │ │ │ │ Lft │ Rgt │ │ * ├---------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐ └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬-----┬-----┤ * │ │ │ │ │ │ │ │ │ │ │ │ Dwn │ │ PgUp│ │ * ├------┬---┴-┬---┴--┬--┴-----┴----┬┴----┬┘ ┌┴-----┴-----┴--┬--┴----┬┴-----┼-----┼-----┼-----┤ * │ │ │ │ │ │ │ │ │ │ Home│ PgDn│ End │ * └------┴-----┴------┴-------------┴-----┘ └---------------┴-------┴------┴-----┴-----┴-----┘ */ [_FN] = LAYOUT( KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_INS, KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_UP, _______, KC_DEL, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_RIGHT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, KC_PGUP, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_END ), };   qmk_firmawareのドキュメントでは一番左上のキーを押しながらUSB接続でFlashモードになるとあったが、実際は一番左下のキーだった。(PCBのロットによって異なる模様)\nAliExpressにしてはお高めなだけあって、アルミ削り出しの筐体はかなり剛性感があり打ち心地は上々。\n","wordCount":"559","inLanguage":"en","datePublished":"2021-06-26T00:00:00Z","dateModified":"2021-06-26T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://aaaanwz.github.io/post/2021/keyboard-sp64/"},"publisher":{"@type":"Organization","name":"A4 tech note","logo":{"@type":"ImageObject","url":"https://aaaanwz.github.io/favicon.ico"}}}</script>
+</head>
+<body id=top>
+<script>window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://aaaanwz.github.io/ accesskey=h title="A4 tech note (Alt + H)">A4 tech note</a>
+<span class=logo-switches>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://aaaanwz.github.io/categories/ title=Categories>
+<span>Categories</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/archives title=Archive>
+<span>Archive</span>
+</a>
+</li>
+<li>
+<a href=https://aaaanwz.github.io/portfolio/ title=Portfolio>
+<span>Portfolio</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<h1 class=post-title>
+自作キーボードYMDK/SP64ビルドログ
+</h1>
+<div class=post-meta><span title="2021-06-26 00:00:00 +0000 UTC">June 26, 2021</span>
+</div>
+</header>
+<div class=post-content><p>標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。
+PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。</p>
+<p><img loading=lazy src=/images/keyboard-sp64/1.jpeg alt=sp64-1>
+</p>
+<p>HHKB liteっぽくキーマップを実装。<br>
+左スペースキー横は日英切り替え(`Alt + ``)にしてみる。</p>
+<div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<table style=border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block><tr><td style=vertical-align:top;padding:0;margin:0;border:0>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">63
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">64
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">65
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">66
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">67
+</span><span style="margin-right:.4em;padding:0 .4em;color:#7f7f7f">68
+</span></code></pre></td>
+<td style=vertical-align:top;padding:0;margin:0;border:0;width:100%>
+<pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c:keymap.c data-lang=c:keymap.c><span style=color:#75715e>#include</span> <span style=color:#75715e>QMK_KEYBOARD_H</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#66d9ef>enum</span> layer_names {
+    BASE, <span style=color:#75715e>// default layer
+</span><span style=color:#75715e></span>    _FN,  <span style=color:#75715e>// function layer
+</span><span style=color:#75715e></span>};
+
+<span style=color:#66d9ef>enum</span> custom_keycodes {
+    M_KANA <span style=color:#f92672>=</span> SAFE_RANGE,
+};
+
+<span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>process_record_user</span>(<span style=color:#66d9ef>uint16_t</span> keycode, keyrecord_t <span style=color:#f92672>*</span>record) {
+    <span style=color:#66d9ef>if</span> (record<span style=color:#f92672>-&gt;</span>event.pressed) {
+        <span style=color:#66d9ef>switch</span>(keycode) {
+            <span style=color:#66d9ef>case</span> M_KANA:
+                    SEND_STRING(SS_LALT(<span style=color:#e6db74>&#34;`&#34;</span>));
+                <span style=color:#66d9ef>return</span> false;
+        }
+    }
+    <span style=color:#66d9ef>return</span> true;
+};
+
+<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint16_t</span> PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] <span style=color:#f92672>=</span> {
+<span style=color:#75715e>/* Keymap 0: Basic layer
+</span><span style=color:#75715e> *
+</span><span style=color:#75715e> * ┌-----┬-----┬-----┬-----┬-----┬-----┬-----┐    ┌-----┬-----┬-----┬-----┬-----┬-----┬----------┐
+</span><span style=color:#75715e> * │  ~  │  1  │  2  │  3  │  4  │  5  │  6  │    │  7  │  8  │  9  │  0  │  -  │  =  │     \    │
+</span><span style=color:#75715e> * ├-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┘ ┌--┴-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬-------┤
+</span><span style=color:#75715e> * │ Tab    │  Q  │  W  │  E  │  R  │  T  │    │  Y  │  U  │  I  │  O  │  P  │  [  │  ]  │ BkSp  │
+</span><span style=color:#75715e> * ├--------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐   └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴-------┤
+</span><span style=color:#75715e> * │ Ctrl    │  A  │  S  │  D  │  F  │  G  │    │  H  │  J  │  K  │  L  │  ;  │  &#39;  │   Enter    │
+</span><span style=color:#75715e> * ├---------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐   └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬-----┬-----┤
+</span><span style=color:#75715e> * │ LShift   │  Z  │  X  │  C  │  V  │  B  │    │  N  │  M  │  &lt;  │  &gt;  │  ?  │ Sft │ Up  │ Fn  │
+</span><span style=color:#75715e> * ├------┬---┴-┬---┴--┬--┴-----┴----┬┴----┬┘   ┌┴-----┴-----┴--┬--┴----┬┴-----┼-----┼-----┼-----┤
+</span><span style=color:#75715e> * │  Fn  │ Alt │ Win  │             │ Kana│    │               │ Win   │ Alt  │ Lft │ Dwn │ Rgt │
+</span><span style=color:#75715e> * └------┴-----┴------┴-------------┴-----┘    └---------------┴-------┴------┴-----┴-----┴-----┘
+</span><span style=color:#75715e> */</span>
+[BASE] <span style=color:#f92672>=</span> LAYOUT(
+  KC_GRV,  KC_1,    KC_2,    KC_3,     KC_4,    KC_5,     KC_6,               KC_7, KC_8,    KC_9,    KC_0,      KC_MINUS,    KC_EQUAL,    KC_BSLS,
+  KC_TAB,  KC_Q,    KC_W,    KC_E,     KC_R,    KC_T,               KC_Y,     KC_U, KC_I,    KC_O,    KC_P,      KC_LBRACKET, KC_RBRACKET, KC_BSPACE,
+  KC_LCTL, KC_A,    KC_S,    KC_D,     KC_F,    KC_G,               KC_H,     KC_J, KC_K,    KC_L,    KC_SCOLON, KC_QUOTE,                 KC_ENTER,
+  KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,    KC_B,               KC_N,     KC_M, KC_COMM, KC_DOT,  KC_SLSH,   KC_RSFT,     KC_UP,       MO(_FN),
+  MO(_FN), KC_LALT, KC_LGUI, KC_SPACE,          M_KANA,            KC_SPACE,       KC_RGUI, KC_RALT,           KC_LEFT,     KC_DOWN,     KC_RIGHT
+  ),
+<span style=color:#75715e>/* Function
+</span><span style=color:#75715e> *
+</span><span style=color:#75715e> * ┌-----┬-----┬-----┬-----┬-----┬-----┬-----┐    ┌-----┬-----┬-----┬-----┬-----┬-----┬----------┐
+</span><span style=color:#75715e> * │ Esc │ F1  │  F2 │ F3  │ F4  │ F5  │ F6  │    │ F7  │ F8  │ F9  │ F10 │ F11 │ F12 │   Ins    │
+</span><span style=color:#75715e> * ├-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┘ ┌--┴-----┴--┬--┴--┬--┴--┬--┴--┬--┴--┬--┴--┬-------┤
+</span><span style=color:#75715e> * │  Caps  │     │     │     │     │     │    │     │     │     │     │     │ Up  │     │  Del  │
+</span><span style=color:#75715e> * ├--------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐   └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴-------┤
+</span><span style=color:#75715e> * │         │     │     │     │     │     │    │     │     │     │     │ Lft │ Rgt │            │
+</span><span style=color:#75715e> * ├---------┴┬----┴┬----┴┬----┴┬----┴┬----┴┐   └┬----┴┬----┴┬----┴┬----┴┬----┴┬----┴┬-----┬-----┤
+</span><span style=color:#75715e> * │          │     │     │     │     │     │    │     │     │     │     │ Dwn │     │ PgUp│     │
+</span><span style=color:#75715e> * ├------┬---┴-┬---┴--┬--┴-----┴----┬┴----┬┘   ┌┴-----┴-----┴--┬--┴----┬┴-----┼-----┼-----┼-----┤
+</span><span style=color:#75715e> * │      │     │      │             │     │    │               │       │      │ Home│ PgDn│ End │
+</span><span style=color:#75715e> * └------┴-----┴------┴-------------┴-----┘    └---------------┴-------┴------┴-----┴-----┴-----┘
+</span><span style=color:#75715e> */</span>
+[_FN] <span style=color:#f92672>=</span> LAYOUT(
+  KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,          KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_INS,
+  KC_CAPS, _______, _______, _______, _______, _______,        _______, _______, _______, _______, _______, KC_UP,   _______, KC_DEL,
+  _______, _______, _______, _______, _______, _______,        _______, _______, _______, _______, KC_LEFT, KC_RIGHT,          _______,
+  _______, _______, _______, _______, _______, _______,        _______, _______, _______, _______, KC_DOWN, _______, KC_PGUP, _______,
+  _______, _______, _______, _______,          _______,        _______,          _______, _______,          KC_HOME, KC_PGDN, KC_END
+  ),
+};
+
+
+</code></pre></td></tr></table>
+</div>
+</div><p><code>qmk_firmaware</code>のドキュメントでは一番左上のキーを押しながらUSB接続でFlashモードになるとあったが、実際は一番左下のキーだった。(PCBのロットによって異なる模様)</p>
+<p>AliExpressにしてはお高めなだけあって、アルミ削り出しの筐体はかなり剛性感があり打ち心地は上々。</p>
+</div>
+<footer class=post-footer>
+<nav class=paginav>
+<a class=prev href=https://aaaanwz.github.io/post/2021/vscode-remote-container-ssh/>
+<span class=title>« Prev Page</span>
+<br>
+<span>VSCode Remote ContainerからGitHubにssh接続する</span>
+</a>
+<a class=next href=https://aaaanwz.github.io/post/2021/airflow-xcom/>
+<span class=title>Next Page »</span>
+<br>
+<span>Airflowで後続のOperatorに配列を渡す</span>
+</a>
+</nav>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://aaaanwz.github.io/>A4 tech note</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

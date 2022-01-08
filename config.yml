@@ -7,7 +7,7 @@ theme: PaperMod
 enableInlineShortCodes: true
 enableEmoji: true
 
-googleAnalytics: "G-CWBPGKYRHB"
+googleAnalytics: "UA-213737265-1"
 enableRobotsTXT: true
 minify:
     disableXML: true

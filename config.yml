@@ -34,7 +34,7 @@ params:
     env: production
     description: ""
     defaultTheme: auto
-    disableThemeToggle: true
+    disableThemeToggle: false
     ShowShareButtons: false
     ShowReadingTime: false
     disableSpecial1stPost: true

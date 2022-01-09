@@ -55,6 +55,15 @@ Cherry MX銀軸が自分にかなりマッチしており、HHKBを使ってい�
 
 ![](https://m.media-amazon.com/images/I/31kJqTsEcFL._AC_.jpg)
 
+## Mi Band 6
+
+安くて小型軽量、更にめちゃくちゃ電池が持つスマートウォッチです。
+Apple Watchをあまり着けなくなった過去がありますが、こいつは1週間以上電池が持つので基本つけっぱなしです。  
+運動量と睡眠の可視化、Slackの通知などに使っています。
+
+<img src="https://i01.appmifile.com/webfile/globalimg/products/pc/mi-smart-band-6/section01-1.png" width="360">
+
+
 ## パネルヒーター
 
 ファンヒーターより気持ちいい暖かさで消費電力も少ない。  

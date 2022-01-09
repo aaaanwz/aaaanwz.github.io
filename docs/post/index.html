@@ -67,6 +67,27 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>2021年 エンジニア的に買ってよかったもの
+</h2>
+</header>
+<section class=entry-content>
+<p>仕事(エンジニア/フルリモート)に役立ったかどうか、という観点で備忘的にまとめてみました。
+自宅サーバー (自作) サーバーとして使っていたRaspberry piが成仏し、現在どこも在庫が皆無なため代わりにファンレスPCを組みました。スペック的にも物理的な拡張性にも余裕があるためより一層遊べるようになり、結果として大正解。
+サブスクのクラウドサービスをセルフホステッドにどんどん切り替えていってるので、スキルアップと家計の両面に大いに貢献しています。
+消費電力は25W/hくらい、電気代は月500円弱。 動かしているアプリケーションに関してはまた別記事で書きたい。
+パーツ 型番 M/B BIOSTAR J4105NH CPU オンボード MEM CFD W4U2400PS-4GC17 (4GB x 2) PSU DC-DCコンバータ + 120W ACアダプタ ストレージ 余っているSSD/HDDいっぱい。合計10TBくらい ケース 100均の書類ケースに適当にネジ止め 自作キーボード YD60MQ 何個かキーボードを作ってみて得た結論として、
+特殊すぎる配列はメリットに対して切り替えコストが割に合わない 右手でマウスを持ったまま左手で右側のキーを押す事があるため、自分の場合は左右分割だと効率が下がる という事から、結局HHKB配列の YMDK YD60MQ に落ち着きました。
+Cherry MX銀軸が自分にかなりマッチしており、HHKBを使っていたときより指の疲労が低減しました。
+LG ウルトラワイドモニター 35WN75C-B 買ったというか、転職サイトから貰った。
+4kモニタは既に持っていてこちらの方が解像度は低かった(3440×1440)けど、大きい正方形のウィンドウ2つを横に並べても視野に収まるのが予想以上に便利でメインモニタに昇格しました。
+曲面のため光の映り込みが少ないのも便利。
+つっぱり棚 サバゲーやる人が銃を飾るのによく使っているアレです。...</p>
+</section>
+<footer class=entry-footer><span title="2022-01-09 13:15:22 +0900 +0900">January 9, 2022</span></footer>
+<a class=entry-link aria-label="post link to 2021年 エンジニア的に買ってよかったもの" href=https://aaaanwz.github.io/post/2022/bestbuy2021/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>Kubernetesに写真サーバーを構築する
 </h2>
 </header>
@@ -189,20 +210,6 @@ Mac 1 2 3 4 5 $ sudo vi ~/.ssh/config Host github.com AddKeysToAgent yes UseKeyc
 </section>
 <footer class=entry-footer><span title="2021-09-02 00:00:00 +0000 UTC">September 2, 2021</span></footer>
 <a class=entry-link aria-label="post link to VSCode Remote ContainerからGitHubにssh接続する" href=https://aaaanwz.github.io/post/2021/vscode-remote-container-ssh/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>自作キーボードYMDK/SP64ビルドログ
-</h2>
-</header>
-<section class=entry-content>
-<p>標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。
-HHKB liteっぽくキーマップを実装。
-左スペースキー横は日英切り替え(`Alt + ``)にしてみる。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record->event....</p>
-</section>
-<footer class=entry-footer><span title="2021-06-26 00:00:00 +0000 UTC">June 26, 2021</span></footer>
-<a class=entry-link aria-label="post link to 自作キーボードYMDK/SP64ビルドログ" href=https://aaaanwz.github.io/post/2021/keyboard-sp64/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>

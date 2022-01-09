@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>日記 on A4 tech note</title>
+    <link>https://aaaanwz.github.io/categories/%E6%97%A5%E8%A8%98/</link>
+    <description>Recent content in 日記 on A4 tech note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sun, 09 Jan 2022 13:15:22 +0900</lastBuildDate><atom:link href="https://aaaanwz.github.io/categories/%E6%97%A5%E8%A8%98/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021年 エンジニア的に買ってよかったもの</title>
+      <link>https://aaaanwz.github.io/post/2022/bestbuy2021/</link>
+      <pubDate>Sun, 09 Jan 2022 13:15:22 +0900</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2022/bestbuy2021/</guid>
+      <description>仕事(エンジニア/フルリモート)に役立ったかどうか、という観点で備忘的にまとめてみました。
+自宅サーバー (自作) サーバーとして使っていたRaspberry piが成仏し、現在どこも在庫が皆無なため代わりにファンレスPCを組みました。スペック的にも物理的な拡張性にも余裕があるためより一層遊べるようになり、結果として大正解。
+サブスクのクラウドサービスをセルフホステッドにどんどん切り替えていってるので、スキルアップと家計の両面に大いに貢献しています。
+消費電力は25W/hくらい、電気代は月500円弱。 動かしているアプリケーションに関してはまた別記事で書きたい。
+   パーツ 型番     M/B BIOSTAR J4105NH   CPU オンボード   MEM CFD W4U2400PS-4GC17 (4GB x 2)   PSU DC-DCコンバータ + 120W ACアダプタ   ストレージ 余っているSSD/HDDいっぱい。合計10TBくらい   ケース 100均の書類ケースに適当にネジ止め    自作キーボード YD60MQ 何個かキーボードを作ってみて得た結論として、
+ 特殊すぎる配列はメリットに対して切り替えコストが割に合わない 右手でマウスを持ったまま左手で右側のキーを押す事があるため、自分の場合は左右分割だと効率が下がる  という事から、結局HHKB配列の YMDK YD60MQ に落ち着きました。
+Cherry MX銀軸が自分にかなりマッチしており、HHKBを使っていたときより指の疲労が低減しました。
+LG ウルトラワイドモニター 35WN75C-B 買ったというか、転職サイトから貰った。
+4kモニタは既に持っていてこちらの方が解像度は低かった(3440×1440)けど、大きい正方形のウィンドウ2つを横に並べても視野に収まるのが予想以上に便利でメインモニタに昇格しました。
+曲面のため光の映り込みが少ないのも便利。
+つっぱり棚 サバゲーやる人が銃を飾るのによく使っているアレです。</description>
+    </item>
+    
+  </channel>
+</rss>

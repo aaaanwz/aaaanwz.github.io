@@ -67,6 +67,20 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>自作キーボードYMDK/SP64ビルドログ
+</h2>
+</header>
+<section class=entry-content>
+<p>標準的な配列の分割キーボードをようやく見つけたためAliExpressで購入。 PCBは予めソケット化されており、差し込むだけで完成なので組み立て手順は割愛。
+HHKB liteっぽくキーマップを実装。
+左スペースキー横は日英切り替え(`Alt + ``)にしてみる。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 #include QMK_KEYBOARD_H enum layer_names { BASE, // default layer _FN, // function layer }; enum custom_keycodes { M_KANA = SAFE_RANGE, }; bool process_record_user(uint16_t keycode, keyrecord_t *record) { if (record->event....</p>
+</section>
+<footer class=entry-footer><span title="2021-06-26 00:00:00 +0000 UTC">June 26, 2021</span></footer>
+<a class=entry-link aria-label="post link to 自作キーボードYMDK/SP64ビルドログ" href=https://aaaanwz.github.io/post/2021/keyboard-sp64/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>Airflowで後続のOperatorに配列を渡す
 </h2>
 </header>
@@ -189,21 +203,6 @@ Github Actions 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 name: La
 </section>
 <footer class=entry-footer><span title="2019-11-28 00:00:00 +0000 UTC">November 28, 2019</span></footer>
 <a class=entry-link aria-label="post link to Github ActionsでAWS Lambdaにデプロイする" href=https://aaaanwz.github.io/post/2019/github-actions-lambda-deploy/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>mavenプロジェクト作成からCIOps構築まで
-</h2>
-</header>
-<section class=entry-content>
-<p>git branchに変更が加わった際、
-JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。
-本番運用ではArgoCDなどgitOps構築をお勧めします
-登場するもの OSS Maven MySQL Docker サービス GitHub CircleCI AWS (ECR, EKS) ⇦ 微修正でその他マネージドk8sにも応用可能かと思います。 サンプルプロジェクトの実装 最終的にディレクトリ構成はこんな感じになります。順を追って作っていきます。 GitHubからcloneして頂いても結構です。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 testproject/ ├ src/ │ ├ main/ │ │ └ java/ │ │ └testpackage/ │ │ └Main.java │ └ test/ │ └ java/ │ └testpackage/ │ └MainTest....</p>
-</section>
-<footer class=entry-footer><span title="2019-07-24 00:00:00 +0000 UTC">July 24, 2019</span></footer>
-<a class=entry-link aria-label="post link to mavenプロジェクト作成からCIOps構築まで" href=https://aaaanwz.github.io/post/2019/java-create-maven-project/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>

@@ -64,6 +64,21 @@
 <main class=main>
 <article class=post-entry>
 <header class=entry-header>
+<h2>mavenプロジェクト作成からCIOps構築まで
+</h2>
+</header>
+<section class=entry-content>
+<p>git branchに変更が加わった際、
+JUnit test (with MySQL) docker build Kubernetes環境にデプロイ (CIOps) が行われるJavaプロジェクトを構築します。
+本番運用ではArgoCDなどgitOps構築をお勧めします
+登場するもの OSS Maven MySQL Docker サービス GitHub CircleCI AWS (ECR, EKS) ⇦ 微修正でその他マネージドk8sにも応用可能かと思います。 サンプルプロジェクトの実装 最終的にディレクトリ構成はこんな感じになります。順を追って作っていきます。 GitHubからcloneして頂いても結構です。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 testproject/ ├ src/ │ ├ main/ │ │ └ java/ │ │ └testpackage/ │ │ └Main.java │ └ test/ │ └ java/ │ └testpackage/ │ └MainTest....</p>
+</section>
+<footer class=entry-footer><span title="2019-07-24 00:00:00 +0000 UTC">July 24, 2019</span></footer>
+<a class=entry-link aria-label="post link to mavenプロジェクト作成からCIOps構築まで" href=https://aaaanwz.github.io/post/2019/java-create-maven-project/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>Kubernetes Liveness ProbeでJavaプロセスを監視する
 </h2>
 </header>

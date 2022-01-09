@@ -6,6 +6,20 @@ ShowToc: false
 
 resumeはDM等でお送りします.
 
+<div class="toc"><details><summary accesskey="c">個人開発</summary>
+
+- オンプレミスサーバー構築・運用
+    - Kubernetes
+- Blog
+    - hugo
+    - GitHub Actions
+- LineBot
+- SlackBot
+- システムトレード開発
+- Flutter
+
+</details></div>
+
 ### 2022/01 ~
 
 <div class="toc"><details><summary accesskey="c">データ分析</summary>

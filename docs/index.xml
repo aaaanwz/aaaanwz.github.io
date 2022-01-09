@@ -344,7 +344,8 @@ key, valueを引数にbooleanを返し、falseの場合はレコードが除外�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/portfolio/</guid>
-      <description>得意分野  データパイプライン構築 (ETL, ELT, batch, streaming) Infra as Code DevOps   Infra  AWS GCP Kubernetes terraform  DevOps  CircleCI GitHub Actions ArgoCD Terraform Cloud  DWH/DB  AWS RedShift GCP BigQuery Apache Cassandra MySQL PostgreSQL ElasticSearch  Message Queue  AWS Kinesis Apache Kafka GCP Pub/Sub  Data pipeline  Apache Airflow Argo Workflows GCP Dataflow  Apache beam   embulk fluentd Kafka Streams AWS DMS  Monitoring  grafana Prometheus Datadog NewRelic  Language  Java Python golang Node.</description>
+      <description>resumeはDM等でお送りします.
+2022/01 ~ データ分析  BigQuery ML Vertex AI Workbench   2021/09 ~ 2021/12 Webサービス データ基盤新規開発 Data pipeline  Kinesis Firehose Argo Workflows embulk Fluentd AWS Database Migration Service  DB/DWH/Datalake  S3 MySQL BigQuery  Infra  terraform EKS Fargate  Argo CD    BI  Redash   2020/01 ~ 2021/08 エンタープライズ データ基盤刷新 Data pipeline  Kinesis Lambda Pub/Sub Dataflow  Apache Beam   Apache Airflow  DB/DWH/Datalake  S3 GCS MySQL RedShift BigQuery Elasticsearch  BI  Readash Kibana Jupyterhub  Infra  CircleCI Prometheus Grafana  Language  Node.</description>
     </item>
     
   </channel>

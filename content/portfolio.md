@@ -4,71 +4,112 @@ description: ""
 ShowToc: false
 ---
 
-## 得意分野
+resumeはDM等でお送りします.
 
-- データパイプライン構築 (ETL, ELT, batch, streaming)
-- Infra as Code
-- DevOps
+### 2022/01 ~
 
----
+<div class="toc"><details><summary accesskey="c">データ分析</summary>
 
-### Infra
+- BigQuery ML
+- Vertex AI Workbench
 
-- AWS
-- GCP
-- Kubernetes
+</details></div>
+
+### 2021/09 ~ 2021/12
+
+<div class="toc"><details><summary accesskey="c"> Webサービス データ基盤新規開発</summary>
+
+#### Data pipeline
+- Kinesis Firehose
+- Argo Workflows
+- embulk
+- Fluentd
+- AWS Database Migration Service
+
+#### DB/DWH/Datalake
+- S3
+- MySQL
+- BigQuery
+
+#### Infra
 - terraform
+- EKS Fargate
+    - Argo CD
 
-### DevOps
+#### BI
+- Redash
 
+</details></div>
+
+### 2020/01 ~ 2021/08
+
+<div class="toc"><details><summary accesskey="c">エンタープライズ データ基盤刷新</summary>
+
+#### Data pipeline
+- Kinesis
+- Lambda
+- Pub/Sub
+- Dataflow
+    - Apache Beam
+- Apache Airflow
+
+#### DB/DWH/Datalake
+- S3
+- GCS
+- MySQL
+- RedShift
+- BigQuery
+- Elasticsearch
+
+#### BI
+- Readash
+- Kibana
+- Jupyterhub
+
+#### Infra
 - CircleCI
-- GitHub Actions
-- ArgoCD
-- Terraform Cloud
+- Prometheus
+- Grafana
 
-### DWH/DB
+#### Language
+- Node.js
+- golang
+- Java
 
-- AWS RedShift
-- GCP BigQuery
+</details></div>
+
+### 2018/10 ~ 2020/11
+
+<div class="toc"><details><summary accesskey="c">DMPサービス インフラ/バックエンド刷新</summary>
+
+#### Data pipeline
+- Apache Kafka
+    - Kafka Streams
+
+#### DB/DWH/Datalake
+- S3
 - Apache Cassandra
 - MySQL
-- PostgreSQL
-- ElasticSearch
+- Athena
 
-### Message Queue
-
-- AWS Kinesis
-- Apache Kafka
-- GCP Pub/Sub
-
-### Data pipeline
-
-- Apache Airflow
-- Argo Workflows
-- GCP Dataflow
-    - Apache beam
-- embulk
-- fluentd
-- Kafka Streams
-- AWS DMS
-
-### Monitoring
-
-- grafana
-- Prometheus
+#### Infra
+- EKS
+    - Argo CD
+- CircleCI
 - Datadog
-- NewRelic
 
-### Language
-
+#### Language
 - Java
-- Python
-- golang
-- Node.js
 
-### Legacy
+</details></div>
+
+### ~ 2018/09
+
+<div class="toc"><details><summary accesskey="c">レガシー系ミドルウェア製品開発/保守</summary>
+
 - IBM z/OS
-- DB2
-- REXX
+- DB2 for z/OS
 - アセンブリ言語 (z/Architecture)
 - Dump analysis (ISPF)
+
+</details></div>

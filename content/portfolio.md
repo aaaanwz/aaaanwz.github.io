@@ -25,6 +25,7 @@ resumeはDM等でお送りします.
 <div class="toc"><details><summary accesskey="c">データ分析</summary>
 
 - BigQuery ML
+    - サブスクリプション コンバージョン予測モデルなど
 - Vertex AI Workbench
 
 </details></div>

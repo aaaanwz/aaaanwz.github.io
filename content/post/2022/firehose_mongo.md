@@ -1,5 +1,5 @@
 ---
-title: "Kinesis Data FirehoseからMongoDBにINSERTする際の罠"
+title: "Kinesis Data FirehoseからMongoDBにデータを流してみる"
 date: 2022-01-31
 draft: true
 categories:
@@ -10,26 +10,25 @@ categories:
 
 詳細は [Using MongoDB Realm WebHooks with Amazon Kinesis Data Firehose](https://www.mongodb.com/developer/how-to/Realm-AWS-Kinesis-Firehose-Destination/) を見るようにとあります。
 
-大きな流れとしては、
+## MongoDB Atlas でClusterを作成
 
-1. MongoDB Atlas Database, Collectionを作成
-2. MongoDB Realm Functionsを実装
-3. Realm HTTPS Endpointsを作成
-4. Kinesis Data Firehoseを設定
+MongoDB Atlas、MongoDB Realmという単語が登場しますが、AtlasはDBaaSとしてのMongoDBそのもの、RealmはAtlasを操作するためのインターフェースとなるサービスのようです。
+まずはAtlasでCluster, Database, Collectionを作成します。
 
-になります。
+- [Get Started with Atlas](https://docs.atlas.mongodb.com/getting-started/)
 
-## 3rd Party ServicesがDeprecatedになっている
+## APIキーを作成
 
-↑の記事が書かれてからまだ半年ですが、[Creating our Realm WebHook](https://www.mongodb.com/developer/how-to/Realm-AWS-Kinesis-Firehose-Destination/#creating-our-realm-webhook) はDeprecatedになっています。
-公式ドキュメントの[Configure HTTPS Endpoints](https://docs.mongodb.com/realm/endpoints/configure/) を参照します。
+- [Create a Server API Key](https://docs.mongodb.com/realm/authentication/api-key/#create-a-server-api-key)
 
-## Realm Functionを自前で実装する必要がある
+## MongoDB Realm Functionsを実装
 
 てっきりGUIポチポチで連携完了するものかとおもってましたが、FirehoseからのWebhookエンドポイントとなるサーバーレス関数を自前で実装する必要があります。  
 これ、Kinesis Data Streams + Lambdaでよくね...？
 
-しかもサンプルコードの冒頭はこんな感じ。
+- [MongoDB Realm Functions](https://docs.mongodb.com/realm/functions/#functions)
+
+AWSのリリースノートからリンクされている[サンプルコード](https://www.mongodb.com/developer/how-to/Realm-AWS-Kinesis-Firehose-Destination/#the-realm-function)の冒頭はこんな感じ。
 
 ```js
 exports = function(payload, response) {
@@ -49,12 +48,73 @@ exports = function(payload, response) {
 ...
 ```
 
-Base64デコードを自前で実装しているのも驚きですが、[A-Za-z1-9+/]以外の文字はガン無視とは。
+自前でbase64デコードが実装されている事自体に驚きですが、マルチバイト文字に対応していないためこのままでは使えません。
 
 幸いなことに [Import External Dependencies](https://docs.mongodb.com/realm/functions/import-external-dependencies/) で外部のnpmパッケージが使えます。
+Function Editor画面で `Add Dependency`を選択し、`js-base64` の `3.7.2`を追加します。
 importは非対応のようで、requireを使うことになります。
 
 ```js
 const decoded = require("js-base64").decode(encoded)
 ```
 
+
+最終的に以下のコードで関数を作成しました。
+認証には先程作成したAPIキーを使いたいので、関数を作成する際に選択するAuthenticationは `System` にします。
+
+```js
+exports = (payload, response) => {
+  const body = JSON.parse(payload.body.text())
+  const requestId = body.requestId
+  const timestamp = new Date(body.timestamp)
+  const firehoseAccessKey = payload.headers["X-Amz-Firehose-Access-Key"]
+
+
+  const bulkOp = context.services.get("mongodb-atlas").db("test-db").collection("test-collection").initializeOrderedBulkOp()
+  body.records.forEach((record, index) => {
+    data = JSON.parse(require("js-base64").decode(record.data))
+    bulkOp.insert(data)
+  })
+  
+  
+  response.addHeader(
+    "Content-Type",
+    "application/json"
+  )
+
+  
+  bulkOp.execute().then(() => {
+    response.setStatusCode(200)
+    response.setBody(JSON.stringify({
+      requestId: requestId,
+      timestamp: timestamp.getTime()
+    }))
+    return
+  }).catch((error) => {
+    response.setStatusCode(500)
+    response.setBody(JSON.stringify({
+      requestId: requestId,
+      timestamp: timestamp.getTime(),
+      errorMessage: error
+    }))
+    return
+  })
+}
+```
+
+## Realm HTTPS Endpointsを作成
+
+リリースノートが書かれてからまだ半年ですが、[Creating our Realm WebHook](https://www.mongodb.com/developer/how-to/Realm-AWS-Kinesis-Firehose-Destination/#creating-our-realm-webhook) は既にDeprecatedになっています。
+
+公式ドキュメントの[Configure HTTPS Endpoints](https://docs.mongodb.com/realm/endpoints/configure/) を参照し、`Add An Endpoint` を選択します。
+先程作成したFunctionを選択し、HTTP Methodは `POST`、Request Validationは `No Additional Authorization` を選択します。
+
+## Kinesis Data Firehoseを設定
+
+[Choose MongoDB Cloud for Your Destination](https://docs.aws.amazon.com/firehose/latest/dev/create-destination.html#create-destination-mongodb) の通りにKinesis Data Firehoseを設定します。
+
+## テスト
+
+AWSマネジメントコンソールの先程作成したKinesis Delivery streamsから `Test with demo data`を選択し、テストデータを流してみます。
+うまくいくとCollectionsにKinesisのテストデータが追加されています。
+うまく行かない場合はMongoDB Cloud側の `LOGS`を確認します。

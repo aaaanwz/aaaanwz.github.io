@@ -106,7 +106,9 @@ pv.yaml 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 
 <section class=entry-content>
 <p>KubernetesでGitOps運用となると必ず話題になるのがSecretの管理です。
 Sealed Secretsやkubesecなどの手元で暗号化する系 Kubernetes Secrets Store CSI Driverやkubernetes-external-secretsなどの外部シークレットストアから引っ張ってくる系 機密情報だけ別Repoにする など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。
-そんな中でIBM社が開発しているArgoCD Vault Pluginを触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。 (上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します) ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。
+そんな中でIBM社が開発しているArgoCD Vault Pluginを触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。
+2022/02追記: Argo Projectに移管されたようです。 https://argocd-vault-plugin.readthedocs.io/en/stable/
+(上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します) ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。
 テスト AVPはbrewからも導入でき、手元で簡単にテストができます。 シークレットストアはAWS Secrets Mangerを使う前提で解説します。
 ローカル環境にインストール (Mac) 1 $ brew install argocd-vault-plugin AWS Secrets Mangerに機密文字列を登録する 1 2 key: my_secret value: foobar Kubernetes Manifestを作成する Secretの実装は非常に簡単で、
 アノテーションに参照するSecret Managerのパスを記述する Secret Managerのキー名を&lt;> で囲う だけでOKです。

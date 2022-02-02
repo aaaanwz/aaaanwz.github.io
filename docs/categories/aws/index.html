@@ -66,6 +66,24 @@
 </header>
 <article class="post-entry tag-entry">
 <header class=entry-header>
+<h2>Kinesis Data FirehoseからMongoDB Cloudにデータを流してみる
+</h2>
+</header>
+<section class=entry-content>
+<p>Amazon Kinesis Data Firehose が MongoDB Cloud へのデータ配信のサポートを開始 したそうなので試してみましたが、色々と「ん？」と思う点があったので書き残します。
+詳細は Using MongoDB Realm WebHooks with Amazon Kinesis Data Firehose を見るようにとあります。
+MongoDB Atlas でClusterを作成 MongoDB Atlas、MongoDB Realmという単語が登場しますが、AtlasはDBaaSとしてのMongoDBそのもの、RealmはAtlasを操作するためのインターフェースとなるサービスのようです。
+まずはAtlasでCluster, Database, Collectionを作成します。
+Get Started with Atlas MongoDB Realm Functionsを実装 てっきりGUIポチポチで連携完了するものかとおもってましたが、FirehoseからのWebhookエンドポイントとなるサーバーレス関数を自前で実装する必要があります。
+だったらKinesis Data Streams + Lambdaでよくね…？
+MongoDB Realm Functions リリースノートのリンク先のサンプルコードの冒頭はこんな感じ。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 exports = function(payload, response) { /* Using Buffer in Realm causes a severe performance hit this function is ~6 times faster */ const decodeBase64 = (s) => { var e={},i,b=0,c,x,l=0,a,r='',w=String....</p>
+</section>
+<footer class=entry-footer><span title="2022-02-02 00:00:00 +0000 UTC">February 2, 2022</span></footer>
+<a class=entry-link aria-label="post link to Kinesis Data FirehoseからMongoDB Cloudにデータを流してみる" href=https://aaaanwz.github.io/post/2022/firehose_mongo/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
 <h2>Github ActionsでAWS Lambdaにデプロイする
 </h2>
 </header>

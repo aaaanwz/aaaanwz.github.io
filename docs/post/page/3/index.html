@@ -67,6 +67,19 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>Github ActionsでAWS Lambdaにデプロイする
+</h2>
+</header>
+<section class=entry-content>
+<p>GitHubでreleaseが作成された時、Lambdaにコードを反映させバージョンを更新するワークフローの単純な実装です
+サンプルディレクトリ構成 1 2 3 4 5 6 7 some-lambda-function-repo ├── .github │ └── workflows │ └── lambda-cd.yml ├── README.md ├── bootstrap └── handler.sh GitHubのSecretsに以下を設定 AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY 必要なPolicyに関しては割愛します
+Github Actions 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 name: Lambda Continuous Delivery on: push: tags: - '*' jobs: lambda-cd: runs-on: ubuntu-latest steps: - uses: actions/checkout@master - run: chmod u+x * - run: zip -r /tmp/some-lambda-function....</p>
+</section>
+<footer class=entry-footer><span title="2019-11-28 00:00:00 +0000 UTC">November 28, 2019</span></footer>
+<a class=entry-link aria-label="post link to Github ActionsでAWS Lambdaにデプロイする" href=https://aaaanwz.github.io/post/2019/github-actions-lambda-deploy/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>mavenプロジェクト作成からCIOps構築まで
 </h2>
 </header>

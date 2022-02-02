@@ -129,7 +129,7 @@ MongoDB RealmのAPIキーを作成します。
 - [Define a Value](https://docs.mongodb.com/realm/values-and-secrets/define-a-value/)
 
 Secretを作成した後、さらにValueを作成してSecretにリンクさせるという手順を踏みます。
-<img src="/images/firehose_mongo/firehose_mongo1.png" width="480">
+<img src="/images/firehose_mongo/firehose_mongo1.png" width="640">
 
 ## テスト
 

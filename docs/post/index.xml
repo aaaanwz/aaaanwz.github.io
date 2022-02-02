@@ -14,7 +14,6 @@
       
       <guid>https://aaaanwz.github.io/post/2022/firehose_mongo/</guid>
       <description>Amazon Kinesis Data Firehose が MongoDB Cloud へのデータ配信のサポートを開始 したそうなので試してみましたが、色々と「ん？」と思う点があったので書き残します。
-詳細は Using MongoDB Realm WebHooks with Amazon Kinesis Data Firehose を見るようにとあります。
 MongoDB Atlas でClusterを作成 MongoDB Atlas、MongoDB Realmという単語が登場しますが、AtlasはDBaaSとしてのMongoDBそのもの、RealmはAtlasを操作するためのインターフェースとなるサービスのようです。
 まずはAtlasでCluster, Database, Collectionを作成します。
  Get Started with Atlas  MongoDB Realm Functionsを実装 てっきりGUIポチポチで連携完了するものかとおもってましたが、FirehoseからのWebhookエンドポイントとなるサーバーレス関数を自前で実装する必要があります。

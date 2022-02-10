@@ -15,6 +15,9 @@ KubernetesでGitOps運用となると必ず話題になるのがSecretの管理�
 など様々な方法がありますが、学習コストや実運用をイメージするとどのソリューションもしっくり来ませんでした。
 
 そんな中でIBM社が開発している`ArgoCD Vault Plugin`を触ってみたところ、ArgoCDのデプロイ時にplaceholderをreplaceするという合理的かつシンプルな仕組みで非常に好感触でした。
+
+> 2022/02追記: Argo Projectに移管されたようです。 https://argocd-vault-plugin.readthedocs.io/en/stable/
+
 (上記でいう「外部シークレットストアから引っ張ってくる系」の一種に該当します)
 ArgoCD Vault Plugin (以下AVP) は日本語の情報が皆無に等しかったため、布教の目的も込めて導入・運用方法を記載します。
 

@@ -66,6 +66,16 @@ $ sudo apt install gnome-shell-extension-prefs
 
 メニュー > 拡張機能 でDesktop Iconsをオフにする
 
+## Brew
+https://docs.brew.sh/Homebrew-on-Linux
+
+```sh
+test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.bash_profile
+echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.profile
+```
+
 ## Docker
 
 sudo無しで使えるようにgroupにユーザーを入れる  
@@ -127,6 +137,7 @@ $ dxvk-setup i
 ## VSCode
 
 snapで入れるとKubernetes extensionが動作しないため、公式の.debパッケージを入れる
+https://code.visualstudio.com/download
 
 ## Slack
 

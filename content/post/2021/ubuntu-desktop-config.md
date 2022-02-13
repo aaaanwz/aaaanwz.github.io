@@ -29,27 +29,10 @@ $ sudo vi /etc/default/keyboard
 XKBOPTIONS="ctrl:nocaps"
 ```
 
-## Chromeをダークモード化
+## 日本語ディレクトリを英語化
 
 ```sh
-$ sudo vi /opt/google/chrome/google-chrome
-...
-exec -a "$0" "$HERE/chrome" "--enable-features=WebUIDarkMode" "--force-dark-mode" "$@"
-```
-
-## 日本語ディレクトリを変更
-
-```sh
-$ sudo vi .config/user-dirs.dirs
-
-XDG_DESKTOP_DIR="$HOME/Desktop"
-XDG_DOWNLOAD_DIR="$HOME/Downloads"
-XDG_TEMPLATES_DIR="$HOME/Templates"
-XDG_PUBLICSHARE_DIR="$HOME/Share"
-XDG_DOCUMENTS_DIR="$HOME/Documents"
-XDG_MUSIC_DIR="$HOME/Music"
-XDG_PICTURES_DIR="$HOME/Pictures"
-XDG_VIDEOS_DIR="$HOME/Videos"
+LANG=C xdg-user-dirs-gtk-update
 ```
 
 ## デスクトップとファイルマネージャの間でファイルの移動ができるようにする
@@ -70,10 +53,11 @@ $ sudo apt install gnome-shell-extension-prefs
 https://docs.brew.sh/Homebrew-on-Linux
 
 ```sh
-test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.bash_profile
-echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.profile
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+$ test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+$ test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+$ test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.bash_profile
+$ echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.profile
 ```
 
 ## Docker
@@ -82,6 +66,7 @@ sudo無しで使えるようにgroupにユーザーを入れる
 https://docs.docker.com/engine/install/linux-postinstall/
 
 ```sh
+$ brew install docker
 $ sudo snap install docker
 $ sudo groupadd docker
 $ sudo usermod -aG docker $USER

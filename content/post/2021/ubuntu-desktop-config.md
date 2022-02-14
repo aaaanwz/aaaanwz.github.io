@@ -77,46 +77,19 @@ $ newgrp docker
 https://wiki.winehq.org/Ubuntu
 
 ```sh
-$ sudo dpkg --add-architecture i386
-$ wget -nc https://dl.winehq.org/wine-builds/winehq.key
-$ sudo apt-key add winehq.key
-$ sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
+$ echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_11/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
+$ wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_11/Release.key -O- | sudo apt-key add -
 $ sudo apt update
-$ sudo apt install wine-development
+$ sudo apt install lutris
 $ winecfg
 ```
 
 文字化け対策
 
 ```sh
-$ sudo apt-get install winetricks
 $ winetricks fakejapanese
 $ winetricks corefonts
 $ winetricks cjkfonts
-```
-
-### 3D関係
-
-```sh
-$ sudo apt install vulkan-utils dxvk
-```
-
-以下のファイルを作成する
-
-```json
-$ vi ~/.wine/windows/winevulkan.json
-
-{
-    "file_format_version": "1.0.0",
-    "ICD": {
-        "library_path": "c:\\windows\\system32\\winevulkan.dll",
-        "api_version": "1.0.51"
-    }
-}
-```
-
-```sh
-$ dxvk-setup i
 ```
 
 ## VSCode

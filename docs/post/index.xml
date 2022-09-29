@@ -6,7 +6,27 @@
     <description>Recent content in Posts on A4 tech note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Wed, 02 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BERTによるテキスト分類サンプルコード</title>
+      <link>https://aaaanwz.github.io/post/2022/bert_example/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2022/bert_example/</guid>
+      <description>GPU環境整備 今回はGCE VM + ColabでGPU環境を用意しました。 https://research.google.com/colaboratory/marketplace.html
+1 2  !nvcc -V !nvidia-smi   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19  +-----------------------------------------------------------------------------+ | NVIDIA-SMI 495.46 Driver Version: 460.32.03 CUDA Version: 11.2 | |-------------------------------+----------------------+----------------------+ | GPU Name Persistence-M| Bus-Id Disp.A | Volatile Uncorr. ECC | | Fan Temp Perf Pwr:Usage/Cap| Memory-Usage | GPU-Util Compute M. | | | | MIG M.</description>
+    </item>
+    
+    <item>
+      <title>分類木モデルの可視化サンプルコード</title>
+      <link>https://aaaanwz.github.io/post/2022/decision_tree_classfier/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2022/decision_tree_classfier/</guid>
+      <description>データ用意 data.csv
+1 2 3  param_a, param_b, label hoge, fuga, 1 foo, bar, 0   1 2 3 4 5 6 7  import pandas as pd from sklearn.model_selection import train_test_split FILENAME=&amp;#39;data.csv&amp;#39; data = pd.read_csv(FILENAME) data[&amp;#39;labels&amp;#39;] = data[&amp;#39;labels&amp;#39;].astype(int)   1 2 3 4 5 6 7 8  from sklearn.tree import DecisionTreeClassifier from sklearn.model_selection import cross_val_score X = data.drop(&amp;#39;label&amp;#39;, axis=1) y = data.drop(&amp;#39;param_a&amp;#39;, axis=1).drop(&amp;#39;param_b&amp;#39;,axis=1) model = DecisionTreeClassifier() model.</description>
+    </item>
+    
     <item>
       <title>Kinesis Data FirehoseからMongoDB Cloudにデータを流してみる</title>
       <link>https://aaaanwz.github.io/post/2022/firehose_mongo/</link>

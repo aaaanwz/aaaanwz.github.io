@@ -1,8 +1,9 @@
 ---
-title: "分類木モデルの可視化サンプルコード"
+title: "sklearn モデル選択とパラメータチューニングのサンプルコード"
 date: 2022-06-29
 categories:
 - データサイエンス
+draft: true
 ---
 
 ## データ用意
@@ -25,16 +26,42 @@ data = pd.read_csv(FILENAME)
 data['labels'] = data['labels'].astype(int)
 ```
 
+## モデル比較
+
 ```python
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import cross_val_score
+names = [
+    "Nearest Neighbors",
+    "Linear SVM",
+    "RBF SVM",
+    "Gaussian Process",
+    "Decision Tree",
+    "Random Forest",
+    "Neural Net",
+    "AdaBoost",
+    "Naive Bayes",
+    "QDA",
+]
 
-X = data.drop('label', axis=1)
-y = data.drop('param_a', axis=1).drop('param_b',axis=1)
+classifiers = [
+    KNeighborsClassifier(3),
+    SVC(kernel="linear", C=0.025),
+    SVC(gamma=2, C=1),
+    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    DecisionTreeClassifier(max_depth=5),
+    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+    MLPClassifier(alpha=1, max_iter=1000),
+    AdaBoostClassifier(),
+    GaussianNB(),
+    QuadraticDiscriminantAnalysis(),
+]
 
-model = DecisionTreeClassifier()
-model.fit(X,y)
+for name, clf in zip(names, classifiers):
+    print(name)
+    result = cross_val_score(clf, X, y, n_jobs=-1,scoring='neg_mean_absolute_error')
+    print(result.mean())
 ```
+
+# グリッドサーチ
 
 ```python
 from sklearn.tree import plot_tree

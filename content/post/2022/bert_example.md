@@ -3,6 +3,7 @@ title: "BERTによるテキスト分類サンプルコード"
 date: 2022-07-29
 categories:
 - データサイエンス
+draft: true
 ---
 
 ## GPU環境整備

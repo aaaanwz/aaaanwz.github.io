@@ -22,7 +22,9 @@ juniversalchardetとはMozillaによって提供されているライブラリ�
 ## 下準備
 以下をmaven dependenciesに追加します
 
-```xml:pom.xml
+`pom.xml`
+
+```xml
 <dependency>
     <groupId>com.googlecode.juniversalchardet</groupId>
     <artifactId>juniversalchardet</artifactId>
@@ -36,7 +38,9 @@ juniversalchardetとはMozillaによって提供されているライブラリ�
 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。
 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
 
-```java:Detector.java
+`Detector.java`
+
+```java
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -74,7 +78,9 @@ public class Detector {
 ファイルの文字コードを判別し、コンソールに出力します。  
 FileInputStreamはmark/resetをサポートしていないため、文字コード判別とコンソール出力で別のインスタンスを生成します。
 
-```java:Main.class
+`Main.java`
+
+```java
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -108,7 +114,9 @@ charset:SHIFT-JIS
 
 追加でApache commons codecを使用します。
 
-```xml:pom.xml
+`pom.xml`
+
+```xml
 <dependency>
     <groupId>commons-codec</groupId>
     <artifactId>commons-codec</artifactId>
@@ -117,7 +125,10 @@ charset:SHIFT-JIS
 ```
 
 ### Detectorクラス
-```java:Detector.class
+
+`Detector.java`
+
+```java
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -143,7 +154,9 @@ public class Detector {
 
 ### Mainクラス
 
-```java:Main.class
+`Main.java`
+
+```java
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

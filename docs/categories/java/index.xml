@@ -54,7 +54,9 @@ Java実装 監視対象クラス テスト用に、インスタンスが生成�
  ファイルの文字コードを推測・デコード・コンソールへの表示を行う URLエンコードされた文字列をデコードする  の2つのサンプルプログラムを作成してみます。
 juniversalchardetとはMozillaによって提供されているライブラリで、バイト列のパターンの出現頻度をもとに文字コードを推測する機能を提供します。現在日本語ではISO-2022-JP, SHIFT-JIS, EUC-JPに対応しています。
 開発環境  OpenJDK 11 Maven 3.6  下準備 以下をmaven dependenciesに追加します
+pom.xml
 1 2 3 4 5  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.googlecode.juniversalchardet&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;juniversalchardet&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   サンプル1. ファイル読み込み Detectorクラス 今回は汎用性のためにInputStreamを引数としてみます。 引数に渡されたInputStreamインスタンスはオフセットが進んでしまう事に注意が必要です。 UniversalDetectorは入力データが全てシングルバイト文字の場合は文字コード判定結果がnullとなります。今回はそのような場合は環境デフォルト値を返すようにしました。
+Detector.java
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30  import java.</description>
     </item>
     

@@ -6,7 +6,23 @@
     <description>Recent content on A4 tech note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Wed, 02 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BigQueryのデータを元にパーソナライズされたメールを送信する</title>
+      <link>https://aaaanwz.github.io/post/2022/bigquery-to-sendgrid/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/post/2022/bigquery-to-sendgrid/</guid>
+      <description>BigQueryに格納されている行動ログを元にマーケティングオートメーションを構築、SendGridでメールを発射したいケースは多々あるかと思います。
+MAツールはかなり高価なものが多いため、シュッと自前構築するためのサンプルコードを掲載します。
+送信したメールの効果測定・分析方法についても少し触れます。
+1. SendGridテンプレートの作成 公式ドキュメントを参考に、Dyamic templateを作成します。
+詳細は割愛しますが、今回は以下のようなメールを送りたいとします。
+1 2 3 4 5 6 7  foobar様への今週のおすすめ商品です！ 1. ほげほげ (1000円) 2. ふがふが (1500円) 購入はこちらから！ https://example.com   テンプレートはこんな感じで記述します。
+1 2 3 4 5 6 7 8  {{customer_name}}様への今週のおすすめ商品です！ {{#each products}} {{this.number}}. {{this.product_name}} ({{this.price}}円) {{/each}} 購入はこちらから！ https://example.com   このテンプレートに対して、送信対象ごとに以下のようなデータを埋め込む事が目標になります。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  { &amp;#34;customer_name&amp;#34;: &amp;#34;foobar&amp;#34;, &amp;#34;products&amp;#34;: [ { &amp;#34;number&amp;#34;: 1, &amp;#34;product_name&amp;#34;: &amp;#34;ほげほげ&amp;#34;, &amp;#34;price&amp;#34;: 1000 }, { &amp;#34;number&amp;#34;: 1, &amp;#34;product_name&amp;#34;: &amp;#34;ふがふが&amp;#34;, &amp;#34;price&amp;#34;: 1500 }, ] }   2.</description>
+    </item>
+    
     <item>
       <title>Kinesis Data FirehoseからMongoDB Cloudにデータを流してみる</title>
       <link>https://aaaanwz.github.io/post/2022/firehose_mongo/</link>

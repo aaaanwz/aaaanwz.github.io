@@ -64,6 +64,18 @@
 <main class=main>
 <article class=post-entry>
 <header class=entry-header>
+<h2>kubectl logsに任意のログを表示する
+</h2>
+</header>
+<section class=entry-content>
+<p>kubectl logsはPID1の標準出力を表示するため、直接書き込んでしまえばなんでも表示できる。
+1 2 3 $ kubectl exec -it pod-xxx bash # echo 'show as stdin' > /proc/1/fd/1 # echo 'show as stderr' > /proc/1/fd/2 1 2 3 4 $ kubectl logs pod-xxx show as stdin show as stderr </p>
+</section>
+<footer class=entry-footer><span title="2021-09-08 00:00:00 +0000 UTC">September 8, 2021</span></footer>
+<a class=entry-link aria-label="post link to kubectl logsに任意のログを表示する" href=https://aaaanwz.github.io/post/2021/kubectl-logs/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>VSCode Remote ContainerからGitHubにssh接続する
 </h2>
 </header>
@@ -188,17 +200,6 @@ WordCountサンプル https://github.com/aaaanwz/beam-wordcount-sample
 </section>
 <footer class=entry-footer><span title="2020-02-01 00:00:00 +0000 UTC">February 1, 2020</span></footer>
 <a class=entry-link aria-label="post link to Apache beam サンプルコード" href=https://aaaanwz.github.io/post/2020/apache-beam-example/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする
-</h2>
-</header>
-<section class=entry-content>
-<p> ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp" - run: GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository </p>
-</section>
-<footer class=entry-footer><span title="2019-11-28 00:00:00 +0000 UTC">November 28, 2019</span></footer>
-<a class=entry-link aria-label="post link to CircleCIでDeploy Keyを用いて別のprivate repoをcloneする" href=https://aaaanwz.github.io/post/2019/circleci-deploy-key/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>

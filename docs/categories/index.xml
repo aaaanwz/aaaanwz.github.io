@@ -6,7 +6,25 @@
     <description>Recent content in Categories on A4 tech note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <lastBuildDate>Wed, 02 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://aaaanwz.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BigQuery</title>
+      <link>https://aaaanwz.github.io/categories/bigquery/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/categories/bigquery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>BI・MA</title>
+      <link>https://aaaanwz.github.io/categories/bima/</link>
+      <pubDate>Tue, 08 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://aaaanwz.github.io/categories/bima/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>AWS</title>
       <link>https://aaaanwz.github.io/categories/aws/</link>
@@ -94,15 +112,6 @@
       <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://aaaanwz.github.io/categories/gcp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>BigQuery</title>
-      <link>https://aaaanwz.github.io/categories/bigquery/</link>
-      <pubDate>Wed, 05 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://aaaanwz.github.io/categories/bigquery/</guid>
       <description></description>
     </item>
     

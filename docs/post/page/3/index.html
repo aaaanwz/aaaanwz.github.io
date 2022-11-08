@@ -67,6 +67,17 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>CircleCIでDeploy Keyを用いて別のprivate repoをcloneする
+</h2>
+</header>
+<section class=entry-content>
+<p> ssh-keygenコマンドで公開鍵/秘密鍵を生成する 公開鍵(id_rsa.pub)をGitHubのDeploy keyに登録する 秘密鍵(id_rsa)をCircleCIに登録する 3.のfingerprintを↓にコピー 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 version: 2.1 jobs: do-something-with-another-repository: docker: - image: circleci/golang:1.11-stretch steps: - add_ssh_keys: fingerprints: - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp" - run: GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone git@github.com:aaaanwz/another-repository.git - run: echo 'Do something' workflows: test: jobs: - do-something-with-another-repository </p>
+</section>
+<footer class=entry-footer><span title="2019-11-28 00:00:00 +0000 UTC">November 28, 2019</span></footer>
+<a class=entry-link aria-label="post link to CircleCIでDeploy Keyを用いて別のprivate repoをcloneする" href=https://aaaanwz.github.io/post/2019/circleci-deploy-key/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>Github ActionsでAWS Lambdaにデプロイする
 </h2>
 </header>

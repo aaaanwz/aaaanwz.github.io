@@ -70,7 +70,7 @@ https://example.com
 ```python
 from google.cloud import bigquery
 import sendgrid
-from sendgrid.helpers.mail import Mail, To, Cc, Bcc
+from sendgrid.helpers.mail import Mail, To
 import os
 import json
 
@@ -137,7 +137,7 @@ https://sendgrid.kke.co.jp/docs/API_Reference/Webhooks/event.html
 このイベントを受け取り、BigQueryに入れる仕組みを用意しておきます。
 こちらのコードは割愛しますが、CloudFunctionsや[fluentd http input plugin](https://docs.fluentd.org/input/http)などでPOSTされてきたデータをそのままBigQueryテーブルにSTREAMING INSERTされるようにします。
 
-落とし穴としてキーに[smtp-id](https://sendgrid.kke.co.jp/docs/API_Reference/Webhooks/event.html#-Event-POST-Example)という値があり、BigQueryではカラム名に `-` が使えないためTransformステップでアンダースコアに置換するなどの処理が必要があります。
+落とし穴としてキーに[smtp-id](https://sendgrid.kke.co.jp/docs/API_Reference/Webhooks/event.html#-Event-POST-Example)という値がありますがBigQueryではカラム名に `-` が使えないため、場合によってはTransformステップでアンダースコアに置換するなどの処理が必要になります。
 
 ## 4. 分析
 
@@ -162,5 +162,6 @@ WHERE
 ## まとめ
 
 - BigQueryとSendGrid Dynamic Templateを組み合わせて、パーソナライズされたメールの自動送信を簡単に実現できる
+  - BigQuery MLと組み合わせると機械学習の導入も一瞬
 - Webhook経由でメールの開封、URLクリックなどのイベントデータが収集できる
 - メール送信時のレスポンスヘッダに含まれる `X-Message-Id` はイベントデータの絞り込みを行う際に必要になる

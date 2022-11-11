@@ -1,5 +1,3 @@
-publishDir: docs
-baseURL: "https://aaaanwz.github.io/"
 languageCode: ja
 title: "A4 tech note"
 theme: PaperMod

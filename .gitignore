@@ -1,4 +1,4 @@
-docs
+public
 resources/_gen
 !.github
 !.devcontainer

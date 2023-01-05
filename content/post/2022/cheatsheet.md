@@ -98,6 +98,12 @@ df.describe(include=['O'])
 - top 最頻値
 - freq 最頻値が登場する回数
 
+## カラムに含まれる値のリストを見る
+
+```python
+df.unique()
+```
+
 # データ加工
 
 ## ソート
@@ -113,26 +119,16 @@ df[["hoge", "fuga"]].sort_values(by='hoge', ascending=False)
 df.drop(columns=['hoge'])
 ```
 
-`implace=True` オプションを指定すると元のデータフレームを書き換える
+`inplace=True` オプションを指定すると元のデータフレームを書き換える
 
-### 列のスライス
+### 行を条件で抽出
 
 ```python
-df.loc(:, 'col2':'col3')
+df[df['Name'].isin(['Alice','Bob'])]
 ```
 
-### 行の削除
-
 ```python
-df=df.set_index(['name'])
-df.drop(index='Alice')
-```
-
-### 行のスライス
-
-```python
-df=df.set_index(['name']).sort_values(by='name', ascending=True)
-df['Alice':'Bob']
+df.query('name == "Alice" or name == "Bob"')
 ```
 
 ## 集約
@@ -158,7 +154,7 @@ df['Flag'] = df['Flag'].map({'True': 1, 'False': 0}).astype(int)
 ### apply
 
 ```python
-df['Number'] = df['Number'].apply(lambda x: 'odd' if x % 2 == 1 else 'even').astype(str)
+df['Diff'] = df[['X','Y'].apply(lambda a: a['X'] - a['Y'], axis=1)
 ```
 
 ## 欠損値を埋める
@@ -285,6 +281,7 @@ After:
 
 ```python
 import seaborn as sns
+import japanize_matplotlib # 文字化け対応
 sns.pairplot(df)
 ```
 

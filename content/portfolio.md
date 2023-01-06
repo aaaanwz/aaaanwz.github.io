@@ -16,7 +16,6 @@ resumeはDM等でお送りします.
 - LineBot
 - SlackBot
 - システムトレード開発
-- Flutter
 
 </details></div>
 
@@ -24,9 +23,24 @@ resumeはDM等でお送りします.
 
 <div class="toc"><details><summary accesskey="c">データ分析</summary>
 
-- BigQuery ML
-    - サブスクリプション コンバージョン予測モデルなど
-- Vertex AI Workbench
+- 経営関係
+    - ダッシュボード開発
+    - KPI設計
+    - 売上予測
+- プロダクト開発関係
+    - ユーザー行動分析
+        - 施策立案・効果測定
+    - 価格決定
+- 営業・マーケティング・広報関係
+    - アンケート設計・分析
+        - 統計的仮説検定
+    - コンバージョン予測モデル開発
+        - 機械学習・Deep learning
+    - SNS分析
+        - 自然言語処理
+            - BERT
+        - プレスリリース効果測定
+    - EFO, LPO
 
 </details></div>
 
@@ -50,9 +64,14 @@ resumeはDM等でお送りします.
 - terraform
 - EKS Fargate
     - Argo CD
+- Grafana
 
 #### BI
 - Redash
+
+#### Language
+- Python
+- Node.js
 
 </details></div>
 

@@ -1,5 +1,5 @@
 ---
-title: "Pythonチートシート"
+title: "Pythonデータ分析チートシート"
 date: 2022-12-28
 categories:
 - データサイエンス
@@ -339,7 +339,6 @@ sns.heatmap(df)
 
 ![](https://seaborn.pydata.org/_images/heatmap_1_1.png)
 
-
 # 統計的仮説検定
 
 ## 二項検定
@@ -383,6 +382,23 @@ print(p)
 ```
 
 [ref: クロス集計](#クロス集計)
+
+
+# 分析モデル
+
+## Cox比例ハザードモデル
+
+生存期間を予測する
+
+```python
+from lifelines import CoxPHFitter
+
+cph = CoxPHFitter()
+cph.fit(rossi, duration_col='lifetime', event_col='is_dead')
+
+cph.print_summary()
+cph.plot()
+```
 
 # 機械学習
 

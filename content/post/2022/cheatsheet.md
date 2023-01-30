@@ -128,7 +128,7 @@ df[df['Name'].isin(['Alice','Bob'])]
 ```
 
 ```python
-df.query('name == "Alice" or name == "Bob"')
+df.query('name == "Alice" or name == "Bob"', engine='python')
 ```
 
 ## 集約
@@ -141,6 +141,20 @@ df[["hoge", "fuga"]].groupby(['hoge'], as_index=False).mean()
 
 ```sql
 SELECT hoge, AVG(fuga) AS fuga FROM df GROUP BY hoge;
+```
+
+## 結合
+
+```python
+pd.merge(df_a, df_b, on='column1', how='inner')
+```
+
+howは `inner`, `left`, `right`, `outer` を指定する
+
+以下のSQLと同じ意味
+
+```sql
+SELECT * FROM df_a INNER JOIN df_b ON df_a.column1 = df_b.column1;
 ```
 
 ## 値の変換

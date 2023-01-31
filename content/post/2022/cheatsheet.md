@@ -324,10 +324,10 @@ df.plot.scatter(x='length',y='width')
 ## ヒストグラム
 
 ```python
-sns.distplot(data=df, x='Length', kde=True)
+sns.histplot(data=df, x='Length', stat='percent')
 ```
 
-![](https://seaborn.pydata.org/_images/displot_1_0.png)
+![](https://seaborn.pydata.org/_images/histplot_23_0.png)
 
 ## 経験的累積分布関数
 

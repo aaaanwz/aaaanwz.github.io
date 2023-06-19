@@ -1,17 +1,51 @@
 ---
-title: "Ubuntu desktop初期設定メモ"
-date: 2021-11-21
+title: "Ubuntu desktop 23.04 環境構築メモ"
+date: 2023-06-20
 draft: false
 categories:
 - 小ネタ
 ---
 
-M1 Macに移行する気になれなかったのでメインマシンをx86 + Ubuntu Desktop 20.04にしました。  
+GPUを使う開発は自作PC+Ubuntuに限る
 
 ## GPUドライバのインストール
 
 ```sh
 $ sudo ubuntu-drivers autoinstall
+```
+
+## CUDAセットアップ
+https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network
+
+```sh
+$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
+$ sudo dpkg -i cuda-keyring_1.0-1_all.deb
+$ sudo apt update
+$ sudo apt install cuda
+```
+
+`~/.bashrc`
+```sh
+...
+export PATH="/usr/local/cuda/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+```
+
+> 動作確認
+
+```sh
+$ nvcc -V
+
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Mon_Apr__3_17:16:06_PDT_2023
+Cuda compilation tools, release 12.1, V12.1.105
+Build cuda_12.1.r12.1/compiler.32688072_0
+```
+
+```python
+import torch
+torch.cuda.is_available()
 ```
 
 ## IME切り替えショートカットを `Ctrl + Space` に設定
@@ -35,19 +69,16 @@ XKBOPTIONS="ctrl:nocaps"
 LANG=C xdg-user-dirs-gtk-update
 ```
 
-## デスクトップとファイルマネージャの間でファイルの移動ができるようにする
+## Docker
 
-### GNOME拡張のDesktop Icons NG (DING)をインストール
-https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/
-
-### 元々のDesktop Iconsを無効化
-デスクトップアイコンが二重に表示されるので、元々の機能を無効化する
+sudo無しで使えるようにgroupにユーザーを入れる  
+https://docs.docker.com/engine/install/linux-postinstall/
 
 ```sh
-$ sudo apt install gnome-shell-extension-prefs
+$ sudo apt install docker.io
+$ sudo usermod -aG docker $USER
+$ newgrp docker 
 ```
-
-メニュー > 拡張機能 でDesktop Iconsをオフにする
 
 ## Brew
 https://docs.brew.sh/Homebrew-on-Linux
@@ -60,18 +91,6 @@ $ test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)
 $ echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.profile
 ```
 
-## Docker
-
-sudo無しで使えるようにgroupにユーザーを入れる  
-https://docs.docker.com/engine/install/linux-postinstall/
-
-```sh
-$ brew install docker
-$ sudo snap install docker
-$ sudo groupadd docker
-$ sudo usermod -aG docker $USER
-$ newgrp docker 
-```
 ## Wine
 
 https://wiki.winehq.org/Ubuntu
@@ -91,19 +110,3 @@ $ winetricks fakejapanese
 $ winetricks corefonts
 $ winetricks cjkfonts
 ```
-
-## VSCode
-
-snapで入れるとKubernetes extensionが動作しないため、公式の.debパッケージを入れる
-https://code.visualstudio.com/download
-
-## Slack
-
-snapで入れると日本語入力ができないため、公式の.devパッケージを入れる
-https://slack.com/intl/ja-jp/downloads/linux
-
----
-
-GUIアプリはsnap版に不具合があるケースが多い模様。
-
-随時追記予定

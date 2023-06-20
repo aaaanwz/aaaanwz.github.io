@@ -8,6 +8,14 @@ categories:
 
 GPUを使う開発は自作PC+Ubuntuに限る
 
+## ハードウェアクロックをローカルタイムにする
+
+```sh
+sudo hwclock -D --systohc --localtime
+```
+
+> この設定をしないとWindows側の時刻がずれる
+
 ## GPUドライバのインストール
 
 ```sh

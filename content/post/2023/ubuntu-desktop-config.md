@@ -6,9 +6,14 @@ categories:
 - 小ネタ
 ---
 
-GPUを使う開発は自作PC+Ubuntuに限る
+GPUを使う開発は自作PC+Linuxに限る、ということでゲーム用Windowsと開発用Ubuntuのデュアルブートにした。
 
-## ハードウェアクロックをローカルタイムにする
+## OS関係
+
+Windowsをnvme0, Ubuntuをsata0に入れてfirst boot driveをsata0に設定、GNU GRUBでOSを選択する。  
+こうしておくとブートローダーを吹っ飛ばしてもsata0を外せばきれいなWindowsが起動する。(はず)
+
+### ハードウェアクロックをローカルタイムにする
 
 ```sh
 sudo hwclock -D --systohc --localtime
@@ -16,13 +21,22 @@ sudo hwclock -D --systohc --localtime
 
 > この設定をしないとWindows側の時刻がずれる
 
-## GPUドライバのインストール
+
+### 日本語ディレクトリを英語化
+
+```sh
+LANG=C xdg-user-dirs-gtk-update
+```
+
+## GPU関係
+
+### GPUドライバのインストール
 
 ```sh
 $ sudo ubuntu-drivers autoinstall
 ```
 
-## CUDAセットアップ
+### CUDAセットアップ
 https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network
 
 ```sh
@@ -43,7 +57,6 @@ export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 
 ```sh
 $ nvcc -V
-
 nvcc: NVIDIA (R) Cuda compiler driver
 Copyright (c) 2005-2023 NVIDIA Corporation
 Built on Mon_Apr__3_17:16:06_PDT_2023
@@ -56,14 +69,16 @@ import torch
 torch.cuda.is_available()
 ```
 
-## IME切り替えショートカットを `Ctrl + Space` に設定
+## 入力関係
 
-- 設定 > 地域と言語 > 入力ソース で入力ソースを `日本語(Mozc)` のみにする
-- Mozcプロパティ > キー設定 > 編集　で 入力キーが`Ctrl Space`のエントリーを削除し、以下のように設定
+### IME切り替えショートカットを `Ctrl + Space` に設定
+
+- 設定 > キーボード > 入力ソース で入力ソースを `日本語(Mozc)` のみにする
+- Mozcプロパティ > キー設定 > 編集　でIMEの有効化/無効化 を`Ctrl + Space`に設定
 
 ![1](/images/ubuntu-desktop-config/mozc.png)
 
-## CapsLockをCtrlに変更
+### CapsLockをCtrlに変更
 
 ```sh
 $ sudo vi /etc/default/keyboard
@@ -71,11 +86,31 @@ $ sudo vi /etc/default/keyboard
 XKBOPTIONS="ctrl:nocaps"
 ```
 
-## 日本語ディレクトリを英語化
+### ターミナルからクリップボードにアクセスできるようにする
 
 ```sh
-LANG=C xdg-user-dirs-gtk-update
+$ sudo apt install xsel
 ```
+
+Macみたいにpbcopy/pbpasteで呼び出せるようにする
+
+`~/.bashrc`
+```sh
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+```
+
+使い方
+
+```sh
+$ echo hoge | pbcopy
+$ pbpaste
+hoge
+```
+
+
+
+## 開発環境
 
 ## Docker
 
@@ -97,24 +132,4 @@ $ test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 $ test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 $ test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.bash_profile
 $ echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >>~/.profile
-```
-
-## Wine
-
-https://wiki.winehq.org/Ubuntu
-
-```sh
-$ echo "deb http://download.opensuse.org/repositories/home:/strycore/Debian_11/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
-$ wget -q https://download.opensuse.org/repositories/home:/strycore/Debian_11/Release.key -O- | sudo apt-key add -
-$ sudo apt update
-$ sudo apt install lutris
-$ winecfg
-```
-
-文字化け対策
-
-```sh
-$ winetricks fakejapanese
-$ winetricks corefonts
-$ winetricks cjkfonts
 ```

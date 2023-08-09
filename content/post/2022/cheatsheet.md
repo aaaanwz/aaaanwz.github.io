@@ -106,6 +106,12 @@ df.unique()
 
 # データ加工
 
+## 転置
+
+```python
+df.T
+```
+
 ## ソート
 
 ```python
@@ -129,6 +135,14 @@ df[df['Name'].isin(['Alice','Bob'])]
 
 ```python
 df.query('name == "Alice" or name == "Bob"', engine='python')
+```
+
+## リネーム
+
+### 行のリネーム
+
+```python
+df.rename(columns={'A': 'Col_1'})
 ```
 
 ## 集約

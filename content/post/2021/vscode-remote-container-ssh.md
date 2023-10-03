@@ -26,3 +26,15 @@ Host github.com
 > Start-Service ssh-agent
 > ssh-add $HOME/.ssh/id_rsa
 ```
+
+## WSL2
+
+```
+sudo apt install keychain
+```
+
+~/.bashrc
+```
+keychain -q --nogui $HOME/.ssh/id_rsa
+source $HOME/.keychain/$(hostname)-sh
+```

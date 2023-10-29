@@ -4,146 +4,98 @@ description: ""
 ShowToc: false
 ---
 
-resumeはDM等でお送りします.
+## 概要
+- データエンジニアとデータサイエンティスト両方の実務経験があり、単身で分析環境の構築からビジネスインサイトの提供まで遂行可能です
+- エンジニア数人規模のスタートアップと数百人規模のエンタープライズ企業両方でのリード経験があり、企業規模・データ利活用フェーズに応じた設計・提案が可能です
 
-<div class="toc"><details><summary accesskey="c">個人開発</summary>
+## キャリア
 
-- オンプレミスサーバー構築・運用
-    - Kubernetes
-- Blog
-    - hugo
-    - GitHub Actions
-- LineBot
-- SlackBot
-- システムトレード開発
+- データエンジニア
+  - 複数社でデータ基盤開発・運用の責任者経験
+  - 500TB超のデータをRedShiftからBigQueryに移行するプロジェクトのリーダーを努め、トラブルなく完遂
+  - データ民主化、マーケティングオートメーション開発などデータ戦略プロジェクトのリーダー経験
 
-</details></div>
+- データサイエンティスト
+  - KPI設計、施策効果検証、A/Bテスト検定、ダッシュボード構築
+  - 事業グロースハックのリーダー経験
+  - リコメンドシステムやコンテンツパーソナライズ等、機械学習システムの開発
 
-### 2022/01 ~
+- その他
+  - エンジニア採用
+    - データエンジニア2名の入社
+  - 海外経験
+    - 海外支社での業務経験あり (日本在住でフルリモート)
+    - 外国籍エンジニアのマネジメント経験あり
+  - 開発組織改善
+    - CI/CD、カンバン導入など
 
-<div class="toc"><details><summary accesskey="c">データ分析</summary>
+## スキル
 
-- 経営関係
-    - ダッシュボード開発
-    - KPI設計
-    - 売上予測
-- プロダクト開発関係
-    - ユーザー行動分析
-        - 施策立案・効果測定
-    - 価格決定
-- 営業・マーケティング・広報関係
-    - アンケート設計・分析
-        - 統計的仮説検定
-    - コンバージョン予測モデル開発
-        - 機械学習・Deep learning
-    - SNS分析
-        - 自然言語処理
-            - BERT
-        - プレスリリース効果測定
-    - EFO, LPO
+> 1年以上の実務経験があるもののみ記載
 
-</details></div>
+<div class="toc"><details><summary accesskey="c">言語</summary>
 
-### 2021/09 ~ 2021/12
-
-<div class="toc"><details><summary accesskey="c"> Webサービス データ基盤新規開発</summary>
-
-#### Data pipeline
-- Kinesis Firehose
-- Argo Workflows
-- embulk
-- Fluentd
-- AWS Database Migration Service
-
-#### DB/DWH/Datalake
-- S3
-- MySQL
-- BigQuery
-
-#### Infra
-- terraform
-- EKS Fargate
-    - Argo CD
-- Grafana
-
-#### BI
-- Redash
-
-#### Language
 - Python
+- Java
+- Go
 - Node.js
 
 </details></div>
 
-### 2020/01 ~ 2021/08
+<div class="toc"><details><summary accesskey="c">インフラ・監視</summary>
 
-<div class="toc"><details><summary accesskey="c">エンタープライズ データ基盤刷新</summary>
+- AWS
+  - EKS, ECS, EC2, Lambda etc.
+- GCP
+  - CloudFunctions etc.
+- Kubernetes
+- terraform
+- Grafana
+- Prometheus
+- Datadog
+- NewRelic
 
-#### Data pipeline
-- Kinesis
-- Lambda
-- Pub/Sub
-- Dataflow
-    - Apache Beam
-- Apache Airflow
+</details></div>
 
-#### DB/DWH/Datalake
-- S3
-- GCS
-- MySQL
-- RedShift
+<div class="toc"><details><summary accesskey="c">DB/DWH/メッセージキュー</summary>
+
 - BigQuery
+- RedShift
+- Athena
+- MySQL
+- RDS Aurora
+- Cassandra
+- Apache Kafka
+- Pub/Sub
+- Kinesis Streaming, Kinesis Firehose
 - Elasticsearch
 
-#### BI
-- Readash
-- Kibana
-- Jupyterhub
+</details></div>
 
-#### Infra
-- CircleCI
-- Prometheus
-- Grafana
+<div class="toc"><details><summary accesskey="c">ワークフローエンジン/データパイプライン/CDC</summary>
 
-#### Language
-- Node.js
-- golang
-- Java
+- Apache Airflow
+- Argo workflow
+- embulk
+- fluentd
+- Amazon DMS
+- Google Datastream
 
 </details></div>
 
-### 2018/10 ~ 2020/11
+<div class="toc"><details><summary accesskey="c">データ分析/BIツール</summary>
 
-<div class="toc"><details><summary accesskey="c">DMPサービス インフラ/バックエンド刷新</summary>
-
-#### Data pipeline
-- Apache Kafka
-    - Kafka Streams
-
-#### DB/DWH/Datalake
-- S3
-- Apache Cassandra
-- MySQL
-- Athena
-
-#### Infra
-- EKS
-    - Argo CD
-- CircleCI
-- Datadog
-
-#### Language
-- Java
+- Redash (インフラ構築・ダッシュボード開発)
+- Looker Studio
+- JupyterHub (インフラ構築・データ分析)
 
 </details></div>
 
-### ~ 2018/09
+<div class="toc"><details><summary accesskey="c">その他開発関係SaaS</summary>
 
-<div class="toc"><details><summary accesskey="c">レガシー系ミドルウェア製品開発/保守</summary>
-
-- IBM z/OS
-- DB2 for z/OS
-- アセンブリ言語 (z/Architecture)
-- Dump analysis (ISPF)
+- Sendgrid
+- CircleCI
+- JIRA
+- Asana
 
 </details></div>

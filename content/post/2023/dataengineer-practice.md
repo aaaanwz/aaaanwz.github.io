@@ -64,19 +64,16 @@ RDBから転送したデータをSQLで加工し、BIツールでダッシュボ
 最近はBigQuery周りの色々が進化しまくっているので、大体の場合は以下の構築パターンでいいんじゃないかと思う。
 
 #### RDBデータ連携
-- Datastream一択
+- Datastream
 
 #### スピードレイヤー
-- Pub/Subに入れて、Cloud FunctionsかDataflowでBigQueryにINSERT ([docs](https://cloud.google.com/dataflow/docs/tutorials/dataflow-stream-to-bigquery?hl=ja))
-- 以下の条件を満たすなら直接Streaming insert APIを叩いてしまうのもアリ
-  - スキーマ変更の可能性が無い、もしくはNative JSON型で入れる
-  - データ量がrate limit以下の保証がある
+- Pub/Subに入れてBigQueryサブスクリプション([docs](https://cloud.google.com/pubsub/docs/bigquery?hl=ja))
 
 #### バッチレイヤー
 - GCS → Data Transfer
 
 #### データマート生成
-- SQLで完結するならscheduled query
+- SQLで完結するならDataflow
 - しないものはワークフローエンジン行き
 
 > ワークフローエンジンの選定に関しては一概に言えない。（大体の場合マネージドAirflowで良いとは思う）

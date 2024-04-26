@@ -1,9 +1,8 @@
-baseUrl: "http://aaaanwz.github.io" 
+baseURL: "http://aaaanwz.github.io" 
 
 languageCode: ja
 title: "A4 tech note"
 theme: hugo-PaperMod
-
 enableInlineShortCodes: true
 enableEmoji: true
 
@@ -56,13 +55,12 @@ params:
     socialIcons:
         - name: github
           url: "https://github.com/aaaanwz"
-        - name: twitter
-          url: "https://twitter.com/aaaanwz"
-        - name: linkedin
-          url: "https://www.linkedin.com/in/takao-anazawa-b41a821aa/"
+        - name: X
+          url: "https://x.com/aaaanwz"
         - name: RSS
           url: "index.xml"
 
+    ShowShareButtons: false
     # editPost:
     #     URL: "https://github.com/aaaanwz/aaaanwz.github.io/tree/main/content"
     #     Text: "Suggest Changes"

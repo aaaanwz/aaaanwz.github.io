@@ -1,11 +1,13 @@
+baseUrl: "http://aaaanwz.github.io" 
+
 languageCode: ja
 title: "A4 tech note"
-theme: PaperMod
+theme: hugo-PaperMod
 
 enableInlineShortCodes: true
 enableEmoji: true
 
-googleAnalytics: "UA-213737265-1"
+googleAnalytics: "G-N9PQBVXK1K"
 enableRobotsTXT: false
 minify:
     disableXML: true

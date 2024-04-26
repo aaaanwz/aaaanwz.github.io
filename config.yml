@@ -34,7 +34,7 @@ params:
     description: ""
     defaultTheme: auto
     disableThemeToggle: false
-    ShowShareButtons: true
+    ShowShareButtons: false
     ShowReadingTime: false
     disableSpecial1stPost: true
     displayFullLangName: true
@@ -60,7 +60,6 @@ params:
         - name: RSS
           url: "index.xml"
 
-    ShowShareButtons: false
     # editPost:
     #     URL: "https://github.com/aaaanwz/aaaanwz.github.io/tree/main/content"
     #     Text: "Suggest Changes"
@@ -71,9 +70,9 @@ params:
     #     icon: icon.png
     #     iconHeight: 35
 
-    # analytics:
-    #     google:
-    #         SiteVerificationTag: 
+    analytics:
+        google:
+            SiteVerificationTag: "4lK1Zsl3jiUQQqEggGxubamYJIHgZuf-2wSGhW8gQDE"
 
     # assets:
     #     favicon: "<link / abs url>"

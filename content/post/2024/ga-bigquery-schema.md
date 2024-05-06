@@ -37,7 +37,7 @@ SELECT
 FROM
   `analytics_123456789.events_*`
 WHERE
-  _TABLE_SUFFIX BETWEEN '2024-01-01' AND '2024-01-31'
+  _TABLE_SUFFIX BETWEEN '20240101' AND '20240131'
 ```
 
 このSQLの結果をデータマートにすれば解決かと思いきや、event_paramsにプロパティを追加する度にデータマートをメンテナンスする必要があり運用が非常に面倒です。

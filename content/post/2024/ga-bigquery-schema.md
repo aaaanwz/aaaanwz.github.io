@@ -153,7 +153,7 @@ config {
 }
 
 pre_operations {
-  # 作成されたテーブルのリストを取得
+  # 作成されたGA4テーブルのsuffixを取得
   DECLARE table_suffix_checkpoint DEFAULT (
     SELECT
         MIN(REPLACE(table_name,'events_',''))

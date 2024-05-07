@@ -95,7 +95,7 @@ WHERE
 ## データマートにしてクエリコストを削減する
 
 上記のビューはスロットやスキャン量といったコスト面の効率が悪く、更にプルーニングのためにevent_timestampではなくdateを用いる必要があるためやや面倒です。  
-そのまま物理テーブルにすればよいかと思いきや、**GA4のデータは `event_timestamp`, `user_pseudo_id`, `ga_session_id`, `event_bundle_sequence_id`, `event_name` を連結キーにしてもユニークにはなりません。** event_timestampはイベントが発生した実際の時刻ではなくGA4のマイクロバッチウィンドウの時刻であるためです。  
+そのまま日次更新の物理テーブルにすればよいかと思いきや、**GA4のデータは `event_timestamp`, `user_pseudo_id`, `ga_session_id`, `event_bundle_sequence_id`, `event_name` を連結キーにしてもユニークにはなりません。** event_timestampはイベントが発生した実際の時刻ではなくGA4のマイクロバッチウィンドウの時刻であるためです。  
 従ってテーブル更新処理の冪等性を担保するにはひと工夫が必要です。
 
 更に、例えば`events_20200101`テーブルがBigQueryに作成されるのは `2020-01-02` とは限りません。3日近く遅延するケースも確認されています。従って日次更新の際に前日分のテーブルが作成されていることを前提とすることはできません。
@@ -154,9 +154,9 @@ config {
 
 pre_operations {
   # 作成されたテーブルのリストを取得
-  DECLARE table_suffix_list DEFAULT (
+  DECLARE table_suffix_checkpoint DEFAULT (
     SELECT
-        ARRAY_AGG(DISTINCT REPLACE(table_name,'events_',''))
+        MIN(REPLACE(table_name,'events_',''))
     FROM
         analytics_123456789.INFORMATION_SCHEMA.TABLES
     WHERE
@@ -164,14 +164,14 @@ pre_operations {
         ${when(incremental(), "AND DATE(creation_time, 'Asia/Tokyo') = DATE_SUB(CURRENT_DATE('Asia/Tokyo'), INTERVAL 1 DAY)"}
     );
   ---
-  # 影響を受けるターゲットテーブルのパーティションを取得
+  # ターゲットテーブルの更新されるパーティションを取得
   DECLARE event_timestamp_checkpoint DEFAULT (
     SELECT
         MIN(TIMESTAMP_MICROS(event_timestamp))
     FROM
         ${ref("google_analytics_raw")}
     WHERE
-        _TABLE_SUFFIX IN UNNEST(table_suffix_list)
+        _TABLE_SUFFIX = table_suffix_checkpoint
   );
 }
 
@@ -184,7 +184,7 @@ SELECT
 FROM
     ${ref("google_analytics_raw")} t
 WHERE
-    _TABLE_SUFFIX IN UNNEST(table_suffix_list)
+    _TABLE_SUFFIX >= table_suffix_checkpoint
 QUALIFY
     ROW_NUMBER() OVER(PARTITION BY event_id) = 1 # event_idで重複排除
 ```

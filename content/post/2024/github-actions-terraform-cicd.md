@@ -10,7 +10,7 @@ categories:
 terraformでGoogle Cloudのリソースを管理し、GitHub ActionsによるCI/CDを構築するまでの手順をまとめます。
 更に以下の要件を実現します。
 - OIDCによる認証
-- Pull Requestをオープンした再、terraform plan結果のを自動でコメントする
+- Pull Requestをオープンした際、terraform plan結果のを自動でコメントする
 
 
 ## 1. gcloud CLIのセットアップ
@@ -20,14 +20,27 @@ terraformでGoogle Cloudのリソースを管理し、GitHub ActionsによるCI/
 ```sh
 $ gcloud auth application-default login
 ```
+> 作業するGoogle Cloudプロジェクトの権限を持つアカウントでログインする
 
-## 2. tfファイルの配置
+## 2. GCSバケットの作成
 
+tfstateファイルの置き場となるバケットを作成する
+
+## 3. tfファイルの配置
+
+以下のリソースを定義したファイルを配置します
+- 手順2で作成したバケットのimport
+- GitHub Actionsが用いるサービスアカウント
+- GitHub Workload Identity連携の有効化
 
 ```
 .
 ├── README.md
 ├── locals.tf
+├── main.tf
+├── modules
+│   └── workload_identity
+│       └── main.tf
 └── provider.tf
 ```
 
@@ -35,14 +48,19 @@ $ gcloud auth application-default login
 
 ```terraform
 locals {
-  project_id = "your-project-name"
+  project_id = "your-project-name" # UPDATE HERE
   region     = "asia-northeast1"
 }
 ```
 
 `provider.tf`
 
-```
+```terraform
+provider "google" {
+  project = local.project_id
+  region  = local.region
+}
+
 terraform {
   required_providers {
     google = {
@@ -51,16 +69,93 @@ terraform {
     }
   }
   backend "gcs" {
-    bucket = "tfstate-bucket-name"
+    bucket = "tfstate-bucket-name" # UPDATE HERE
   }
 }
 
-provider "google" {
-  project = local.project_id
-  region  = local.region
+resource "google_storage_bucket" "tfstate" {
+  name     = "tfstate-bucket-name" # UPDATE HERE
+  location = "ASIA"
+}
+
+import {
+  id = "${local.project_id}/tfstate-bucket-name" # UPDATE HERE
+  to = google_storage_bucket.tfstate
 }
 ```
 
+`modules/workload_identity/main.tf`
+
+```terraform
+variable "project_id" {
+  type = string
+}
+
+variable "github_repo_name" {
+  type = string
+}
+
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+resource "google_service_account" "terraform" {
+  account_id   = "terraform"
+  display_name = "ServiceAccount for terraform apply"
+}
+
+resource "google_project_iam_member" "project_owner" {
+  project = data.google_project.project.project_id
+  role    = "roles/owner"
+  member  = "serviceAccount:${google_service_account.terraform.email}"
+}
+
+resource "google_iam_workload_identity_pool" "github" {
+  provider                  = google
+  project                   = data.google_project.project.project_id
+  workload_identity_pool_id = "github"
+  display_name              = "github"
+  description               = "GitHub Actions"
+}
+
+resource "google_iam_workload_identity_pool_provider" "github" {
+  provider                           = google
+  project                            = data.google_project.project.project_id
+  workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
+  workload_identity_pool_provider_id = "github"
+  display_name                       = "github"
+  description                        = "GitHub Actions"
+
+  attribute_mapping = {
+    "google.subject"       = "assertion.sub"
+    "attribute.repository" = "assertion.repository"
+  }
+
+  oidc {
+    issuer_uri = "https://token.actions.githubusercontent.com"
+  }
+}
+
+resource "google_service_account_iam_member" "terraform" {
+  service_account_id = google_service_account.terraform.id
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/${var.github_repo_name}"
+}
+```
+
+`main.tf`
+
+```terraform
+module "workload_identity" {
+  source           = "./modules/workload_identity"
+  project_id       = local.project_id
+  github_repo_name = "your-org-name/repo-name" # UPDATE HERE
+}
+```
+
+## 4. 
+
+## 5. 
 
 --- 
 

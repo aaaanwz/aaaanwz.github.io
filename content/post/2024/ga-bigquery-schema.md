@@ -68,11 +68,10 @@ LANGUAGE js AS """
 # ビュー
 CREATE VIEW dataset.google_analytics AS
 SELECT
-    PARSE_DATE('%Y-%m-%d', _TABLE_SUFFIX) AS date,
+    PARSE_DATE('%Y%m%d', _TABLE_SUFFIX) AS date,
     TIMESTAMP_MICROS(event_timestamp) AS event_timestamp,
-    dataset.parse_ga_struct(event_params) AS event_params,
-    dataset.parse_ga_struct(user_properties) AS user_properties,
-    * EXCEPT(event_timestamp, event_params, user_properties)
+    dataset.parse_ga_struct(event_params) AS event_params
+    * EXCEPT(event_timestamp, event_params)
 FROM
     `analytics_123456789.events_*`;
 ```
@@ -179,8 +178,7 @@ SELECT
     FARM_FINGERPRINT(TO_JSON_STRING(t)) AS event_id, # 行全体をハッシュ化してユニークキーにする
     TIMESTAMP_MICROS(event_timestamp) AS event_timestamp,
     ${ref("parse_ga_struct")}(event_params) AS event_params,
-    ${ref("parse_ga_struct")}(user_properties) AS user_properties,
-    * EXCEPT(event_timestamp, event_params, user_properties)
+    * EXCEPT(event_timestamp, event_params)
 FROM
     ${ref("google_analytics_raw")} t
 WHERE

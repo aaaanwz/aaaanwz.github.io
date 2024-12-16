@@ -12,7 +12,7 @@ categories:
 Cloud Composerで
 
 ```sh
-$ airflow connections export connections.json`
+$ airflow connections export connections.json
 ```
 
 を実行したい場合、
